@@ -1,6 +1,11 @@
 package vocabulary
 
-import "github.com/benpate/form"
+import (
+	"testing"
+
+	"github.com/benpate/form"
+	"github.com/stretchr/testify/assert"
+)
 
 func getTestLibrary() form.Library {
 
@@ -9,4 +14,11 @@ func getTestLibrary() form.Library {
 	All(library)
 
 	return library
+}
+
+func TestAll(t *testing.T) {
+
+	library := getTestLibrary()
+
+	assert.NotNil(t, library)
 }
