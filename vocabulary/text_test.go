@@ -18,5 +18,5 @@ func TestText(t *testing.T) {
 	html, err := f.HTML(library, nil, nil)
 
 	t.Log(html)
-	t.Log(err)
+	derp.Report(err)
 }
