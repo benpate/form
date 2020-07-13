@@ -3,49 +3,28 @@ package vocabulary
 import (
 	"strings"
 
-	"github.com/benpate/convert"
 	"github.com/benpate/form"
-	"github.com/benpate/path"
 	"github.com/benpate/schema"
 )
 
+// Text registers a text <input> widget into the library
 func Text(library form.Library) {
 
-	library.Register("text", func(f form.Form, s schema.Schema, value interface{}, builder *strings.Builder) error {
+	library.Register("text", func(f form.Form, s schema.Schema, v interface{}, builder *strings.Builder) error {
 
-		// Parse the path to the field value.
-		p := path.New(f.Path)
-
-		// If the schema is nil, then there's not much we can do here.
-		if s != nil {
-			s, _ = s.Path(p)
-		}
-
-		if s == nil {
-			s = schema.Any{}
-		}
+		// find the path and schema to use
+		schemaObject, valueString := locateSchema(f.Path, s, v)
 
 		// Start building a new tag
 		tag := TagBuilder("input", builder)
 
 		// Always dd ID attribute (if values exist)
 		tag.Attr("id", f.ID)
-
-		// Try to find a value attribute
-		if f.Path != "" {
-
-			tag.Attr("name", f.Path)
-
-			if value, err := p.Get(value); err == nil {
-
-				if value, _ := convert.StringOk(value, ""); value != "" {
-					tag.Attr("value", value)
-				}
-			}
-		}
+		tag.Attr("name", f.Path)
+		tag.Attr("value", valueString)
 
 		// Add attributes that depend on what KIND of input we have.
-		switch s := s.(type) {
+		switch s := schemaObject.(type) {
 
 		case schema.Integer:
 			tag.Attr("type", "number").Attr("step", "1")

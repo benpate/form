@@ -7,4 +7,5 @@ func All(library form.Library) {
 	LayoutHorizontal(library)
 	LayoutVertical(library)
 	Text(library)
+	Textarea(library)
 }

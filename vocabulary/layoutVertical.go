@@ -9,6 +9,7 @@ import (
 	"github.com/benpate/schema"
 )
 
+// LayoutVertical defines a standard top to bottom layout, including labels above every child item.
 func LayoutVertical(library form.Library) {
 
 	library.Register("layout-vertical", func(form form.Form, schema schema.Schema, value interface{}, builder *strings.Builder) error {
@@ -28,7 +29,7 @@ func LayoutVertical(library form.Library) {
 
 			builder.WriteString(`<div class="element">`)
 
-			TagBuilder("label", builder).Attr("for", child.ID).EndTag(child.Label)
+			TagBuilder("label", builder).Attr("for", child.ID).InnerHTML(child.Label)
 
 			if err := child.Write(library, schema, value, builder); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form)
