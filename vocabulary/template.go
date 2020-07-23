@@ -12,7 +12,7 @@ import (
 
 type TemplateArgs struct {
 	Form   form.Form
-	Schema schema.Schema
+	Schema schema.Element
 	Value  interface{}
 }
 
@@ -36,10 +36,8 @@ func RegisterTemplate(library form.Library, name string, html string) error {
 			Form: form,
 		}
 
-		if schema != nil {
-			if schemaValue, err := schema.Path(p); err != nil {
-				args.Schema = schemaValue
-			}
+		if schemaValue, err := schema.Path(p); err != nil {
+			args.Schema = schemaValue
 		}
 
 		// Try to get the value from the data provided

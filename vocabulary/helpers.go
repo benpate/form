@@ -7,9 +7,9 @@ import (
 )
 
 // locateSchema looks up schema and values using a variable path.
-func locateSchema(pathString string, originalSchema schema.Schema, value interface{}) (schema.Schema, string) {
+func locateSchema(pathString string, original schema.Schema, value interface{}) (schema.Element, string) {
 
-	var resultSchema schema.Schema
+	var resultSchema schema.Element
 	var resultValue string
 
 	resultSchema = schema.Any{}
@@ -20,15 +20,12 @@ func locateSchema(pathString string, originalSchema schema.Schema, value interfa
 		// Parse the path to the field value.
 		pathObject := path.New(pathString)
 
-		// If the schema is nil, then there's not much we can do here.
-		if originalSchema != nil {
-			if s, err := originalSchema.Path(pathObject); err == nil {
-				resultSchema = s
-			}
+		if s, err := original.Path(pathObject); err == nil {
+			resultSchema = s
 		}
 
 		if value, err := pathObject.Get(value); err == nil {
-			resultValue, _ = convert.StringOk(value, "")
+			resultValue = convert.String(value)
 		}
 	}
 

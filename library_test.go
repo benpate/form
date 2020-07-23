@@ -22,7 +22,7 @@ func TestLibraryWidget(t *testing.T) {
 		Kind: "test",
 	}
 
-	html, err := form.HTML(library, nil, nil)
+	html, err := form.HTML(library, schema.Schema{}, nil)
 
 	assert.Equal(t, "SAMPLE-WIDGET", html)
 	assert.Nil(t, err)
@@ -38,7 +38,7 @@ func TestLibraryError(t *testing.T) {
 
 	form := Form{Kind: "error"}
 
-	html, err := form.HTML(library, nil, nil)
+	html, err := form.HTML(library, schema.Schema{}, nil)
 
 	assert.Equal(t, "", html)
 	assert.NotNil(t, err)
@@ -55,7 +55,7 @@ func TestLibraryNotFound(t *testing.T) {
 
 	form := Form{Kind: "not-found"}
 
-	html, err := form.HTML(library, nil, nil)
+	html, err := form.HTML(library, schema.Schema{}, nil)
 
 	assert.Equal(t, "", html)
 	assert.NotNil(t, err)
