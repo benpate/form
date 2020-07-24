@@ -4,6 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/benpate/form?style=flat-square)](https://goreportcard.com/report/github.com/benpate/form)
 [![Build Status](http://img.shields.io/travis/benpate/form.svg?style=flat-square)](https://travis-ci.org/benpate/form)
 [![Codecov](https://img.shields.io/codecov/c/github/benpate/form.svg?style=flat-square)](https://codecov.io/gh/benpate/form)
+![Version](https://img.shields.io/github/v/release/benpate/form?include_prereleases&style=flat-square&color=brightgreen)
 
 ## JSON to HTML (Forms for Go)
 
