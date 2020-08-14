@@ -49,3 +49,24 @@ func (form Form) Write(library Library, schema schema.Schema, value interface{},
 
 	return nil
 }
+
+// AllPaths returns pointers to all of the valid paths in this form
+func (form Form) AllPaths() []*Form {
+
+	var result []*Form
+
+	// If THIS element has a Path, then add it to the result
+	if form.Path != "" {
+		result = []*Form{&form}
+	} else {
+		result = []*Form{}
+	}
+
+	// Scan all chiild elements for THEIR paths, and add them to the result
+	for _, child := range form.Children {
+		result = append(result, child.AllPaths()...)
+	}
+
+	// Success
+	return result
+}
