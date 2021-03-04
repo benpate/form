@@ -18,8 +18,17 @@ type Element struct {
 
 // Start writes the initial tag name and opening bracket for this tag.
 func (element *Element) Start() *Element {
+
+	var growSize int
+
+	if element.container {
+		growSize = (2*len(element.name) + 2) + 1 // < + name + > + </ + name + >
+	} else {
+		growSize = len(element.name) + 2 // < + name + >
+	}
+
 	// Grow the buffer and write the new tag name
-	element.builder.Grow(len(element.name) + 2)
+	element.builder.Grow(growSize)
 	element.builder.WriteRune('<')
 	element.builder.WriteString(element.name)
 
@@ -71,7 +80,6 @@ func (element *Element) EndBracket() *Element {
 	}
 
 	element.endBracket = true
-	element.builder.Grow(1)
 	element.builder.WriteRune('>')
 	return element
 }
@@ -115,26 +123,21 @@ func (element *Element) Close() *Element {
 	}
 
 	// Mark this element as closed.
-	element.closed = true
-	element.builder.last = element.parent
+	element.EndBracket()
 
-	// If this is not a CONTAINER element, then ensure that we have an end bracket
-	if element.container == false {
-		return element.EndBracket()
-	}
-
-	// If we already have an end bracket, then we need to add a full closing tag
-	if element.endBracket {
-		element.builder.Grow(len(element.name) + 3)
+	// If this is a CONTAINER element, then add the ending tag too.
+	if element.container {
+		// correct buffer size is set when we create the tag...
 		element.builder.WriteString("</")
 		element.builder.WriteString(element.name)
 		element.builder.WriteRune('>')
-		return element
 	}
 
-	// Otherwise, we can use the shortened "/>" syntax
-	element.endBracket = true
-	element.builder.Grow(3)
-	element.builder.WriteString(" />")
+	// Mark the element closed
+	element.closed = true
+
+	// Update the builder's stack.
+	element.builder.last = element.parent
+
 	return element
 }
