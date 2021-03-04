@@ -1,9 +1,8 @@
 package form
 
 import (
-	"strings"
-
 	"github.com/benpate/derp"
+	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
@@ -22,19 +21,19 @@ type Form struct {
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
 
 // HTML returns a populated HTML string for the provided form, schema, and value
-func (form Form) HTML(library Library, schema schema.Schema, value interface{}) (string, error) {
+func (form Form) HTML(library Library, schema *schema.Schema, value interface{}) (string, error) {
 
-	var writer strings.Builder
+	builder := html.New()
 
-	if err := form.Write(library, schema, value, &writer); err != nil {
+	if err := form.Write(library, schema, value, builder); err != nil {
 		return "", derp.Wrap(err, "form.HTML", "Error rendering element", form)
 	}
 
-	return writer.String(), nil
+	return builder.String(), nil
 }
 
 // Write generates an HTML string for the fully populated form into the provided string builder
-func (form Form) Write(library Library, schema schema.Schema, value interface{}, builder *strings.Builder) error {
+func (form Form) Write(library Library, schema *schema.Schema, value interface{}, builder *html.Builder) error {
 
 	// Try to locate the Renderer in the library
 	renderer, err := library.Renderer(form.Kind)

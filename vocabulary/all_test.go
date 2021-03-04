@@ -18,9 +18,9 @@ func getTestLibrary() form.Library {
 	return library
 }
 
-func getTestSchema() schema.Schema {
+func getTestSchema() *schema.Schema {
 
-	return schema.Schema{
+	return &schema.Schema{
 		ID:      "",
 		Comment: "",
 		Element: schema.Object{

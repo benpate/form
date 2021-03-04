@@ -1,44 +1,38 @@
 package vocabulary
 
 import (
-	"html"
-	"strings"
-
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
+	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
 // LayoutVertical defines a standard top to bottom layout, including labels above every child item.
 func LayoutVertical(library form.Library) {
 
-	library.Register("layout-vertical", func(form form.Form, schema schema.Schema, value interface{}, builder *strings.Builder) error {
+	library.Register("layout-vertical", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 
 		var result error
 
-		builder.WriteString(`<div class="layout-vertical">`)
-
+		b.Div().Class("layout-vertical")
 		if len(form.Label) > 0 {
-			builder.WriteString(`<div class="label">`)
-			builder.WriteString(html.EscapeString(form.Label))
-			builder.WriteString(`</div>`)
-			builder.WriteString(`<div class="elements>`)
+			b.Div().Class("layout-vertical-label").InnerHTML(form.Label).Close()
 		}
+		b.Div().Class("layout-vertical-elements")
 
 		for index, child := range form.Children {
 
-			builder.WriteString(`<div class="element">`)
+			b.Div().Class("layout-vertical-element")
+			b.Label(child.ID).InnerHTML(child.Label).Close()
 
-			TagBuilder("label", builder).Attr("for", child.ID).InnerHTML(child.Label)
-
-			if err := child.Write(library, schema, value, builder); err != nil {
+			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form)
 			}
-			builder.WriteString(`</div>`)
+
+			b.Close()
 		}
 
-		builder.WriteString(`</div>`)
-		builder.WriteString(`</div>`)
+		b.CloseAll()
 
 		return result
 	})

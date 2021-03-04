@@ -7,7 +7,7 @@ import (
 )
 
 // locateSchema looks up schema and values using a variable path.
-func locateSchema(pathString string, original schema.Schema, value interface{}) (schema.Element, string) {
+func locateSchema(pathString string, original *schema.Schema, value interface{}) (schema.Element, string) {
 
 	var resultSchema schema.Element
 	var resultValue string

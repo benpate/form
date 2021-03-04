@@ -1,27 +1,24 @@
 package vocabulary
 
 import (
-	"strings"
-
 	"github.com/benpate/form"
+	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
 // Text registers a text <input> widget into the library
 func Text(library form.Library) {
 
-	library.Register("text", func(f form.Form, s schema.Schema, v interface{}, builder *strings.Builder) error {
+	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
 		schemaObject, valueString := locateSchema(f.Path, s, v)
 
 		// Start building a new tag
-		tag := TagBuilder("input", builder)
-
-		// Always dd ID attribute (if values exist)
-		tag.Attr("id", f.ID)
-		tag.Attr("name", f.Path)
-		tag.Attr("value", valueString)
+		tag := b.Input().
+			ID(f.ID).
+			Name(f.Path).
+			Value(valueString)
 
 		// Add attributes that depend on what KIND of input we have.
 		switch s := schemaObject.(type) {

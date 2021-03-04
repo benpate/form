@@ -1,38 +1,37 @@
 package vocabulary
 
 import (
-	"html"
-	"strings"
-
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
+	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
 func LayoutHorizontal(library form.Library) {
 
-	library.Register("layout-horizontal", func(form form.Form, schema schema.Schema, value interface{}, builder *strings.Builder) error {
+	library.Register("layout-horizontal", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 
 		var result error
 
-		builder.WriteString(`<div class="layout-horizontal">`)
-		builder.WriteString(`<div class="elements>`)
+		b.Div().Class("layout-horizontal")
+		if form.Label != "" {
+			b.Div().Class("layout-horizontal-label").InnerHTML(form.Label).Close()
+		}
+		b.Div().Class("layout-horizontal-elements")
 
 		for index, child := range form.Children {
 
-			builder.WriteString(`<div class="element">`)
-			builder.WriteString(`<div class="label">`)
-			builder.WriteString(html.EscapeString(child.Label))
-			builder.WriteString(`</div">`)
+			b.Div().Class("layout-horizontal-element")
+			b.Div().Class("label").InnerHTML(child.Label).Close()
 
-			if err := child.Write(library, schema, value, builder); err != nil {
+			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutHorizontal", "Error rendering child", index, child)
 			}
-			builder.WriteString(`</div>`)
+
+			b.Close()
 		}
 
-		builder.WriteString(`</div>`)
-		builder.WriteString(`</div>`)
+		b.CloseAll()
 
 		return result
 	})

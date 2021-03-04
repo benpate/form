@@ -1,8 +1,7 @@
 package vocabulary
 
 import (
-	"html"
-	"strings"
+	"github.com/benpate/form/html"
 
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
@@ -11,26 +10,29 @@ import (
 
 func LayoutGroup(library form.Library) {
 
-	library.Register("layout-group", func(form form.Form, schema schema.Schema, value interface{}, builder *strings.Builder) error {
+	library.Register("layout-group", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 
 		var result error
 
-		builder.WriteString(`<div class="layout-group">`)
+		b.Div().Class("layout-group")
 
-		builder.WriteString(`<div class="label">` + html.EscapeString(form.Label) + `</div>`)
-		builder.WriteString(`<div class="elements>`)
+		if form.Label != "" {
+			b.Div().Class("layout-group-label").InnerHTML(form.Label).Close()
+		}
+		b.Div().Class("layout-group-elements")
 
 		for index, child := range form.Children {
-			builder.WriteString(`<div class="element">`)
 
-			if err := child.Write(library, schema, value, builder); err != nil {
+			tag := b.Div().Class("layout-group-element")
+
+			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutGroup", "Error rendering child", index, child)
 			}
-			builder.WriteString(`</div>`)
+
+			tag.Close()
 		}
 
-		builder.WriteString(`</div>`)
-		builder.WriteString(`</div>`)
+		b.CloseAll()
 
 		return result
 	})
