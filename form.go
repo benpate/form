@@ -1,8 +1,8 @@
 package form
 
 import (
+	"github.com/benpate/builder"
 	"github.com/benpate/derp"
-	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
@@ -23,17 +23,17 @@ type Form struct {
 // HTML returns a populated HTML string for the provided form, schema, and value
 func (form Form) HTML(library Library, schema *schema.Schema, value interface{}) (string, error) {
 
-	builder := html.New()
+	b := builder.New()
 
-	if err := form.Write(library, schema, value, builder); err != nil {
+	if err := form.Write(library, schema, value, b); err != nil {
 		return "", derp.Wrap(err, "form.HTML", "Error rendering element", form)
 	}
 
-	return builder.String(), nil
+	return b.String(), nil
 }
 
 // Write generates an HTML string for the fully populated form into the provided string builder
-func (form Form) Write(library Library, schema *schema.Schema, value interface{}, builder *html.Builder) error {
+func (form Form) Write(library Library, schema *schema.Schema, value interface{}, b *builder.Builder) error {
 
 	// Try to locate the Renderer in the library
 	renderer, err := library.Renderer(form.Kind)
@@ -43,7 +43,7 @@ func (form Form) Write(library Library, schema *schema.Schema, value interface{}
 	}
 
 	// try to render the form into the
-	if err := renderer(form, schema, value, builder); err != nil {
+	if err := renderer(form, schema, value, b); err != nil {
 		return derp.Wrap(err, "form.Write", "Error rendering element", form)
 	}
 

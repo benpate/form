@@ -1,7 +1,7 @@
 package vocabulary
 
 import (
-	"github.com/benpate/form/html"
+	"github.com/benpate/builder"
 
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
@@ -10,7 +10,7 @@ import (
 
 func LayoutGroup(library form.Library) {
 
-	library.Register("layout-group", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
+	library.Register("layout-group", func(form form.Form, schema *schema.Schema, value interface{}, b *builder.Builder) error {
 
 		var result error
 

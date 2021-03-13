@@ -1,15 +1,15 @@
 package vocabulary
 
 import (
+	"github.com/benpate/builder"
 	"github.com/benpate/form"
-	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
 // Text registers a text <input> widget into the library
 func Text(library form.Library) {
 
-	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
+	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *builder.Builder) error {
 
 		// find the path and schema to use
 		schemaObject, valueString := locateSchema(f.Path, s, v)

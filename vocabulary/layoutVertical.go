@@ -1,16 +1,16 @@
 package vocabulary
 
 import (
+	"github.com/benpate/builder"
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
-	"github.com/benpate/form/html"
 	"github.com/benpate/schema"
 )
 
 // LayoutVertical defines a standard top to bottom layout, including labels above every child item.
 func LayoutVertical(library form.Library) {
 
-	library.Register("layout-vertical", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
+	library.Register("layout-vertical", func(form form.Form, schema *schema.Schema, value interface{}, b *builder.Builder) error {
 
 		var result error
 
