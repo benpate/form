@@ -13,8 +13,19 @@ func Option(library form.Library) {
 	library.Register("option", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		_, value := locateSchema(f.Path, s, v)
+		schemaElement, value := locateSchema(f.Path, s, v)
 		valueString := convert.String(value)
+
+		widget := f.Widget
+
+		if widget == "" {
+
+			if schemaElement.Type() == schema.TypeArray {
+				widget = "checkbox"
+			} else {
+				widget = "radio"
+			}
+		}
 
 		// Start building a new tag
 
@@ -24,7 +35,7 @@ func Option(library form.Library) {
 			ID(f.ID).
 			Name(f.Path).
 			Value(valueString).
-			Type(f.Widget).
+			Type(widget).
 			Class(f.CSSClass).
 			InnerHTML(f.Label)
 

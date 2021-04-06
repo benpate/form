@@ -6,6 +6,7 @@ func All(library form.Library) {
 	LayoutGroup(library)
 	LayoutHorizontal(library)
 	LayoutVertical(library)
+	Option(library)
 	Select(library)
 	Text(library)
 	Textarea(library)
