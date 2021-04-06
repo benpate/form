@@ -1,16 +1,15 @@
 package vocabulary
 
 import (
-	"github.com/benpate/convert"
 	"github.com/benpate/path"
 	"github.com/benpate/schema"
 )
 
 // locateSchema looks up schema and values using a variable path.
-func locateSchema(pathString string, original *schema.Schema, value interface{}) (schema.Element, string) {
+func locateSchema(pathString string, original *schema.Schema, value interface{}) (schema.Element, interface{}) {
 
 	var resultSchema schema.Element
-	var resultValue string
+	var resultValue interface{}
 
 	resultSchema = schema.Any{}
 
@@ -25,7 +24,7 @@ func locateSchema(pathString string, original *schema.Schema, value interface{})
 		}
 
 		if value, err := pathObject.Get(value); err == nil {
-			resultValue = convert.String(value)
+			resultValue = value
 		}
 	}
 

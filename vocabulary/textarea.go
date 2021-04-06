@@ -1,18 +1,21 @@
 package vocabulary
 
 import (
-	"github.com/benpate/builder"
+	"github.com/benpate/convert"
 	"github.com/benpate/form"
+	"github.com/benpate/html"
 	"github.com/benpate/schema"
 )
 
 // Textarea registers a <textarea> input widget into the library
 func Textarea(library form.Library) {
 
-	library.Register("textarea", func(f form.Form, s *schema.Schema, v interface{}, b *builder.Builder) error {
+	library.Register("textarea", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		schemaObject, valueString := locateSchema(f.Path, s, v)
+		schemaObject, value := locateSchema(f.Path, s, v)
+
+		valueString := convert.String(value)
 
 		// Start building a new tag
 		tag := b.Container("textarea").
@@ -25,11 +28,11 @@ func Textarea(library form.Library) {
 		if schemaString, ok := schemaObject.(schema.String); ok {
 
 			if schemaString.MinLength.IsPresent() {
-				tag.Attr("minlength", schemaString.MinLength.Int())
+				tag.Attr("minlength", schemaString.MinLength.String())
 			}
 
 			if schemaString.MaxLength.IsPresent() {
-				tag.Attr("maxlength", schemaString.MaxLength.Int())
+				tag.Attr("maxlength", schemaString.MaxLength.String())
 			}
 
 			if schemaString.Pattern != "" {
@@ -37,7 +40,7 @@ func Textarea(library form.Library) {
 			}
 
 			if schemaString.Required {
-				tag.Attr("required", true)
+				tag.Attr("required", "true")
 			}
 		}
 

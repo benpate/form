@@ -1,18 +1,25 @@
 package vocabulary
 
 import (
-	"github.com/benpate/builder"
+	"strings"
+
+	"github.com/benpate/convert"
 	"github.com/benpate/form"
+	"github.com/benpate/html"
 	"github.com/benpate/schema"
 )
 
 // Text registers a text <input> widget into the library
 func Text(library form.Library) {
 
-	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *builder.Builder) error {
+	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
+
+		var listID string
 
 		// find the path and schema to use
-		schemaObject, valueString := locateSchema(f.Path, s, v)
+		schemaElement, value := locateSchema(f.Path, s, v)
+
+		valueString := convert.String(value)
 
 		// Start building a new tag
 		tag := b.Input().
@@ -20,11 +27,23 @@ func Text(library form.Library) {
 			Name(f.Path).
 			Value(valueString)
 
+		// Enumeration Options
+		options := library.Options(f, schemaElement)
+
+		if len(options) > 0 {
+			if f.ID != "" {
+				listID = "datalist_" + f.ID
+			} else {
+				listID = "datalist_" + strings.ReplaceAll(f.Path, "/", "_")
+			}
+			tag.Attr("list", listID)
+		}
+
 		// Add attributes that depend on what KIND of input we have.
-		switch s := schemaObject.(type) {
+		switch s := schemaElement.(type) {
 
 		case schema.Integer:
-			tag.Attr("type", "number").Attr("step", "1")
+			tag.Type("number").Attr("step", "1")
 
 			if s.Minimum.IsPresent() {
 				tag.Attr("min", s.Minimum.String())
@@ -40,7 +59,7 @@ func Text(library form.Library) {
 
 		case schema.Number:
 
-			tag.Attr("type", "number")
+			tag.Type("number")
 
 			if s.Minimum.IsPresent() {
 				tag.Attr("min", s.Minimum.String())
@@ -51,28 +70,28 @@ func Text(library form.Library) {
 			}
 
 			if s.Required {
-				tag.Attr("required", true)
+				tag.Attr("required", "true")
 			}
 
 		case schema.String:
 
 			switch s.Format {
 			case "email":
-				tag.Attr("type", "email")
+				tag.Type("email")
 			case "tel":
-				tag.Attr("type", "tel")
+				tag.Type("tel")
 			case "url":
-				tag.Attr("type", "url")
+				tag.Type("url")
 			default:
-				tag.Attr("type", "text")
+				tag.Type("text")
 			}
 
 			if s.MinLength.IsPresent() {
-				tag.Attr("minlength", s.MinLength.Int())
+				tag.Attr("minlength", s.MinLength.String())
 			}
 
 			if s.MaxLength.IsPresent() {
-				tag.Attr("maxlength", s.MaxLength.Int())
+				tag.Attr("maxlength", s.MaxLength.String())
 			}
 
 			if s.Pattern != "" {
@@ -80,11 +99,11 @@ func Text(library form.Library) {
 			}
 
 			if s.Required {
-				tag.Attr("required", true)
+				tag.Attr("required", "true")
 			}
 
 		default:
-			tag.Attr("type", "text")
+			tag.Type("text")
 		}
 
 		if f.CSSClass != "" {
@@ -96,6 +115,16 @@ func Text(library form.Library) {
 		}
 
 		tag.Close()
+
+		if len(options) > 0 {
+			b.Container("datalist").ID(listID)
+			for _, option := range options {
+				b.Empty("option").Value(option.Value).Close()
+			}
+			b.Close()
+		}
+
+		b.CloseAll()
 		return nil
 	})
 }

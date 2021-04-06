@@ -70,6 +70,4 @@ func TestLayoutVertical(t *testing.T) {
 	expected = strings.ReplaceAll(expected, "\n", "")
 	expected = strings.ReplaceAll(expected, "\t", "")
 	require.Equal(t, expected, html)
-
-	t.Log(html)
 }

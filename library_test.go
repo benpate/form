@@ -3,17 +3,17 @@ package form
 import (
 	"testing"
 
-	"github.com/benpate/builder"
 	"github.com/benpate/derp"
+	"github.com/benpate/html"
 	"github.com/benpate/schema"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLibraryWidget(t *testing.T) {
 
-	library := New()
+	library := New(nil)
 
-	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *builder.Builder) error {
+	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		b.Empty("SAMPLE-WIDGET")
 		return nil
 	})
@@ -30,9 +30,9 @@ func TestLibraryWidget(t *testing.T) {
 
 func TestLibraryError(t *testing.T) {
 
-	library := New()
+	library := New(nil)
 
-	library.Register("error", func(form Form, _ *schema.Schema, _ interface{}, b *builder.Builder) error {
+	library.Register("error", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		return derp.New(500, "Error", "error")
 	})
 
@@ -46,9 +46,9 @@ func TestLibraryError(t *testing.T) {
 
 func TestLibraryNotFound(t *testing.T) {
 
-	library := New()
+	library := New(nil)
 
-	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *builder.Builder) error {
+	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		b.Empty("SAMPLE-WIDGET")
 		return nil
 	})

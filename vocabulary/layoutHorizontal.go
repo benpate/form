@@ -1,15 +1,15 @@
 package vocabulary
 
 import (
-	"github.com/benpate/builder"
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
+	"github.com/benpate/html"
 	"github.com/benpate/schema"
 )
 
 func LayoutHorizontal(library form.Library) {
 
-	library.Register("layout-horizontal", func(form form.Form, schema *schema.Schema, value interface{}, b *builder.Builder) error {
+	library.Register("layout-horizontal", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 
 		var result error
 

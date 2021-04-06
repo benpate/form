@@ -11,7 +11,7 @@ import (
 
 func getTestLibrary() form.Library {
 
-	library := form.New()
+	library := form.New(testOptionProvider(true))
 
 	All(library)
 
@@ -50,11 +50,46 @@ func getTestSchema() *schema.Schema {
 					Maximum:  null.NewFloat(100),
 					Required: true,
 				},
+				"color": schema.String{
+					Enum: []string{"Yellow", "Orange", "Red", "Violet", "Blue", "Green"},
+				},
+				"tags": schema.Array{
+					Items: schema.String{
+						Enum: []string{"pretty", "please", "my", "dear", "aunt", "sally"},
+					},
+				},
 			},
 		},
 	}
-
 }
+
+type testOptionProvider bool
+
+func (t testOptionProvider) OptionCodes(_ string) []form.OptionCode {
+	return []form.OptionCode{
+		{
+			Label: "This is the first code",
+			Value: "ONE",
+		},
+		{
+			Label: "This is the second code",
+			Value: "TWO",
+		},
+		{
+			Label: "This is the third code",
+			Value: "THREE",
+		},
+		{
+			Label: "This is the fourth code",
+			Value: "FOUR",
+		},
+		{
+			Label: "This is the fifth code",
+			Value: "FIVE",
+		},
+	}
+}
+
 func TestAll(t *testing.T) {
 
 	library := getTestLibrary()
