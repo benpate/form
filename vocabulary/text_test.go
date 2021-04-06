@@ -86,7 +86,7 @@ func TestTextTags(t *testing.T) {
 	html, err := f.HTML(library, s, nil)
 
 	require.Nil(t, err)
-	require.Equal(t, `<input name="tags" type="text">`, html)
+	require.Equal(t, `<input name="tags" list="datalist_tags" type="text"><datalist id="datalist_tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`, html)
 }
 
 func TestTextTagsWithID(t *testing.T) {
@@ -112,10 +112,12 @@ func TestTextOptions(t *testing.T) {
 	s := getTestSchema()
 
 	f := form.Form{
-		Kind:    "text",
-		Path:    "tag",
-		ID:      "tag",
-		Options: "/test",
+		Kind: "text",
+		Path: "tag",
+		ID:   "tag",
+		Options: map[string]string{
+			"provider": "/test",
+		},
 	}
 
 	html, err := f.HTML(library, s, nil)

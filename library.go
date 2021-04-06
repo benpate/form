@@ -37,8 +37,8 @@ func (library Library) Renderer(name string) (Renderer, error) {
 func (library Library) Options(form Form, element schema.Element) []OptionCode {
 
 	// If form specifies an OptionProvider, then use that
-	if form.Options != "" {
-		return library.Provider.OptionCodes((form.Options))
+	if optionProvider := form.Options["provider"]; optionProvider != "" {
+		return library.Provider.OptionCodes((optionProvider))
 	}
 
 	// If this is an array, then look up Enumerations on its elements.

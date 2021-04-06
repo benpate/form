@@ -10,14 +10,13 @@ import (
 type Form struct {
 	Path        string            `json:"path"`        // Path to the data value displayed in for this form element
 	Kind        string            `json:"kind"`        // The kind of form element
-	Widget      string            `json:"widget"`      // Optional: used to specify the kind of widget to use instead of the default
 	ID          string            `json:"id"`          // DOM ID to use for this element.
 	Label       string            `json:"label"`       // Short label to be displayed on the form element
 	Description string            `json:"description"` // Longer description text to be displayed on the form element
-	Options     string            `json:"options"`     // URL of the OptionProvider for this widget.
 	CSSClass    string            `json:"cssClass"`    // CSS Class override to apply to this widget.  This should be used sparingly
-	Children    []Form            `json:"children"`    // Array of sub-form elements that may be displayed depending on the kind.
+	Options     map[string]string `json:"options"`     // Additional custom properties defined by individual widgets
 	Rules       map[string]string `json:"rules"`       // Visibility rules (in hyperscript) to apply to UI.
+	Children    []Form            `json:"children"`    // Array of sub-form elements that may be displayed depending on the kind.
 }
 
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete

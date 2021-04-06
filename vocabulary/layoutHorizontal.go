@@ -22,7 +22,10 @@ func LayoutHorizontal(library form.Library) {
 		for index, child := range form.Children {
 
 			b.Div().Class("layout-horizontal-element")
-			b.Div().Class("label").InnerHTML(child.Label).Close()
+
+			if form.Options["show-labels"] != "false" {
+				b.Div().Class("label").InnerHTML(child.Label).Close()
+			}
 
 			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutHorizontal", "Error rendering child", index, child)

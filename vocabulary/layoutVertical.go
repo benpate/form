@@ -15,15 +15,20 @@ func LayoutVertical(library form.Library) {
 		var result error
 
 		b.Div().Class("layout-vertical")
+
 		if len(form.Label) > 0 {
 			b.Div().Class("layout-vertical-label").InnerHTML(form.Label).Close()
 		}
+
 		b.Div().Class("layout-vertical-elements")
 
 		for index, child := range form.Children {
 
 			b.Div().Class("layout-vertical-element")
-			b.Label(child.ID).InnerHTML(child.Label).Close()
+
+			if form.Options["show-labels"] != "false" {
+				b.Label(child.ID).InnerHTML(child.Label).Close()
+			}
 
 			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form)

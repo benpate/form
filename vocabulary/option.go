@@ -16,14 +16,14 @@ func Option(library form.Library) {
 		schemaElement, value := locateSchema(f.Path, s, v)
 		valueString := convert.String(value)
 
-		widget := f.Widget
+		format := f.Options["format"]
 
-		if widget == "" {
+		if format == "" {
 
 			if schemaElement.Type() == schema.TypeArray {
-				widget = "checkbox"
+				format = "checkbox"
 			} else {
-				widget = "radio"
+				format = "radio"
 			}
 		}
 
@@ -35,7 +35,7 @@ func Option(library form.Library) {
 			ID(f.ID).
 			Name(f.Path).
 			Value(valueString).
-			Type(widget).
+			Type(format).
 			Class(f.CSSClass).
 			InnerHTML(f.Label)
 

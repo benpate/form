@@ -29,9 +29,11 @@ func TestSelectOneFromProvider(t *testing.T) {
 	s := getTestSchema()
 
 	f := form.Form{
-		Kind:    "select",
-		Path:    "color",
-		Options: "/test",
+		Kind: "select",
+		Path: "color",
+		Options: map[string]string{
+			"provider": "/test",
+		},
 	}
 
 	value := map[string]interface{}{"color": "FIVE"}
@@ -48,9 +50,11 @@ func TestSelectOneRadio(t *testing.T) {
 	s := getTestSchema()
 
 	f := form.Form{
-		Kind:   "select",
-		Widget: "radio",
-		Path:   "color",
+		Kind: "select",
+		Path: "color",
+		Options: map[string]string{
+			"format": "radio",
+		},
 	}
 
 	html, err := f.HTML(library, s, nil)

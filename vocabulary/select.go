@@ -52,7 +52,7 @@ func Select(library form.Library) {
 		// SelectOne
 		valueString := convert.String(value)
 
-		if f.Widget == "radio" {
+		if f.Options["format"] == "radio" {
 
 			for _, option := range options {
 				label := b.Label(f.ID)
@@ -61,7 +61,7 @@ func Select(library form.Library) {
 					ID(f.ID).
 					Name(f.Path).
 					Value(option.Value).
-					Type(f.Widget)
+					Type("radio")
 
 				if valueString == option.Value {
 					input.Attr("checked", "true")
