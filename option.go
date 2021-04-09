@@ -3,7 +3,7 @@ package form
 // OptionProvider is an external object that
 // can inject OptionCodes based on their URL.
 type OptionProvider interface {
-	OptionCodes(string) []OptionCode
+	OptionCodes(string) ([]OptionCode, error)
 }
 
 // OptionCode represents a single value/label pair
