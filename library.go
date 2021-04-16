@@ -38,7 +38,13 @@ func (library Library) Options(form Form, element schema.Element) []OptionCode {
 
 	// If form specifies an OptionProvider, then use that
 	if optionProvider := form.Options["provider"]; optionProvider != "" {
-		return library.Provider.OptionCodes((optionProvider))
+		result, err := library.Provider.OptionCodes((optionProvider))
+
+		if err != nil {
+			derp.Report(err)
+		}
+
+		return result
 	}
 
 	// If this is an array, then look up Enumerations on its elements.
