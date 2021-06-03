@@ -1,6 +1,8 @@
 package form
 
 import (
+	"encoding/json"
+
 	"github.com/benpate/convert"
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
@@ -18,6 +20,30 @@ type Form struct {
 	Options     map[string]string `json:"options"`     // Additional custom properties defined by individual widgets
 	Rules       map[string]string `json:"rules"`       // Visibility rules (in hyperscript) to apply to UI.
 	Children    []Form            `json:"children"`    // Array of sub-form elements that may be displayed depending on the kind.
+}
+
+// Parse attempts to convert any value into a Form.
+func Parse(data interface{}) (Form, error) {
+
+	var result Form
+
+	switch data := data.(type) {
+
+	case map[string]interface{}:
+		err := result.UnmarshalMap(data)
+		return result, err
+
+	case []byte:
+		err := json.Unmarshal(data, &result)
+		return result, err
+
+	case string:
+		err := json.Unmarshal([]byte(data), &result)
+		return result, err
+
+	}
+
+	return result, derp.New(derp.CodeInternalError, "form.Parse", "Cannot Parse Value: Unknown Datatype", data)
 }
 
 // UnmarshalMap parses data from a generic structure (map[string]interface{}) into a Form record.
