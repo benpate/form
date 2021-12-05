@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/benpate/convert"
+	"github.com/benpate/datatype"
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
 	"github.com/benpate/schema"
@@ -29,6 +30,10 @@ func Parse(data interface{}) (Form, error) {
 
 	switch data := data.(type) {
 
+	case datatype.Map:
+		err := result.UnmarshalMap(map[string]interface{}(data))
+		return result, err
+
 	case map[string]interface{}:
 		err := result.UnmarshalMap(data)
 		return result, err
@@ -44,6 +49,18 @@ func Parse(data interface{}) (Form, error) {
 	}
 
 	return result, derp.New(derp.CodeInternalError, "form.Parse", "Cannot Parse Value: Unknown Datatype", data)
+}
+
+// MustParse guarantees that a value has been parsed into a Form, or else it panics the application.
+func MustParse(data interface{}) Form {
+
+	result, err := Parse(data)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return result
 }
 
 // UnmarshalMap parses data from a generic structure (map[string]interface{}) into a Form record.

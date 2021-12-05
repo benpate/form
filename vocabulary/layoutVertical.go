@@ -20,11 +20,11 @@ func LayoutVertical(library form.Library) {
 			b.Div().Class("layout-vertical-label").InnerHTML(form.Label).Close()
 		}
 
-		b.Div().Class("layout-vertical-elements")
+		b.Div().Class("layout-vertical-elements") // TODO: Something funny is requiring end brackets when it shouldn't
 
 		for index, child := range form.Children {
 
-			b.Div().Class("layout-vertical-element")
+			b.Div().Class("layout-vertical-element") // TODO: Something funny is requiring end brackets when it shouldn't
 
 			if form.Options["show-labels"] != "false" {
 				b.Label(child.ID).InnerHTML(child.Label).Close()
