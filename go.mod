@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/benpate/compare v0.0.4
-	github.com/benpate/convert v0.9.2
+	github.com/benpate/convert v0.11.0
 	github.com/benpate/datatype v0.0.3
-	github.com/benpate/derp v0.21.0
+	github.com/benpate/derp v0.22.0
 	github.com/benpate/html v0.11.1
 	github.com/benpate/null v0.6.0
 	github.com/benpate/path v0.4.0
