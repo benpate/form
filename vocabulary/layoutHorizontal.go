@@ -7,7 +7,7 @@ import (
 	"github.com/benpate/schema"
 )
 
-func LayoutHorizontal(library form.Library) {
+func LayoutHorizontal(library *form.Library) {
 
 	library.Register("layout-horizontal", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 

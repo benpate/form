@@ -8,7 +8,7 @@ import (
 )
 
 // LayoutVertical defines a standard top to bottom layout, including labels above every child item.
-func LayoutVertical(library form.Library) {
+func LayoutVertical(library *form.Library) {
 
 	library.Register("layout-vertical", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 

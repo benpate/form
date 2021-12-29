@@ -8,7 +8,7 @@ import (
 	"github.com/benpate/schema"
 )
 
-func LayoutGroup(library form.Library) {
+func LayoutGroup(library *form.Library) {
 
 	library.Register("layout-group", func(form form.Form, schema *schema.Schema, value interface{}, b *html.Builder) error {
 

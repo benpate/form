@@ -10,7 +10,7 @@ import (
 )
 
 // Text registers a text <input> widget into the library
-func Text(library form.Library) {
+func Text(library *form.Library) {
 
 	library.Register("text", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 

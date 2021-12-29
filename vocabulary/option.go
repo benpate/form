@@ -8,7 +8,7 @@ import (
 )
 
 // Option registers a text <input> widget into the library
-func Option(library form.Library) {
+func Option(library *form.Library) {
 
 	library.Register("option", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 

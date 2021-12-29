@@ -11,8 +11,8 @@ type Library struct {
 	Renderers map[string]Renderer
 }
 
-// New returns a fully initialized Library
-func New(provider OptionProvider) Library {
+// NewLibrary returns a fully initialized Library
+func NewLibrary(provider OptionProvider) Library {
 	return Library{
 		Provider:  provider,
 		Renderers: make(map[string]Renderer),

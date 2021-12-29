@@ -8,7 +8,7 @@ import (
 )
 
 // Textarea registers a <textarea> input widget into the library
-func Textarea(library form.Library) {
+func Textarea(library *form.Library) {
 
 	library.Register("textarea", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 

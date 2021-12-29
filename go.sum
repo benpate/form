@@ -9,15 +9,19 @@ github.com/benpate/derp v0.20.1/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8f
 github.com/benpate/derp v0.21.0/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8fUlCxY=
 github.com/benpate/derp v0.22.0 h1:w4Or+AwXpzbuwlVpA327woRtQhvaKx9DpD2mWHsdME0=
 github.com/benpate/derp v0.22.0/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8fUlCxY=
-github.com/benpate/html v0.11.1 h1:s9V9nIWOQe0awtBT1WDkZgxVV6ba7lEVgnOI0eesPuw=
-github.com/benpate/html v0.11.1/go.mod h1:LfFlgbO4BW7dMxGdlFHv1viDdfrw54YDkE5jmWQDapw=
+github.com/benpate/html v0.11.3 h1:JjM7fRcqAtOjZRTaT8zhAHMcG+7/W7wtACMjqV6OzQg=
+github.com/benpate/html v0.11.3/go.mod h1:LfFlgbO4BW7dMxGdlFHv1viDdfrw54YDkE5jmWQDapw=
 github.com/benpate/list v0.4.0 h1:da3D4pYWTFEb1i+Tj/a3uR9N969a7y5JOclVy2gYUfs=
 github.com/benpate/list v0.4.0/go.mod h1:WAtfxD27A/GNVNL/LQD8kecQM7BB7sbfE5uoDrxpZwI=
+github.com/benpate/list v0.4.1 h1:slaO4GXQbS13ORStj2DxXQeOhqhhuenPBGJAqeiH3Ro=
+github.com/benpate/list v0.4.1/go.mod h1:WAtfxD27A/GNVNL/LQD8kecQM7BB7sbfE5uoDrxpZwI=
 github.com/benpate/null v0.6.0 h1:7ienEL2uuXls6zKAjrmPAHL6GE1MQyw2RqDGCSkWIeo=
 github.com/benpate/null v0.6.0/go.mod h1:ObR4S/eyKgPvABPJhSmvNkF0Ma4I9m/icDc0vaJcUw8=
 github.com/benpate/path v0.2.0/go.mod h1:Ww1r+6Kcal8x4HdIfWTGRMhgvG+TykBRrOuL4WQcb7M=
 github.com/benpate/path v0.4.0 h1:JxccdecRUpIhPOQpbHQlw5nv0psWXBbIjwq6fOVwk38=
 github.com/benpate/path v0.4.0/go.mod h1:NlcH/jI4VoGgndQ9rEQmP2HBXb+9Jj5vBtgN6zk92sQ=
+github.com/benpate/path v0.4.1 h1:49wBjiEixFg93mK09XSm2P+6ibXVamrrqTgxdVpgOoc=
+github.com/benpate/path v0.4.1/go.mod h1:sbQantQgf2uJcpHMjcDwA/M7NsDjbYPoqxRvc9panfk=
 github.com/benpate/schema v0.10.2 h1:FVekaiWe8iYkCMGGcnHbep/3PPMyzr2dA8vjlWf3O6U=
 github.com/benpate/schema v0.10.2/go.mod h1:kkIBt46zjSnpjQivOOMltU1RuD6r2brFfkgRPv0V/Cw=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -25,6 +29,7 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stretchr/objx v0.1.0 h1:4G4v2dO3VZwixGIRoQ5Lfboy6nUhCyYzaqnIAPPhYs4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
@@ -33,3 +38,5 @@ gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b h1:h8qDotaEPuJATrMmW04NCwg7v22aHH28wwpauUhK9Oo=
+gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

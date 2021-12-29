@@ -9,7 +9,7 @@ import (
 )
 
 // Select registers a text <input> widget into the library
-func Select(library form.Library) {
+func Select(library *form.Library) {
 
 	library.Register("select", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 

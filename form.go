@@ -102,7 +102,7 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
 
 // HTML returns a populated HTML string for the provided form, schema, and value
-func (form Form) HTML(library Library, schema *schema.Schema, value interface{}) (string, error) {
+func (form Form) HTML(library *Library, schema *schema.Schema, value interface{}) (string, error) {
 
 	b := html.New()
 
@@ -114,7 +114,7 @@ func (form Form) HTML(library Library, schema *schema.Schema, value interface{})
 }
 
 // Write generates an HTML string for the fully populated form into the provided string builder
-func (form Form) Write(library Library, schema *schema.Schema, value interface{}, b *html.Builder) error {
+func (form Form) Write(library *Library, schema *schema.Schema, value interface{}, b *html.Builder) error {
 
 	// Try to locate the Renderer in the library
 	renderer, err := library.Renderer(form.Kind)
