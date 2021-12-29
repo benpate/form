@@ -11,8 +11,9 @@
 This expandable [Go module](https://golang.org) generates HTML forms using JSON configurations.  It is inspired by JSON-Forms but is not compatable with that standard.
 
 ## DO NOT USE
+
 This project is a work-in-progress, and should NOT be used by ANYONE, for ANY PURPOSE, under ANY CIRCUMSTANCES.  It is NOT READY FOR PRIME TIME, and is essentially GUARANTEED to blow up your computer, send your cat into an infinite loop, and combine your hot and cold laundry into a single cycle.
 
 ## Pull Requests Welcome
 
-This library is a work in progress, and will benefit from your experience reports, use cases, and contributions.  If you have an idea for making Rosetta better, send in a pull request.  We're all in this together! 🤔
+This library is a work in progress, and will benefit from your experience reports, use cases, and contributions.  If you have an idea for making this library better, send in a pull request.  We're all in this together! 🤔
