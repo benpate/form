@@ -12,16 +12,18 @@ import (
 
 // Form defines a single form element, or a nested form layout.  It can be serialized to and from a database.
 type Form struct {
-	Path        string            `json:"path"`        // Path to the data value displayed in for this form element
-	Kind        string            `json:"kind"`        // The kind of form element
-	ID          string            `json:"id"`          // DOM ID to use for this element.
-	Label       string            `json:"label"`       // Short label to be displayed on the form element
-	Description string            `json:"description"` // Longer description text to be displayed on the form element
-	CSSClass    string            `json:"cssClass"`    // CSS Class override to apply to this widget.  This should be used sparingly
-	Options     map[string]string `json:"options"`     // Additional custom properties defined by individual widgets
-	Rules       map[string]string `json:"rules"`       // Visibility rules (in hyperscript) to apply to UI.
-	Children    []Form            `json:"children"`    // Array of sub-form elements that may be displayed depending on the kind.
+	Path        string `json:"path"`                  // Path to the data value displayed in for this form element
+	Kind        string `json:"kind"`                  // The kind of form element
+	ID          string `json:"id,omitempty"`          // DOM ID to use for this element.
+	Label       string `json:"label,omitempty"`       // Short label to be displayed on the form element
+	Description string `json:"description,omitempty"` // Longer description text to be displayed on the form element
+	CSSClass    string `json:"cssClass,omitempty"`    // CSS Class override to apply to this widget.  This should be used sparingly
+	Options     Map    `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
+	Script      string `json:"script,omitempty"`      // Hyperscript to be embedded at the base of each widget.
+	Children    []Form `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
 }
+
+type Map map[string]string
 
 // Parse attempts to convert any value into a Form.
 func Parse(data interface{}) (Form, error) {
@@ -72,18 +74,12 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 	form.Label = convert.String(data["label"])
 	form.Description = convert.String(data["description"])
 	form.CSSClass = convert.String(data["cssClass"])
+	form.Script = convert.String(data["script"])
 
-	form.Options = make(map[string]string)
+	form.Options = make(Map)
 	if options, ok := data["options"].(map[string]interface{}); ok {
 		for key, value := range options {
 			form.Options[key] = convert.String(value)
-		}
-	}
-
-	form.Rules = make(map[string]string)
-	if rules, ok := data["rules"].(map[string]interface{}); ok {
-		for key, value := range rules {
-			form.Rules[key] = convert.String(value)
 		}
 	}
 
@@ -136,15 +132,15 @@ func (form Form) Write(library Library, schema *schema.Schema, value interface{}
 }
 
 // AllPaths returns pointers to all of the valid paths in this form
-func (form Form) AllPaths() []*Form {
+func (form Form) AllPaths() []Form {
 
-	var result []*Form
+	var result []Form
 
 	// If THIS element has a Path, then add it to the result
 	if form.Path != "" {
-		result = []*Form{&form}
+		result = []Form{form}
 	} else {
-		result = []*Form{}
+		result = []Form{}
 	}
 
 	// Scan all chiild elements for THEIR paths, and add them to the result
