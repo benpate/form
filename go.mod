@@ -7,7 +7,7 @@ require (
 	github.com/benpate/convert v0.11.0
 	github.com/benpate/datatype v0.0.3
 	github.com/benpate/derp v0.22.0
-	github.com/benpate/html v0.11.3
+	github.com/benpate/html v0.11.4
 	github.com/benpate/null v0.6.0
 	github.com/benpate/path v0.4.1
 	github.com/benpate/schema v0.10.2
