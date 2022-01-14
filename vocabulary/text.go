@@ -113,6 +113,7 @@ func Text(library *form.Library) {
 			tag.Attr("hint", f.Description)
 		}
 
+		tag.TabIndex("0")
 		tag.Close()
 
 		if len(options) > 0 {
