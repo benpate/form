@@ -11,9 +11,9 @@ import (
 
 func getTestLibrary() form.Library {
 
-	library := form.New(testOptionProvider(true))
+	library := form.NewLibrary(testOptionProvider(true))
 
-	All(library)
+	All(&library)
 
 	return library
 }

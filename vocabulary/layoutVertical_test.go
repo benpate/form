@@ -43,7 +43,7 @@ func TestLayoutVertical(t *testing.T) {
 		"age":   27,
 	}
 
-	html, err := f.HTML(library, s, v)
+	html, err := f.HTML(&library, s, v)
 
 	assert.Nil(t, err)
 	derp.Report(err)

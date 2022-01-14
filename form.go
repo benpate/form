@@ -25,6 +25,15 @@ type Form struct {
 
 type Map map[string]string
 
+// NewForm returns a fully initialized Form object
+func NewForm(kind string) Form {
+	return Form{
+		Kind:     kind,
+		Options:  make(Map),
+		Children: make([]Form, 0),
+	}
+}
+
 // Parse attempts to convert any value into a Form.
 func Parse(data interface{}) (Form, error) {
 
@@ -150,4 +159,63 @@ func (form Form) AllPaths() []Form {
 
 	// Success
 	return result
+}
+
+/*********************************
+ * BUILDER FUNCTIONS
+ *********************************/
+
+// SetPath sets the path value for this form item
+// This DOES NOT implement the path.Setter interface
+func (form *Form) SetPath(path string) *Form {
+	form.Path = path
+	return form
+}
+
+// SetID sets the ID value for this form item.
+func (form *Form) SetID(id string) *Form {
+	form.ID = id
+	return form
+}
+
+// SetLabel sets the Label value for this form item
+func (form *Form) SetLabel(label string) *Form {
+	form.Label = label
+	return form
+}
+
+// SetDescription sets the description value for this form item
+func (form *Form) SetDescription(description string) *Form {
+	form.Description = description
+	return form
+}
+
+// SetCSSClass sets the CSSClass value for this form item
+func (form *Form) SetCSSClass(cssClass string) *Form {
+	form.CSSClass = cssClass
+	return form
+}
+
+// SetOption sets an individual option for this form item
+func (form *Form) SetOption(key string, value string) *Form {
+	form.Options[key] = value
+	return form
+}
+
+// SetScript sets the script value for this form item
+func (form *Form) SetScript(script string) *Form {
+	form.Script = script
+	return form
+}
+
+// AddChild adds a new child of the designated type
+// to this form element.  It returns a reference to the
+// newly created child.
+func (form *Form) AddChild(kind string) *Form {
+
+	child := NewForm(kind)
+
+	form.Children = append(form.Children, child)
+
+	return &(form.Children[len(form.Children)-1])
 }

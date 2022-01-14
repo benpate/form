@@ -11,7 +11,7 @@ import (
 
 func TestLibraryWidget(t *testing.T) {
 
-	library := New(nil)
+	library := NewLibrary(nil)
 
 	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		b.Empty("SAMPLE-WIDGET")
@@ -22,7 +22,7 @@ func TestLibraryWidget(t *testing.T) {
 		Kind: "test",
 	}
 
-	html, err := form.HTML(library, &schema.Schema{}, nil)
+	html, err := form.HTML(&library, &schema.Schema{}, nil)
 
 	assert.Equal(t, "<SAMPLE-WIDGET>", html)
 	assert.Nil(t, err)
@@ -30,7 +30,7 @@ func TestLibraryWidget(t *testing.T) {
 
 func TestLibraryError(t *testing.T) {
 
-	library := New(nil)
+	library := NewLibrary(nil)
 
 	library.Register("error", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		return derp.New(500, "Error", "error")
@@ -38,7 +38,7 @@ func TestLibraryError(t *testing.T) {
 
 	form := Form{Kind: "error"}
 
-	html, err := form.HTML(library, &schema.Schema{}, nil)
+	html, err := form.HTML(&library, &schema.Schema{}, nil)
 
 	assert.Equal(t, "", html)
 	assert.NotNil(t, err)
@@ -46,7 +46,7 @@ func TestLibraryError(t *testing.T) {
 
 func TestLibraryNotFound(t *testing.T) {
 
-	library := New(nil)
+	library := NewLibrary(nil)
 
 	library.Register("test", func(form Form, _ *schema.Schema, _ interface{}, b *html.Builder) error {
 		b.Empty("SAMPLE-WIDGET")
@@ -55,7 +55,7 @@ func TestLibraryNotFound(t *testing.T) {
 
 	form := Form{Kind: "not-found"}
 
-	html, err := form.HTML(library, &schema.Schema{}, nil)
+	html, err := form.HTML(&library, &schema.Schema{}, nil)
 
 	assert.Equal(t, "", html)
 	assert.NotNil(t, err)

@@ -17,7 +17,7 @@ func TestSelectOne(t *testing.T) {
 		Path: "color",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	t.Log(html)
@@ -38,7 +38,7 @@ func TestSelectOneFromProvider(t *testing.T) {
 
 	value := map[string]interface{}{"color": "FIVE"}
 
-	html, err := f.HTML(library, s, value)
+	html, err := f.HTML(&library, s, value)
 
 	require.Nil(t, err)
 	t.Log(html)
@@ -57,7 +57,7 @@ func TestSelectOneRadio(t *testing.T) {
 		},
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	t.Log(html)
@@ -77,7 +77,7 @@ func TestSelectMany(t *testing.T) {
 		"tags": []string{"pretty", "please"},
 	}
 
-	html, err := f.HTML(library, s, value)
+	html, err := f.HTML(&library, s, value)
 
 	require.Nil(t, err)
 	t.Log(html)

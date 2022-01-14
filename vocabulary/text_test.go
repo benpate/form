@@ -17,7 +17,7 @@ func TestInteger(t *testing.T) {
 		Path: "age",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input name="age" type="number" step="1" min="10" max="100" required="true">`, html)
@@ -34,7 +34,7 @@ func TestFloat(t *testing.T) {
 		Path: "distance",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input id="idFormElement" name="distance" type="number" min="10" max="100" required="true">`, html)
@@ -50,7 +50,7 @@ func TestText(t *testing.T) {
 		Path: "username",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input name="username" type="text" minlength="10" maxlength="100" pattern="[a-z]+" required="true">`, html)
@@ -67,7 +67,7 @@ func TestDescription(t *testing.T) {
 		Description: "Hint text would go here",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input name="name" type="text" maxlength="50" hint="Hint text would go here">`, html)
@@ -83,7 +83,7 @@ func TestTextTags(t *testing.T) {
 		Path: "tags",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input name="tags" list="datalist_tags" type="text"><datalist id="datalist_tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`, html)
@@ -100,7 +100,7 @@ func TestTextTagsWithID(t *testing.T) {
 		ID:   "tags",
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	require.Equal(t, `<input id="tags" name="tags" list="datalist_tags" type="text"><datalist id="datalist_tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`, html)
@@ -120,7 +120,7 @@ func TestTextOptions(t *testing.T) {
 		},
 	}
 
-	html, err := f.HTML(library, s, nil)
+	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
 	t.Log(html)
