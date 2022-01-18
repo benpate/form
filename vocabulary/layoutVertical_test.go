@@ -54,15 +54,15 @@ func TestLayoutVertical(t *testing.T) {
 		<div class="layout-vertical-elements">
 			<div class="layout-vertical-element">
 				<label>Name</label>
-				<input name="name" value="John Connor" type="text" maxlength="50">
+				<input name="name" value="John Connor" type="text" maxlength="50" tabIndex="0">
 			</div>
 			<div class="layout-vertical-element">
 				<label>Email</label>
-				<input name="email" value="john@resistance.mil" type="email" minlength="10" maxlength="100" required="true">
+				<input name="email" value="john@resistance.mil" type="email" minlength="10" maxlength="100" required="true" tabIndex="0">
 			</div>
 			<div class="layout-vertical-element">
 				<label>Age</label>
-				<input name="age" value="27" type="number" step="1" min="10" max="100" required="true">
+				<input name="age" value="27" type="number" step="1" min="10" max="100" required="true" tabIndex="0">
 			</div>
 		</div>
 	</div>`

@@ -22,7 +22,7 @@ func Text(library *form.Library) {
 		valueString := convert.String(value)
 
 		// Start building a new tag
-		tag := b.Input("text", f.Path).
+		tag := b.Input("", f.Path).
 			ID(f.ID).
 			Value(valueString)
 
