@@ -1,9 +1,9 @@
 # Form 🤔
 
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/benpate/form)
-[![Go Report Card](https://goreportcard.com/badge/github.com/benpate/form?style=flat-square)](https://goreportcard.com/report/github.com/benpate/form)
-[![Build Status](http://img.shields.io/travis/benpate/form.svg?style=flat-square)](https://travis-ci.com/benpate/form)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://godoc.org/github.com/benpate/form)
+[![Build Status](http://img.shields.io/travis/benpate/form.svg?style=flat-square)](https://travis-ci.org/benpate/form)
 [![Codecov](https://img.shields.io/codecov/c/github/benpate/form.svg?style=flat-square)](https://codecov.io/gh/benpate/form)
+[![Go Report Card](https://goreportcard.com/badge/github.com/benpate/form?style=flat-square)](https://goreportcard.com/report/github.com/benpate/form)
 ![Version](https://img.shields.io/github/v/release/benpate/form?include_prereleases&style=flat-square&color=brightgreen)
 
 ## JSON to HTML (Forms for Go)
@@ -12,7 +12,7 @@ This expandable [Go module](https://golang.org) generates HTML forms using JSON 
 
 ## DO NOT USE
 
-This project is a work-in-progress, and should NOT be used by ANYONE, for ANY PURPOSE, under ANY CIRCUMSTANCES.  It is NOT READY FOR PRIME TIME, and is essentially GUARANTEED to blow up your computer, send your cat into an infinite loop, and combine your hot and cold laundry into a single cycle.
+This project is a work-in-progress, and should NOT be used by ANYONE, for ANY PURPOSE, under ANY CIRCUMSTANCES.  It is WILL BE CHANGED UNDERNEATH YOU WITHOUT NOTICE OR HESITATION, and is expressly GUARANTEED to blow up your computer, send your cat into an infinite loop, and combine your hot and cold laundry into a single cycle.
 
 ## Pull Requests Welcome
 
