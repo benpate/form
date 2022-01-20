@@ -17,13 +17,11 @@ func locateSchema(pathString string, original *schema.Schema, value interface{})
 	if pathString != "" {
 
 		// Parse the path to the field value.
-		pathObject := path.New(pathString)
-
-		if s, err := original.Path(pathObject); err == nil {
+		if s, err := original.Path(pathString); err == nil {
 			resultSchema = s
 		}
 
-		if value, err := pathObject.Get(value); err == nil {
+		if value, ok := path.GetOK(value, pathString); ok {
 			resultValue = value
 		}
 	}
