@@ -6,8 +6,9 @@ github.com/benpate/datatype v0.2.0 h1:ZEQm89/jfDfmTHXvgLxEWQB8PQJsbjk50utII3KYhX
 github.com/benpate/datatype v0.2.0/go.mod h1:yv4SNYtwHWiDk3ZsNG8ej+NKq0s/7dK9fMhmNuydYL4=
 github.com/benpate/derp v0.22.2 h1:qPcnT32VG8gqhDR4y+dhK2n/0TMvZ3RUP+HbENNogAc=
 github.com/benpate/derp v0.22.2/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8fUlCxY=
-github.com/benpate/exp v0.1.0 h1:Xfdh11vnl5vHF6SsYIK7JJvn/ewmYeiPNZcZWVYZBKc=
 github.com/benpate/exp v0.1.0/go.mod h1:HIA7i+4hg0vn85dwAawpXJw8adDBRE+bU7/1jgMav5o=
+github.com/benpate/exp v0.1.1 h1:3Wao3iVt7HrN4g07DIP9WeQgiBPzFQ+kZsdT3ba4UxU=
+github.com/benpate/exp v0.1.1/go.mod h1:AELV4lX/Jr7GF8D46oYLFnXpH89jogoc61UWY86I8lk=
 github.com/benpate/html v0.11.5 h1:637RE/jVdasQy1H/2sTqjWW0pG87SKs4qRnmExfuGfw=
 github.com/benpate/html v0.11.5/go.mod h1:/6BdNS8//g1lH602FSMt6VTXaCVUxEQuXLg40HT/EXw=
 github.com/benpate/list v0.4.2 h1:on6Y6Fh7L+gNI41eRbeCntgNX54jQlFiO2RAa8wj0lw=
@@ -47,6 +48,7 @@ github.com/xdg-go/scram v1.0.2/go.mod h1:1WAq6h33pAW+iRreB34OORO2Nf7qel3VV3fjBj+
 github.com/xdg-go/stringprep v1.0.2/go.mod h1:8F9zXuvzgwmyT5DUm4GUfZGDdT3W+LCvS6+da4O5kxM=
 github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d/go.mod h1:rHwXgn7JulP+udvsHwJoVG1YGAP6VLg4y9I5dyZdqmA=
 go.mongodb.org/mongo-driver v1.8.1/go.mod h1:0sQWfOeY63QTntERDJJ/0SuKK0T1uVSgKCuAROlKEPY=
+go.mongodb.org/mongo-driver v1.8.2/go.mod h1:0sQWfOeY63QTntERDJJ/0SuKK0T1uVSgKCuAROlKEPY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20201216223049-8b5274cf687f/go.mod h1:jdWPYTVW3xRLrWPugEBEK3UY2ZEsg3UU495nc5E+M+I=
 golang.org/x/net v0.0.0-20190311183353-d8887717615a/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
