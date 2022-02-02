@@ -1,7 +1,8 @@
 github.com/benpate/compare v0.1.0 h1:ez9loY//1MHYhk+jVNcHRu1beiS1O6mME9re0TjmUbQ=
 github.com/benpate/compare v0.1.0/go.mod h1:Ii/Lnmvvw+CCvBLAKoKXHWUqQEttAozkiFKVKMzeh6Q=
-github.com/benpate/convert v0.11.1 h1:j1GQdQpwqdsXS5cI+uWeDYW/Zk1P1h7n8AQixZBYNnI=
 github.com/benpate/convert v0.11.1/go.mod h1:OOSsfYUChsbE+9hBIJQsxGyiogL//WTHEpgXiSLETRg=
+github.com/benpate/convert v0.12.0 h1:N4aTPQabpyoIgUSZNmkeP3t/kZo72rWaYQ9oX0ggBds=
+github.com/benpate/convert v0.12.0/go.mod h1:kcwWFWAQFvp6s9s/w74gXIYRDvH7pqt83Ad9YIuwo8s=
 github.com/benpate/datatype v0.2.0 h1:ZEQm89/jfDfmTHXvgLxEWQB8PQJsbjk50utII3KYhX0=
 github.com/benpate/datatype v0.2.0/go.mod h1:yv4SNYtwHWiDk3ZsNG8ej+NKq0s/7dK9fMhmNuydYL4=
 github.com/benpate/derp v0.22.2 h1:qPcnT32VG8gqhDR4y+dhK2n/0TMvZ3RUP+HbENNogAc=
