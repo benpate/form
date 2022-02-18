@@ -1,5 +1,6 @@
-github.com/benpate/compare v0.1.0 h1:ez9loY//1MHYhk+jVNcHRu1beiS1O6mME9re0TjmUbQ=
 github.com/benpate/compare v0.1.0/go.mod h1:Ii/Lnmvvw+CCvBLAKoKXHWUqQEttAozkiFKVKMzeh6Q=
+github.com/benpate/compare v0.1.1 h1:rpO2mLSWFEReq/hCKd4ULxJV+HSJLYINORodg8rMvMQ=
+github.com/benpate/compare v0.1.1/go.mod h1:djtVm+GtoMdMKsdbOdYtd4H4/mV2sL2l/SnqiPexECU=
 github.com/benpate/convert v0.11.1/go.mod h1:OOSsfYUChsbE+9hBIJQsxGyiogL//WTHEpgXiSLETRg=
 github.com/benpate/convert v0.12.0 h1:N4aTPQabpyoIgUSZNmkeP3t/kZo72rWaYQ9oX0ggBds=
 github.com/benpate/convert v0.12.0/go.mod h1:kcwWFWAQFvp6s9s/w74gXIYRDvH7pqt83Ad9YIuwo8s=
@@ -17,10 +18,11 @@ github.com/benpate/list v0.4.2/go.mod h1:qT9JMhKPxIP97Gsr+mUfvuGwwDfKsfR/jfRuWj0
 github.com/benpate/null v0.6.1 h1:MInsq7/M9E9IzF6EWeB1po5p9zQpvimw3brrU1UeRzA=
 github.com/benpate/null v0.6.1/go.mod h1:gxun/MktUPdKfYWvkzCI2fCy3OX/3+sZWh01hjYdXwE=
 github.com/benpate/path v0.8.0/go.mod h1:icrNZIRDEZBzJSmMaYBiJa/NZT469ag+jkNF4yMzBdk=
+github.com/benpate/path v0.8.1/go.mod h1:icrNZIRDEZBzJSmMaYBiJa/NZT469ag+jkNF4yMzBdk=
 github.com/benpate/path v0.8.2 h1:sKq38k8mEZzTIxKT7DNSZlzf1FjxaKlMPwsoykVM11U=
 github.com/benpate/path v0.8.2/go.mod h1:0lFgiaccvOPAkMR/0LjjqURUcMn1NJ8SLOhylWV7wI4=
-github.com/benpate/schema v0.12.0 h1:wUzD0fuDvdmUnHgjFuqrSLyhsQrsr0ZtFYPeHzmmb64=
-github.com/benpate/schema v0.12.0/go.mod h1:dlmr+tSRgmVpFdP+IRJaXuCM9g3vIA8A0p0gsE5NHwI=
+github.com/benpate/schema v0.13.0 h1:p1iiDWRCg8K3KYw0w6v1pynUOOfpMbRyUQZs5aAtUxo=
+github.com/benpate/schema v0.13.0/go.mod h1:cXbnXgerabIQH/FZirFGnTu5/mBWyJMZ0rhJZLoH2Lk=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
