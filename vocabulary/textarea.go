@@ -44,6 +44,7 @@ func Textarea(library *form.Library) {
 			}
 		}
 
+		tag.TabIndex("0")
 		tag.InnerHTML(valueString).Close()
 		return nil
 	})
