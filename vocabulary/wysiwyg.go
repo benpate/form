@@ -59,7 +59,7 @@ func WYSIWYG(library *form.Library) {
 		}
 		b.Close()
 
-		b.Div().Class("wysiwyg-editor").Script("install Autosave").InnerHTML(valueString)
+		b.Div().Class("wysiwyg-editor").InnerHTML(valueString)
 		b.CloseAll()
 
 		return nil
