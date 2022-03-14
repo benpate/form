@@ -24,8 +24,8 @@ github.com/benpate/null v0.6.1/go.mod h1:gxun/MktUPdKfYWvkzCI2fCy3OX/3+sZWh01hjY
 github.com/benpate/path v0.8.0/go.mod h1:icrNZIRDEZBzJSmMaYBiJa/NZT469ag+jkNF4yMzBdk=
 github.com/benpate/path v0.8.3 h1:/8mxDgN8vycijcuMWWHnXiVg1ytKkCaU2XzOJbvov7k=
 github.com/benpate/path v0.8.3/go.mod h1:142Jbmmb6dtRf6Icao23WfJcEhNE7zd1kUXNMkHmFDI=
-github.com/benpate/schema v0.14.3 h1:5zwhQkSd1Z8C7FXKXd+rtxUg/Lr9of7alOxd79kg8Lw=
-github.com/benpate/schema v0.14.3/go.mod h1:eV+PG720ZtUf7ToHg1QLyWicgFFmPNaVp91eV02SMgw=
+github.com/benpate/schema v0.14.4 h1:heRypqBJM0xxaUOTVEqMRGBVw5SqTATFbJrxSxgMZOk=
+github.com/benpate/schema v0.14.4/go.mod h1:eV+PG720ZtUf7ToHg1QLyWicgFFmPNaVp91eV02SMgw=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
