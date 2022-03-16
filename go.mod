@@ -11,7 +11,7 @@ require (
 	github.com/benpate/null v0.6.1
 	github.com/benpate/path v0.8.3
 	github.com/benpate/schema v0.14.4
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 )
 
 require (
