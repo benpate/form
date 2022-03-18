@@ -18,6 +18,7 @@ func Checkbox(library *form.Library) {
 		// Start building a new tag
 		tag := b.Input("checkbox", f.Path).
 			ID(f.ID).
+			Style("vertical-align:text-bottom").
 			Value("true")
 
 		if convert.Bool(value) {

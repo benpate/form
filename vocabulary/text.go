@@ -109,10 +109,7 @@ func Text(library *form.Library) {
 			tag.Attr("class", f.CSSClass)
 		}
 
-		if f.Description != "" {
-			tag.Attr("hint", f.Description)
-		}
-
+		tag.Attr("autocomplete", f.Options["autocomplete"])
 		tag.TabIndex("0")
 		tag.Close()
 

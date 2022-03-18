@@ -26,12 +26,26 @@ func LayoutVertical(library *form.Library) {
 
 			b.Div().Class("layout-vertical-element").Script(child.Script).EndBracket()
 
-			if form.Options["show-labels"] != "false" {
-				b.Label(child.ID).InnerHTML(child.Label).Close()
-			}
+			if child.Kind == "checkbox" {
 
-			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
-				result = derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form)
+				b.Label(child.ID)
+				if err := child.Write(library, schema, value, b.SubTree()); err != nil {
+					result = derp.Append(result, derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form))
+				}
+				b.Span().InnerHTML(child.Label).Close()
+				b.Div().Class("text-sm", "gray40", "space-left").InnerHTML(child.Description).Close()
+				b.Close()
+
+			} else {
+				b.Label(child.ID).InnerHTML(child.Label).Close()
+
+				if err := child.Write(library, schema, value, b.SubTree()); err != nil {
+					result = derp.Append(result, derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering child", index, form))
+				}
+
+				if child.Description != "" {
+					b.Div().Class("text-sm gray40").InnerHTML(child.Description).Close()
+				}
 			}
 
 			b.Close()
