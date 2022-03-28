@@ -64,13 +64,13 @@ func TestDescription(t *testing.T) {
 	f := form.Form{
 		Kind:        "text",
 		Path:        "name",
-		Description: "Hint text would go here",
+		Description: "Hint text no longer added to widgets",
 	}
 
 	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
-	require.Equal(t, `<input name="name" type="text" maxlength="50" hint="Hint text would go here" tabIndex="0">`, html)
+	require.Equal(t, `<input name="name" type="text" maxlength="50" tabIndex="0">`, html)
 }
 
 func TestTextTags(t *testing.T) {

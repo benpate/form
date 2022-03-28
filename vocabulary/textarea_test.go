@@ -20,5 +20,5 @@ func TestTextarea(t *testing.T) {
 	html, err := f.HTML(&library, s, nil)
 
 	assert.Nil(t, err)
-	assert.Equal(t, `<textarea name="username" minlength="10" maxlength="100" pattern="[a-z]+" required="true"></textarea>`, html)
+	assert.Equal(t, `<textarea name="username" minlength="10" maxlength="100" pattern="[a-z]+" required="true" tabIndex="0"></textarea>`, html)
 }
