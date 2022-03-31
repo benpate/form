@@ -19,8 +19,8 @@ type Form struct {
 	Description string `json:"description,omitempty"` // Longer description text to be displayed on the form element
 	CSSClass    string `json:"cssClass,omitempty"`    // CSS Class override to apply to this widget.  This should be used sparingly
 	Options     Map    `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
-	Script      string `json:"script,omitempty"`      // Hyperscript to be embedded at the base of each widget.
 	Children    []Form `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
+	Show        Rule   `json:"show"`                  // Rules for showing/hiding/disabling this element
 }
 
 type Map map[string]string
@@ -83,7 +83,6 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 	form.Label = convert.String(data["label"])
 	form.Description = convert.String(data["description"])
 	form.CSSClass = convert.String(data["cssClass"])
-	form.Script = convert.String(data["script"])
 
 	form.Options = make(Map)
 	if options, ok := data["options"].(map[string]interface{}); ok {
@@ -199,12 +198,6 @@ func (form *Form) SetCSSClass(cssClass string) *Form {
 // SetOption sets an individual option for this form item
 func (form *Form) SetOption(key string, value string) *Form {
 	form.Options[key] = value
-	return form
-}
-
-// SetScript sets the script value for this form item
-func (form *Form) SetScript(script string) *Form {
-	form.Script = script
 	return form
 }
 

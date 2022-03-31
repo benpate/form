@@ -24,7 +24,7 @@ func LayoutVertical(library *form.Library) {
 
 		for index, child := range form.Children {
 
-			b.Div().Class("layout-vertical-element").Script(child.Script).EndBracket()
+			b.Div().Class("layout-vertical-element").Script(child.Show.HyperscriptRules())
 
 			if child.Kind == "checkbox" {
 

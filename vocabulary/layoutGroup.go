@@ -23,7 +23,7 @@ func LayoutGroup(library *form.Library) {
 
 		for index, child := range form.Children {
 
-			tag := b.Div().Class("layout-group-element").Script(form.Script)
+			tag := b.Div().Class("layout-group-element")
 
 			if err := child.Write(library, schema, value, b.SubTree()); err != nil {
 				result = derp.Wrap(err, "form.widget.LayoutGroup", "Error rendering child", index, child)

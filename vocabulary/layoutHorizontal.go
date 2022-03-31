@@ -21,7 +21,7 @@ func LayoutHorizontal(library *form.Library) {
 
 		for index, child := range form.Children {
 
-			b.Div().Class("layout-horizontal-element").Script(form.Script)
+			b.Div().Class("layout-horizontal-element")
 
 			if form.Options["show-labels"] != "false" {
 				b.Div().Class("label").InnerHTML(child.Label).Close()
