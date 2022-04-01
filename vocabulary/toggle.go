@@ -5,7 +5,6 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/schema"
-	"github.com/davecgh/go-spew/spew"
 )
 
 // Toggle registers a custom toggle widget into the library
@@ -27,7 +26,6 @@ func Toggle(library *form.Library) {
 		tag.Attr("false-text", convert.String(f.Options["false-text"]))
 
 		b.CloseAll()
-		spew.Dump(b.String())
 		return nil
 	})
 }
