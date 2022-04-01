@@ -12,5 +12,6 @@ func All(library *form.Library) {
 	Tab(library)
 	Text(library)
 	Textarea(library)
+	Toggle(library)
 	WYSIWYG(library)
 }
