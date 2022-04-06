@@ -6,7 +6,6 @@ import (
 
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -105,7 +104,5 @@ func TestRules(t *testing.T) {
 
 	assert.Nil(t, err)
 	derp.Report(err)
-
-	spew.Dump(html)
 
 }
