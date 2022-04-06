@@ -59,7 +59,7 @@ func Parse(data interface{}) (Form, error) {
 
 	}
 
-	return result, derp.New(derp.CodeInternalError, "form.Parse", "Cannot Parse Value: Unknown Datatype", data)
+	return result, derp.NewInternalError("form.Parse", "Cannot Parse Value: Unknown Datatype", data)
 }
 
 // MustParse guarantees that a value has been parsed into a Form, or else it panics the application.
@@ -99,7 +99,7 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 				childForm.UnmarshalMap(childData)
 				form.Children[index] = childForm
 			} else {
-				return derp.New(derp.CodeInternalError, "form.UnmarshalMap", "Error parsing child form information.", childInterface)
+				return derp.NewInternalError("form.UnmarshalMap", "Error parsing child form information.", childInterface)
 			}
 		}
 	}
