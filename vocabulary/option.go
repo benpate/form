@@ -15,8 +15,7 @@ func Option(library *form.Library) {
 		// find the path and schema to use
 		schemaElement, value := locateSchema(f.Path, s, v)
 		valueString := convert.String(value)
-
-		format := f.Options["format"]
+		format := convert.String(f.Options["format"])
 
 		if format == "" {
 

@@ -109,7 +109,7 @@ func Text(library *form.Library) {
 			tag.Attr("class", f.CSSClass)
 		}
 
-		tag.Attr("autocomplete", f.Options["autocomplete"])
+		tag.Attr("autocomplete", convert.String(f.Options["autocomplete"]))
 		tag.TabIndex("0")
 		tag.Close()
 

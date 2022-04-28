@@ -37,8 +37,8 @@ func (library Library) Renderer(name string) (Renderer, error) {
 func (library Library) Options(form Form, element schema.Element) []OptionCode {
 
 	// If form specifies an OptionProvider, then use that
-	if optionProvider := form.Options["provider"]; optionProvider != "" {
-		result, err := library.Provider.OptionCodes((optionProvider))
+	if optionProvider, ok := form.Options["provider"].(string); ok {
+		result, err := library.Provider.OptionCodes(optionProvider)
 
 		if err != nil {
 			derp.Report(err)
@@ -50,6 +50,11 @@ func (library Library) Options(form Form, element schema.Element) []OptionCode {
 	// If this is an array, then look up Enumerations on its elements.
 	if array, ok := element.(schema.Array); ok {
 		element = array.Items
+	}
+
+	// If we already have an array of OptionCodes, then just return it.
+	if options, ok := form.Options["options"].([]OptionCode); ok {
+		return options
 	}
 
 	// If this schema element is an Enumerator, then convert its values to []OptionCode

@@ -19,7 +19,7 @@ func Tab(library *form.Library) {
 
 		// If we have a configuration option for labels,
 		// parse it into a slice
-		if labelString, ok := f.Options["labels"]; ok {
+		if labelString, ok := f.Options["labels"].(string); ok {
 			labels = strings.Split(labelString, ",")
 		}
 

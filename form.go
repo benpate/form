@@ -23,7 +23,7 @@ type Form struct {
 	Show        Rule   `json:"show"`                  // Rules for showing/hiding/disabling this element
 }
 
-type Map map[string]string
+type Map map[string]interface{}
 
 // NewForm returns a fully initialized Form object
 func NewForm(kind string) Form {
@@ -34,7 +34,7 @@ func NewForm(kind string) Form {
 	}
 }
 
-// Parse attempts to convert any value into a Form.
+// Parse attempts to convert interface{} value into a Form.
 func Parse(data interface{}) (Form, error) {
 
 	var result Form

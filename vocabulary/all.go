@@ -7,6 +7,7 @@ func All(library *form.Library) {
 	LayoutGroup(library)
 	LayoutHorizontal(library)
 	LayoutVertical(library)
+	Multiselect(library)
 	Option(library)
 	Select(library)
 	Tab(library)
