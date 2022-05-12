@@ -12,24 +12,22 @@ import (
 
 // Form defines a single form element, or a nested form layout.  It can be serialized to and from a database.
 type Form struct {
-	Path        string `json:"path"`                  // Path to the data value displayed in for this form element
-	Kind        string `json:"kind"`                  // The kind of form element
-	ID          string `json:"id,omitempty"`          // DOM ID to use for this element.
-	Label       string `json:"label,omitempty"`       // Short label to be displayed on the form element
-	Description string `json:"description,omitempty"` // Longer description text to be displayed on the form element
-	CSSClass    string `json:"cssClass,omitempty"`    // CSS Class override to apply to this widget.  This should be used sparingly
-	Options     Map    `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
-	Children    []Form `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
-	Show        Rule   `json:"show"`                  // Rules for showing/hiding/disabling this element
+	Path        string         `json:"path"`                  // Path to the data value displayed in for this form element
+	Kind        string         `json:"kind"`                  // The kind of form element
+	ID          string         `json:"id,omitempty"`          // DOM ID to use for this element.
+	Label       string         `json:"label,omitempty"`       // Short label to be displayed on the form element
+	Description string         `json:"description,omitempty"` // Longer description text to be displayed on the form element
+	CSSClass    string         `json:"cssClass,omitempty"`    // CSS Class override to apply to this widget.  This should be used sparingly
+	Options     map[string]any `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
+	Children    []Form         `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
+	Show        Rule           `json:"show"`                  // Rules for showing/hiding/disabling this element
 }
-
-type Map map[string]interface{}
 
 // NewForm returns a fully initialized Form object
 func NewForm(kind string) Form {
 	return Form{
 		Kind:     kind,
-		Options:  make(Map),
+		Options:  make(map[string]any),
 		Children: make([]Form, 0),
 	}
 }
@@ -84,7 +82,7 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 	form.Description = convert.String(data["description"])
 	form.CSSClass = convert.String(data["cssClass"])
 
-	form.Options = make(Map)
+	form.Options = make(map[string]any)
 	if options, ok := data["options"].(map[string]interface{}); ok {
 		for key, value := range options {
 			form.Options[key] = convert.String(value)

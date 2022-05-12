@@ -31,12 +31,12 @@ func TestSelectOneFromProvider(t *testing.T) {
 	f := form.Form{
 		Kind: "select",
 		Path: "color",
-		Options: map[string]string{
+		Options: map[string]any{
 			"provider": "/test",
 		},
 	}
 
-	value := map[string]interface{}{"color": "FIVE"}
+	value := map[string]any{"color": "FIVE"}
 
 	html, err := f.HTML(&library, s, value)
 
@@ -52,7 +52,7 @@ func TestSelectOneRadio(t *testing.T) {
 	f := form.Form{
 		Kind: "select",
 		Path: "color",
-		Options: map[string]string{
+		Options: map[string]any{
 			"format": "radio",
 		},
 	}
@@ -73,7 +73,7 @@ func TestSelectMany(t *testing.T) {
 		Path: "tags",
 	}
 
-	value := map[string]interface{}{
+	value := map[string]any{
 		"tags": []string{"pretty", "please"},
 	}
 

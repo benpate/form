@@ -1,6 +1,6 @@
 module github.com/benpate/form
 
-go 1.17
+go 1.18
 
 require (
 	github.com/benpate/compare v0.1.1

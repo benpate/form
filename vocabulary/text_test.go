@@ -115,7 +115,7 @@ func TestTextOptions(t *testing.T) {
 		Kind: "text",
 		Path: "tag",
 		ID:   "tag",
-		Options: map[string]string{
+		Options: map[string]any{
 			"provider": "/test",
 		},
 	}

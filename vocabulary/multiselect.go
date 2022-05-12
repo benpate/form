@@ -31,7 +31,8 @@ func Multiselect(library *form.Library) {
 
 		valueSlice := convert.SliceOfString(value)
 
-		b.Div().Class("multiselect").Style("maxHeight:" + maxHeight + "px").Script("install multiselect")
+		b.Div().Class("multiselect").Script("install multiselect")
+		b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
 
 		for _, option := range options {
 
@@ -51,7 +52,7 @@ func Multiselect(library *form.Library) {
 				input.Attr("checked", "true")
 			}
 
-			b.Close()
+			b.Close() // input
 
 			b.Div()
 			b.Div().InnerHTML(option.Label).Close()
@@ -59,10 +60,17 @@ func Multiselect(library *form.Library) {
 			if option.Description != "" {
 				b.Div().Class("text-sm", "gray50").InnerHTML(option.Description).Close()
 			}
-
-			b.Close()
-			b.Close()
+			b.Close() // div
+			b.Close() // label
 		}
+
+		b.Close() // .options
+
+		// Buttons
+		b.Div().Class("buttons").EndBracket()
+		b.Button().Type("button").Data("sort", "up").InnerHTML("△").Close()
+		b.Button().Type("button").Data("sort", "down").InnerHTML("▽").Close()
+		b.Close()
 
 		b.CloseAll()
 		return nil
