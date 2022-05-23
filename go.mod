@@ -16,7 +16,7 @@ require (
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/benpate/exp v0.1.1 // indirect
+	github.com/benpate/exp v0.1.2 // indirect
 	github.com/benpate/htmlconv v0.3.3 // indirect
 	github.com/benpate/list v0.4.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
