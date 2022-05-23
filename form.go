@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/benpate/convert"
-	"github.com/benpate/datatype"
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
 	"github.com/benpate/schema"
@@ -32,27 +31,30 @@ func NewForm(kind string) Form {
 	}
 }
 
-// Parse attempts to convert interface{} value into a Form.
-func Parse(data interface{}) (Form, error) {
+// Parse attempts to convert any value into a Form.
+func Parse(data any) (Form, error) {
 
 	var result Form
 
-	switch data := data.(type) {
+	switch typedData := data.(type) {
 
-	case datatype.Map:
-		err := result.UnmarshalMap(map[string]interface{}(data))
+	case Form:
+		return typedData, nil
+
+	case UnmarshalMaper:
+		err := result.UnmarshalMap(typedData.UnmarshalMap())
 		return result, err
 
-	case map[string]interface{}:
-		err := result.UnmarshalMap(data)
+	case map[string]any:
+		err := result.UnmarshalMap(typedData)
 		return result, err
 
 	case []byte:
-		err := json.Unmarshal(data, &result)
+		err := json.Unmarshal(typedData, &result)
 		return result, err
 
 	case string:
-		err := json.Unmarshal([]byte(data), &result)
+		err := json.Unmarshal([]byte(typedData), &result)
 		return result, err
 
 	}
@@ -61,7 +63,7 @@ func Parse(data interface{}) (Form, error) {
 }
 
 // MustParse guarantees that a value has been parsed into a Form, or else it panics the application.
-func MustParse(data interface{}) Form {
+func MustParse(data any) Form {
 
 	result, err := Parse(data)
 
@@ -72,8 +74,8 @@ func MustParse(data interface{}) Form {
 	return result
 }
 
-// UnmarshalMap parses data from a generic structure (map[string]interface{}) into a Form record.
-func (form *Form) UnmarshalMap(data map[string]interface{}) error {
+// UnmarshalMap parses data from a generic structure (map[string]any) into a Form record.
+func (form *Form) UnmarshalMap(data map[string]any) error {
 
 	form.Path = convert.String(data["path"])
 	form.Kind = convert.String(data["kind"])
@@ -83,16 +85,16 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 	form.CSSClass = convert.String(data["cssClass"])
 
 	form.Options = make(map[string]any)
-	if options, ok := data["options"].(map[string]interface{}); ok {
+	if options, ok := data["options"].(map[string]any); ok {
 		for key, value := range options {
 			form.Options[key] = convert.String(value)
 		}
 	}
 
-	if children, ok := data["children"].([]interface{}); ok {
+	if children, ok := data["children"].([]any); ok {
 		form.Children = make([]Form, len(children))
 		for index, childInterface := range children {
-			if childData, ok := childInterface.(map[string]interface{}); ok {
+			if childData, ok := childInterface.(map[string]any); ok {
 				var childForm Form
 				childForm.UnmarshalMap(childData)
 				form.Children[index] = childForm
@@ -108,7 +110,7 @@ func (form *Form) UnmarshalMap(data map[string]interface{}) error {
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
 
 // HTML returns a populated HTML string for the provided form, schema, and value
-func (form Form) HTML(library *Library, schema *schema.Schema, value interface{}) (string, error) {
+func (form Form) HTML(library *Library, schema *schema.Schema, value any) (string, error) {
 
 	b := html.New()
 
@@ -120,7 +122,7 @@ func (form Form) HTML(library *Library, schema *schema.Schema, value interface{}
 }
 
 // Write generates an HTML string for the fully populated form into the provided string builder
-func (form Form) Write(library *Library, schema *schema.Schema, value interface{}, b *html.Builder) error {
+func (form Form) Write(library *Library, schema *schema.Schema, value any, b *html.Builder) error {
 
 	// Try to locate the Renderer in the library
 	renderer, err := library.Renderer(form.Kind)
