@@ -13,15 +13,16 @@ func Option(library *form.Library) {
 	library.Register("option", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		schemaElement, value := locateSchema(f.Path, s, v)
+		value, schemaElement, _ := s.Get(v, f.Path)
 		valueString := convert.String(value)
 		format := convert.String(f.Options["format"])
 
 		if format == "" {
 
-			if schemaElement.Type() == schema.TypeArray {
+			switch schemaElement.(type) {
+			case schema.Array:
 				format = "checkbox"
-			} else {
+			default:
 				format = "radio"
 			}
 		}

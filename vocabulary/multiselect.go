@@ -14,13 +14,15 @@ func Multiselect(library *form.Library) {
 	library.Register("multiselect", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		schemaElement, value := locateSchema(f.Path, s, v)
+		value, schemaElement, _ := s.Get(v, f.Path)
 
 		if element, ok := schemaElement.(schema.Array); ok {
 			schemaElement = element.Items
 		}
 
-		maxHeight := "200"
+		sortable := convert.Bool(f.Options["sort"])
+
+		maxHeight := "300"
 
 		if value, ok := f.Options["maxHeight"].(string); ok {
 			maxHeight = value
@@ -28,10 +30,9 @@ func Multiselect(library *form.Library) {
 
 		// Get all options for this element...
 		options := library.Options(f, schemaElement)
-
 		valueSlice := convert.SliceOfString(value)
 
-		b.Div().Class("multiselect").Script("install multiselect")
+		b.Div().Class("multiselect").Script("install multiselect(sort:'" + convert.String(sortable) + "')")
 		b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
 
 		for _, option := range options {
@@ -67,10 +68,12 @@ func Multiselect(library *form.Library) {
 		b.Close() // .options
 
 		// Buttons
-		b.Div().Class("buttons").EndBracket()
-		b.Button().Type("button").Data("sort", "up").InnerHTML("△").Close()
-		b.Button().Type("button").Data("sort", "down").InnerHTML("▽").Close()
-		b.Close()
+		if sortable {
+			b.Div().Class("buttons").EndBracket()
+			b.Button().Type("button").Data("sort", "up").InnerHTML("△").Close()
+			b.Button().Type("button").Data("sort", "down").InnerHTML("▽").Close()
+			b.Close()
+		}
 
 		b.CloseAll()
 		return nil

@@ -16,7 +16,7 @@ func Select(library *form.Library) {
 		var selectMany bool
 
 		// find the path and schema to use
-		schemaElement, value := locateSchema(f.Path, s, v)
+		value, schemaElement, _ := s.Get(v, f.Path)
 
 		if element, ok := schemaElement.(schema.Array); ok {
 			schemaElement = element.Items

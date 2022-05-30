@@ -12,7 +12,7 @@ func WYSIWYG(library *form.Library) {
 	library.Register("wysiwyg", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		_, value := locateSchema(f.Path, s, v)
+		value, _, _ := s.Get(v, f.Path)
 
 		valueString := convert.String(value)
 

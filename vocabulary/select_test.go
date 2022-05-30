@@ -23,7 +23,7 @@ func TestSelectOne(t *testing.T) {
 	t.Log(html)
 }
 
-func TestSelectOneFromProvider(t *testing.T) {
+func TestSelectOne_WithEnum(t *testing.T) {
 
 	library := getTestLibrary()
 	s := getTestSchema()
@@ -31,12 +31,28 @@ func TestSelectOneFromProvider(t *testing.T) {
 	f := form.Form{
 		Kind: "select",
 		Path: "color",
-		Options: map[string]any{
-			"provider": "/test",
-		},
 	}
 
-	value := map[string]any{"color": "FIVE"}
+	value := map[string]any{"color": "Blue"}
+
+	html, err := f.HTML(&library, s, value)
+
+	require.Nil(t, err)
+	t.Log(html)
+}
+
+func TestSelectOneFromProvider(t *testing.T) {
+
+	library := getTestLibrary()
+	s := getTestSchema()
+
+	f := form.Form{
+		Kind:    "select",
+		Path:    "color",
+		Options: map[string]any{"provider": "/test"},
+	}
+
+	value := map[string]any{"color": "FOUR"}
 
 	html, err := f.HTML(&library, s, value)
 

@@ -41,8 +41,8 @@ func getTestSchema() *schema.Schema {
 					Required:  true,
 				},
 				"age": schema.Integer{
-					Minimum:  null.NewInt(10),
-					Maximum:  null.NewInt(100),
+					Minimum:  null.NewInt64(10),
+					Maximum:  null.NewInt64(100),
 					Required: true,
 				},
 				"distance": schema.Number{
@@ -58,36 +58,10 @@ func getTestSchema() *schema.Schema {
 						Enum: []string{"pretty", "please", "my", "dear", "aunt", "sally"},
 					},
 				},
+				"terms": schema.Boolean{},
 			},
 		},
 	}
-}
-
-type testOptionProvider bool
-
-func (t testOptionProvider) OptionCodes(_ string) ([]form.OptionCode, error) {
-	return []form.OptionCode{
-		{
-			Label: "This is the first code",
-			Value: "ONE",
-		},
-		{
-			Label: "This is the second code",
-			Value: "TWO",
-		},
-		{
-			Label: "This is the third code",
-			Value: "THREE",
-		},
-		{
-			Label: "This is the fourth code",
-			Value: "FOUR",
-		},
-		{
-			Label: "This is the fifth code",
-			Value: "FIVE",
-		},
-	}, nil
 }
 
 func TestAll(t *testing.T) {

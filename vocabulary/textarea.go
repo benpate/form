@@ -13,7 +13,7 @@ func Textarea(library *form.Library) {
 	library.Register("textarea", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		schemaObject, value := locateSchema(f.Path, s, v)
+		value, schemaElement, _ := s.Get(v, f.Path)
 
 		valueString := convert.String(value)
 
@@ -25,7 +25,7 @@ func Textarea(library *form.Library) {
 			Attr("hint", f.Description)
 
 		// Add attributes that depend on what KIND of input we have.
-		if schemaString, ok := schemaObject.(schema.String); ok {
+		if schemaString, ok := schemaElement.(schema.String); ok {
 
 			if schemaString.MinLength.IsPresent() {
 				tag.Attr("minlength", schemaString.MinLength.String())

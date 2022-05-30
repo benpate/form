@@ -13,7 +13,7 @@ func Toggle(library *form.Library) {
 	library.Register("toggle", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		// find the path and schema to use
-		_, value := locateSchema(f.Path, s, v)
+		value, _, _ := s.Get(v, f.Path)
 
 		// Start building a new tag
 		tag := b.Span().Script("install toggle").Name(f.Path)

@@ -44,7 +44,8 @@ func Tab(library *form.Library) {
 				Role("tab").
 				ID("tab-"+indexString).
 				Class("tab-label").
-				Aria("controls", "panel-"+indexString)
+				Aria("controls", "panel-"+indexString).
+				TabIndex("0")
 
 			if index == 0 {
 				tab.Aria("selected", "true")

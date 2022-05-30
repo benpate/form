@@ -17,7 +17,7 @@ func Text(library *form.Library) {
 		var listID string
 
 		// find the path and schema to use
-		schemaElement, value := locateSchema(f.Path, s, v)
+		value, schemaElement, _ := s.Get(v, f.Path)
 
 		valueString := convert.String(value)
 
