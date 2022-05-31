@@ -32,7 +32,7 @@ func Multiselect(library *form.Library) {
 		options := library.Options(f, schemaElement)
 		valueSlice := convert.SliceOfString(value)
 
-		b.Div().Class("multiselect").Script("install multiselect(sort:'" + convert.String(sortable) + "')")
+		b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
 		b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
 
 		for _, option := range options {
