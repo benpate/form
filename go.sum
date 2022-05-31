@@ -14,8 +14,8 @@ github.com/benpate/htmlconv v0.3.3 h1:PrYFgwPEZMYJRe7m3UFK8JDLGCyqaNmo20Hk4uOAhw
 github.com/benpate/htmlconv v0.3.3/go.mod h1:YDO7M9p+ZQGhtZ0u0nkHfFx031028Ab4ShM6W8c3k6w=
 github.com/benpate/list v0.4.2 h1:on6Y6Fh7L+gNI41eRbeCntgNX54jQlFiO2RAa8wj0lw=
 github.com/benpate/list v0.4.2/go.mod h1:qT9JMhKPxIP97Gsr+mUfvuGwwDfKsfR/jfRuWj0ogLc=
-github.com/benpate/null v0.6.1 h1:MInsq7/M9E9IzF6EWeB1po5p9zQpvimw3brrU1UeRzA=
-github.com/benpate/null v0.6.1/go.mod h1:gxun/MktUPdKfYWvkzCI2fCy3OX/3+sZWh01hjYdXwE=
+github.com/benpate/null v0.6.3 h1:O/QQT81LobMC76ZBmi0lzR1TXPvjOs9Zng0JEqcgbmk=
+github.com/benpate/null v0.6.3/go.mod h1:iQxWcODr//rQQnw4sI1MbITuCnl08nEyGYb2zrj23Oo=
 github.com/benpate/path v0.8.3 h1:/8mxDgN8vycijcuMWWHnXiVg1ytKkCaU2XzOJbvov7k=
 github.com/benpate/path v0.8.3/go.mod h1:142Jbmmb6dtRf6Icao23WfJcEhNE7zd1kUXNMkHmFDI=
 github.com/benpate/schema v0.14.7 h1:43FRhG3gf1ckLxeUd4EuRIm9i3hAy0m3CgxEIvmcdfc=
