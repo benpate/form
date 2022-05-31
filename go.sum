@@ -2,8 +2,8 @@ github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuP
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/benpate/compare v0.1.1 h1:rpO2mLSWFEReq/hCKd4ULxJV+HSJLYINORodg8rMvMQ=
 github.com/benpate/compare v0.1.1/go.mod h1:djtVm+GtoMdMKsdbOdYtd4H4/mV2sL2l/SnqiPexECU=
-github.com/benpate/convert v0.12.0 h1:N4aTPQabpyoIgUSZNmkeP3t/kZo72rWaYQ9oX0ggBds=
-github.com/benpate/convert v0.12.0/go.mod h1:kcwWFWAQFvp6s9s/w74gXIYRDvH7pqt83Ad9YIuwo8s=
+github.com/benpate/convert v0.13.0 h1:qbvPlvkAJDCvFJrk2gDZlceX/4aazfRMFbICrfTZ64g=
+github.com/benpate/convert v0.13.0/go.mod h1:ZM29Oz9mLso7C9AhFZG9SXf7n3UCMwB3gPxfRrjQJGg=
 github.com/benpate/derp v0.22.2 h1:qPcnT32VG8gqhDR4y+dhK2n/0TMvZ3RUP+HbENNogAc=
 github.com/benpate/derp v0.22.2/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8fUlCxY=
 github.com/benpate/exp v0.1.4 h1:ISFY7Hpo9KC88zGKdL7LYHkXlRTn3ORa6wetgvHRwBs=
@@ -14,12 +14,12 @@ github.com/benpate/htmlconv v0.3.3 h1:PrYFgwPEZMYJRe7m3UFK8JDLGCyqaNmo20Hk4uOAhw
 github.com/benpate/htmlconv v0.3.3/go.mod h1:YDO7M9p+ZQGhtZ0u0nkHfFx031028Ab4ShM6W8c3k6w=
 github.com/benpate/list v0.4.2 h1:on6Y6Fh7L+gNI41eRbeCntgNX54jQlFiO2RAa8wj0lw=
 github.com/benpate/list v0.4.2/go.mod h1:qT9JMhKPxIP97Gsr+mUfvuGwwDfKsfR/jfRuWj0ogLc=
-github.com/benpate/null v0.6.1 h1:MInsq7/M9E9IzF6EWeB1po5p9zQpvimw3brrU1UeRzA=
-github.com/benpate/null v0.6.1/go.mod h1:gxun/MktUPdKfYWvkzCI2fCy3OX/3+sZWh01hjYdXwE=
+github.com/benpate/null v0.6.3 h1:O/QQT81LobMC76ZBmi0lzR1TXPvjOs9Zng0JEqcgbmk=
+github.com/benpate/null v0.6.3/go.mod h1:iQxWcODr//rQQnw4sI1MbITuCnl08nEyGYb2zrj23Oo=
 github.com/benpate/path v0.8.3 h1:/8mxDgN8vycijcuMWWHnXiVg1ytKkCaU2XzOJbvov7k=
 github.com/benpate/path v0.8.3/go.mod h1:142Jbmmb6dtRf6Icao23WfJcEhNE7zd1kUXNMkHmFDI=
-github.com/benpate/schema v0.14.7 h1:43FRhG3gf1ckLxeUd4EuRIm9i3hAy0m3CgxEIvmcdfc=
-github.com/benpate/schema v0.14.7/go.mod h1:5TjnCYtNnBbVmneFZ0HNhPmdI2KajlW6BgiJoSxXMU8=
+github.com/benpate/schema v0.15.0 h1:ANN6LrSU6biGqpFaQYvpF+rPKoVzDoR+ucKJ+ZfraWY=
+github.com/benpate/schema v0.15.0/go.mod h1:YuFeuf3Gj4jisvJ9yeXFyck+ovYWO345Sojc6xqmFLM=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
