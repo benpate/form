@@ -6,7 +6,7 @@ require (
 	github.com/benpate/compare v0.1.1
 	github.com/benpate/convert v0.13.0
 	github.com/benpate/derp v0.22.2
-	github.com/benpate/html v0.12.0
+	github.com/benpate/html v0.12.1
 	github.com/benpate/null v0.6.3
 	github.com/benpate/path v0.8.3
 	github.com/benpate/schema v0.15.0
