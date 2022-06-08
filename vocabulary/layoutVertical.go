@@ -24,6 +24,14 @@ func LayoutVertical(library *form.Library) {
 
 		for index, child := range form.Children {
 
+			// Special case for hidden fields (don't include element wrappers)
+			if child.Kind == "hidden" {
+				if err := child.Write(library, schema, value, b.SubTree()); err != nil {
+					result = derp.Append(result, derp.Wrap(err, "form.widget.LayoutVertical", "Error rendering hidden field", index, form))
+				}
+				continue
+			}
+
 			b.Div().Class("layout-vertical-element").Script(child.Show.HyperscriptRules())
 
 			if child.Kind == "checkbox" {

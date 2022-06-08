@@ -21,6 +21,7 @@ func WYSIWYG(library *form.Library) {
 			Value(valueString).
 			Close()
 
+		b.Div().Class("content-editor")
 		b.Div().Class("wysiwyg").Script("install wysiwyg(name:'" + f.Path + "') install hotkey")
 		b.Div().Class("wysiwyg-toolbar").Attr("hidden", "true")
 		{

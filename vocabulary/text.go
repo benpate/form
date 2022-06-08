@@ -42,7 +42,7 @@ func Text(library *form.Library) {
 		switch s := schemaElement.(type) {
 
 		case schema.Integer:
-			tag.Type("number").Attr("step", "1")
+			tag.Attr("step", convert.String(convert.IntDefault(f.Options["step"], 1)))
 
 			if s.Minimum.IsPresent() {
 				tag.Attr("min", s.Minimum.String())
@@ -59,6 +59,8 @@ func Text(library *form.Library) {
 		case schema.Number:
 
 			tag.Type("number")
+
+			tag.Attr("step", convert.String(convert.FloatDefault(f.Options["step"], 0.01)))
 
 			if s.Minimum.IsPresent() {
 				tag.Attr("min", s.Minimum.String())

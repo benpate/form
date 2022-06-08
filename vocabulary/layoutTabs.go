@@ -14,6 +14,10 @@ func Tab(library *form.Library) {
 
 	library.Register("layout-tabs", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
+		if len(f.Label) > 0 {
+			b.H1().InnerHTML(f.Label).Close()
+		}
+
 		// Make a placeholder for labels
 		labels := make([]string, 0)
 
@@ -35,12 +39,16 @@ func Tab(library *form.Library) {
 			// Use the best label we have (configured, or generated)
 			if index < len(labels) {
 				label = labels[index]
+			} else if f.Children[index].Label != "" {
+				label = f.Children[index].Label
+				f.Children[index].Label = ""
 			} else {
 				label = "Tab " + indexString
 			}
 
 			// Go!
 			tab := b.Button().
+				Type("button").
 				Role("tab").
 				ID("tab-"+indexString).
 				Class("tab-label").

@@ -76,6 +76,10 @@ func Select(library *form.Library) {
 
 			dropdown := b.Container("select").ID(f.ID).Name(f.Path).Class(f.CSSClass)
 
+			if !schemaElement.IsRequired() {
+				b.Container("option").Value("").InnerHTML("").Close()
+			}
+
 			for _, option := range options {
 				opt := b.Container("option").Value(option.Value)
 				if option.Value == valueString {

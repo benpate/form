@@ -2,6 +2,8 @@ module github.com/benpate/form
 
 go 1.18
 
+replace github.com/benpate/schema => ../schema
+
 require (
 	github.com/benpate/compare v0.1.1
 	github.com/benpate/convert v0.13.1

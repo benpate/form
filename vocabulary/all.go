@@ -4,6 +4,7 @@ import "github.com/benpate/form"
 
 func All(library *form.Library) {
 	Checkbox(library)
+	Hidden(library)
 	LayoutGroup(library)
 	LayoutHorizontal(library)
 	LayoutVertical(library)
