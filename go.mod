@@ -2,15 +2,13 @@ module github.com/benpate/form
 
 go 1.18
 
-replace github.com/benpate/schema => ../schema
-
 require (
-	github.com/benpate/compare v0.1.1
-	github.com/benpate/convert v0.13.2
+	github.com/benpate/compare v0.1.3
+	github.com/benpate/convert v0.13.5
 	github.com/benpate/derp v0.22.2
 	github.com/benpate/html v0.12.1
-	github.com/benpate/null v0.6.3
-	github.com/benpate/schema v0.15.0
+	github.com/benpate/null v0.6.4
+	github.com/benpate/schema v0.15.1
 	github.com/stretchr/testify v1.7.2
 )
 
