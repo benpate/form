@@ -37,7 +37,7 @@ func TestFloat(t *testing.T) {
 	html, err := f.HTML(&library, s, nil)
 
 	require.Nil(t, err)
-	require.Equal(t, `<input name="distance" id="idFormElement" type="number" min="10" max="100" required="true" tabIndex="0">`, html)
+	require.Equal(t, `<input name="distance" id="idFormElement" type="number" step="0.01" min="10" max="100" required="true" tabIndex="0">`, html)
 }
 
 func TestText(t *testing.T) {
