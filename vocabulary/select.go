@@ -40,6 +40,7 @@ func Select(library *form.Library) {
 					input.Attr("checked", "true")
 				}
 
+				input.TabIndex("0")
 				input.Close()
 				label.InnerHTML(option.Label)
 				label.Close()
@@ -65,6 +66,7 @@ func Select(library *form.Library) {
 					input.Attr("checked", "true")
 				}
 
+				input.TabIndex("0")
 				input.Close()
 				label.InnerHTML(option.Label)
 				label.Close()
@@ -74,7 +76,7 @@ func Select(library *form.Library) {
 
 			// Fall through to select box
 
-			dropdown := b.Container("select").ID(f.ID).Name(f.Path).Class(f.CSSClass)
+			dropdown := b.Container("select").ID(f.ID).Name(f.Path).Class(f.CSSClass).TabIndex("0")
 
 			if !schemaElement.IsRequired() {
 				b.Container("option").Value("").InnerHTML("").Close()
