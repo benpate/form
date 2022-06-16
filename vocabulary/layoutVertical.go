@@ -17,7 +17,7 @@ func LayoutVertical(library *form.Library) {
 		b.Div().Class("layout-vertical")
 
 		if len(form.Label) > 0 {
-			b.Div().Class("layout-vertical-label").InnerHTML(form.Label).Close()
+			b.Div().Class("layout-title").InnerHTML(form.Label).Close()
 		}
 
 		b.Div().Class("layout-vertical-elements")

@@ -15,7 +15,7 @@ func Tab(library *form.Library) {
 	library.Register("layout-tabs", func(f form.Form, s *schema.Schema, v interface{}, b *html.Builder) error {
 
 		if len(f.Label) > 0 {
-			b.H1().InnerHTML(f.Label).Close()
+			b.Div().Class("layout-title").InnerHTML(f.Label).Close()
 		}
 
 		// Make a placeholder for labels
