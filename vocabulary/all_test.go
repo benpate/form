@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/benpate/form"
-	"github.com/benpate/null"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/null"
+	"github.com/benpate/rosetta/schema"
 	"github.com/stretchr/testify/assert"
 )
 

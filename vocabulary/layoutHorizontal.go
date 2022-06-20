@@ -4,7 +4,7 @@ import (
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/schema"
 )
 
 func LayoutHorizontal(library *form.Library) {

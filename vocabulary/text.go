@@ -3,10 +3,10 @@ package vocabulary
 import (
 	"strings"
 
-	"github.com/benpate/convert"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/convert"
+	"github.com/benpate/rosetta/schema"
 )
 
 // Text registers a text <input> widget into the library

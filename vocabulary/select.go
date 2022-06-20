@@ -1,11 +1,11 @@
 package vocabulary
 
 import (
-	"github.com/benpate/compare"
-	"github.com/benpate/convert"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/compare"
+	"github.com/benpate/rosetta/convert"
+	"github.com/benpate/rosetta/schema"
 )
 
 // Select registers a text <input> widget into the library

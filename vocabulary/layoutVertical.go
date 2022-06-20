@@ -4,7 +4,7 @@ import (
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/schema"
 )
 
 // LayoutVertical defines a standard top to bottom layout, including labels above every child item.

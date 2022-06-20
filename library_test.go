@@ -5,7 +5,7 @@ import (
 
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/schema"
 	"github.com/stretchr/testify/assert"
 )
 

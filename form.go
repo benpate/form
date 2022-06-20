@@ -3,10 +3,10 @@ package form
 import (
 	"encoding/json"
 
-	"github.com/benpate/convert"
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/convert"
+	"github.com/benpate/rosetta/schema"
 )
 
 // Form defines a single form element, or a nested form layout.  It can be serialized to and from a database.

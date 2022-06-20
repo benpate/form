@@ -2,7 +2,7 @@ package form
 
 import (
 	"github.com/benpate/derp"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/schema"
 )
 
 // Library stores all of the available Renderers, and can execute them on a set of data

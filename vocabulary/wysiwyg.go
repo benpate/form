@@ -1,10 +1,10 @@
 package vocabulary
 
 import (
-	"github.com/benpate/convert"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/schema"
+	"github.com/benpate/rosetta/convert"
+	"github.com/benpate/rosetta/schema"
 )
 
 func WYSIWYG(library *form.Library) {
