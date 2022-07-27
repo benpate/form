@@ -10,7 +10,7 @@ func TestAllPaths(t *testing.T) {
 
 	form := getTestForm()
 
-	paths := form.AllPaths()
+	paths := form.AllElements()
 
 	assert.Equal(t, 5, len(paths))
 	assert.Equal(t, "data.firstName", paths[0].Path)
@@ -20,28 +20,28 @@ func TestAllPaths(t *testing.T) {
 	assert.Equal(t, "data.ontology", paths[4].Path)
 }
 
-func getTestForm() Form {
+func getTestForm() Element {
 
-	return Form{
-		Kind: "layout-vertical",
-		Children: []Form{
+	return Element{
+		Type: "layout-vertical",
+		Children: []Element{
 			{
-				Kind: "text",
+				Type: "text",
 				Path: "data.firstName",
 			}, {
-				Kind: "text",
+				Type: "text",
 				Path: "data.lastName",
 			}, {
-				Kind: "layout-horizontal",
-				Children: []Form{
+				Type: "layout-horizontal",
+				Children: []Element{
 					{
-						Kind: "textarea",
+						Type: "textarea",
 						Path: "data.biography",
 					}, {
-						Kind: "textarea",
+						Type: "textarea",
 						Path: "data.psychology",
 					}, {
-						Kind: "textarea",
+						Type: "textarea",
 						Path: "data.ontology",
 					},
 				},
