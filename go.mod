@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/benpate/derp v0.24.0
-	github.com/benpate/html v0.14.0
+	github.com/benpate/html v0.14.1
 	github.com/benpate/path v0.8.4
 	github.com/benpate/rosetta v0.5.1
 	github.com/segmentio/ksuid v1.0.4
