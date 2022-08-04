@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 )
@@ -16,8 +15,7 @@ func init() {
 func HTMLCheckbox(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	elementValue, schemaElement := element.GetValue(value, schema)
-	valueSlice := convert.SliceOfString(elementValue)
+	valueSlice, schemaElement := element.GetSliceOfString(value, schema)
 
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 

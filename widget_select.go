@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -16,8 +15,7 @@ func init() {
 func HTMLSelect(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	value, schemaElement := element.GetValue(value, s)
-	valueString := convert.String(value)
+	valueString, schemaElement := element.GetString(value, s)
 	id := "select-" + strings.ReplaceAll(element.Path, ".", "-")
 
 	if element, ok := schemaElement.(schema.Array); ok {

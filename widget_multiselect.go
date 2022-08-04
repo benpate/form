@@ -16,12 +16,7 @@ func init() {
 func HTMLMultiselect(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	value, schemaElement := element.GetValue(value, s)
-	valueSlice := convert.SliceOfString(value)
-
-	if element, ok := schemaElement.(schema.Array); ok {
-		schemaElement = element.Items
-	}
+	valueSlice, schemaElement := element.GetSliceOfString(value, s)
 
 	sortable := element.Options.GetBool("sort")
 	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")

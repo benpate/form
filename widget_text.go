@@ -16,8 +16,7 @@ func init() {
 func HTMLText(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	value, schemaElement := element.GetValue(value, s)
-	valueString := convert.String(value)
+	valueString, schemaElement := element.GetString(value, s)
 	id := "text-" + strings.ReplaceAll(element.Path, ".", "-")
 
 	// Start building a new tag

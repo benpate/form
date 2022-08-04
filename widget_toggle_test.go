@@ -18,7 +18,6 @@ func TestToggle(t *testing.T) {
 		html, err := form.HTML(nil, getTestSchema(), testLookupProvider{})
 		require.Nil(t, err)
 		require.Equal(t, `<span data-script="install toggle" name="terms"></span>`, html)
-		t.Log(html)
 	}
 
 	{
@@ -26,6 +25,5 @@ func TestToggle(t *testing.T) {
 		html, err := form.HTML(value, getTestSchema(), testLookupProvider{})
 		require.Nil(t, err)
 		require.Equal(t, `<span data-script="install toggle" name="terms" value="true"></span>`, html)
-		t.Log(html)
 	}
 }

@@ -93,7 +93,7 @@ func TestTextOptions(t *testing.T) {
 		Path: "tag",
 		ID:   "tag",
 		Options: maps.Map{
-			"datasource": "test",
+			"provider": "test",
 		},
 	}
 

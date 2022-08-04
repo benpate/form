@@ -39,10 +39,10 @@ func TestLayoutVertical(t *testing.T) {
 		"age":   27,
 	}
 
-	html, err := form.HTML(value, getTestSchema(), nil)
+	actual, err := form.HTML(value, getTestSchema(), nil)
 
 	assert.Nil(t, err)
-	t.Log(html)
+	t.Log(actual)
 }
 
 func TestRules(t *testing.T) {
@@ -69,9 +69,9 @@ func TestRules(t *testing.T) {
 		},
 	}
 
-	html, err := form.HTML(nil, getTestSchema(), nil)
+	actual, err := form.HTML(nil, getTestSchema(), nil)
 
 	assert.Nil(t, err)
 	derp.Report(err)
-	t.Log(html)
+	t.Log(actual)
 }

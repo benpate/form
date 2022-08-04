@@ -51,11 +51,6 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 	// If we have a schemaElement (type definition), then try to use it to generate lookup codes
 	if schemaElement != nil {
 
-		// If this is an array, then look up Enumerations on its elements.
-		if array, ok := schemaElement.(schema.Array); ok {
-			schemaElement = array.Items
-		}
-
 		// If this schema element is an Enumerator, then convert its values to []LookupCode
 		if enumerator, ok := schemaElement.(schema.Enumerator); ok {
 			return slice.Map(enumerator.Enumerate(), NewLookupCode)

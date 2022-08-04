@@ -14,12 +14,12 @@ func init() {
 func HTMLToggle(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	elementValue, _ := element.GetValue(value, s)
+	valueString, _ := element.GetString(value, s)
 
 	// Start building a new tag
 	tag := b.Span().Script("install toggle").Name(element.Path)
 
-	if convert.Bool(elementValue) {
+	if convert.Bool(valueString) {
 		tag.Value("true")
 	}
 

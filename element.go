@@ -3,9 +3,9 @@ package form
 import (
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/path"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/maps"
+	"github.com/benpate/rosetta/path"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -52,7 +52,32 @@ func (element *Element) WriteHTML(schema *schema.Schema, lookupProvider LookupPr
 
 // GetValue returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
-func (element *Element) GetValue(value any, s *schema.Schema) (any, schema.Element) {
+func (element *Element) GetString(value any, s *schema.Schema) (string, schema.Element) {
+
+	result, schemaElement := element.getValue(value, s)
+
+	switch schemaElement := schemaElement.(type) {
+	case schema.Array:
+		return convert.JoinString(result, schemaElement.Delimiter), schemaElement.Items
+	}
+
+	return convert.String(result), schemaElement
+}
+
+func (element *Element) GetSliceOfString(value any, s *schema.Schema) ([]string, schema.Element) {
+
+	result, schemaElement := element.getValue(value, s)
+
+	switch schemaElement := schemaElement.(type) {
+	case schema.Array:
+		return convert.SplitSliceOfString(result, schemaElement.Delimiter), schemaElement.Items
+	}
+	return convert.SliceOfString(result), schemaElement
+}
+
+// getValue returns the value of the element at the provided path.  If the schema is present,
+// then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
+func (element *Element) getValue(value any, s *schema.Schema) (any, schema.Element) {
 
 	// If there is a schema, use it to get the value
 	if s != nil {

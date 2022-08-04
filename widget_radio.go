@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -15,9 +14,7 @@ func init() {
 func HTMLRadio(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	elementValue, schemaElement := element.GetValue(value, schema)
-	valueString := convert.String(elementValue)
-
+	valueString, schemaElement := element.GetString(value, schema)
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag

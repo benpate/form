@@ -2,7 +2,6 @@ package form
 
 import (
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -13,15 +12,14 @@ func init() {
 func HTMLWYSIWYG(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	elementValue, _ := element.GetValue(value, s)
-	valueString := convert.String(elementValue)
+	valueString, _ := element.GetString(value, s)
 
 	// Start building a new tag
 	b.Input("hidden", element.Path).
 		Value(valueString).
 		Close()
 
-	b.Div().Class("content-editor")
+	b.Div().ID("content-editor")
 	b.Div().Class("wysiwyg").Script("install wysiwyg(name:'" + element.Path + "') install hotkey")
 	b.Div().Class("wysiwyg-toolbar").Attr("hidden", "true")
 	{
