@@ -1,22 +1,42 @@
 package form
 
 import (
-	"strings"
-
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
 func init() {
-	Register("select", HTMLSelect)
+	Register("select", WidgetSelect{})
 }
 
-// HTMLSelect registers a select box widget into the library
-func HTMLSelect(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+// WidgetSelect renders a select box widget
+type WidgetSelect struct{}
+
+func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, schemaElement := element.GetString(value, s)
-	id := "select-" + strings.ReplaceAll(element.Path, ".", "-")
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
+	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+
+	// Start building a new tag
+	b.Div().Class("layout-value").EndBracket()
+	for _, lookupCode := range lookupCodes {
+		if lookupCode.Value == valueString {
+			b.WriteString(lookupCode.Label)
+			break
+		}
+	}
+	b.Close()
+
+	return nil
+}
+
+func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	// find the path and schema to use
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
 
 	if element, ok := schemaElement.(schema.Array); ok {
 		schemaElement = element.Items
@@ -26,11 +46,11 @@ func HTMLSelect(element *Element, s *schema.Schema, lookupProvider LookupProvide
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	b.Container("select").
-		ID(id).
+		ID(element.ID).
 		Name(element.Path).
 		TabIndex("0")
 
-	if !schemaElement.IsRequired() {
+	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
 		b.Container("option").Value("").InnerHTML("").Close()
 	}
 
@@ -44,4 +64,12 @@ func HTMLSelect(element *Element, s *schema.Schema, lookupProvider LookupProvide
 
 	b.CloseAll()
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetSelect) ShowLabels() bool {
+	return true
 }

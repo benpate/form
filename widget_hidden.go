@@ -6,14 +6,20 @@ import (
 )
 
 func init() {
-	Register("hidden", HTMLHidden)
+	Register("hidden", WidgetHidden{})
 }
 
-// Hidden registers a text <input> widget into the library
-func HTMLHidden(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetHidden struct{}
+
+func (WidgetHidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	return nil
+}
+
+// WidgetHidden registers a text <input> widget into the library
+func (WidgetHidden) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	elementValue, _ := element.GetString(value, schema)
+	elementValue := element.GetString(value, schema)
 
 	// Start building a new tag
 	b.Input("hidden", element.Path).
@@ -22,4 +28,12 @@ func HTMLHidden(element *Element, schema *schema.Schema, lookupProvider LookupPr
 		Close()
 
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetHidden) ShowLabels() bool {
+	return false
 }

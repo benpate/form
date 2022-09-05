@@ -5,9 +5,9 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
-func getTestSchema() *schema.Schema {
+func getTestSchema() schema.Schema {
 
-	return &schema.Schema{
+	return schema.Schema{
 		ID:      "",
 		Comment: "",
 		Element: schema.Object{
@@ -32,6 +32,7 @@ func getTestSchema() *schema.Schema {
 					Maximum:  null.NewInt64(100),
 					Required: true,
 				},
+				"human": schema.Boolean{},
 				"distance": schema.Number{
 					Minimum:  null.NewFloat(10),
 					Maximum:  null.NewFloat(100),
@@ -46,6 +47,14 @@ func getTestSchema() *schema.Schema {
 					},
 				},
 				"terms": schema.Boolean{},
+				"ology": schema.Object{
+					Properties: map[string]schema.Element{
+						"biology":    schema.String{MaxLength: null.NewInt(1000)},
+						"geology":    schema.String{MaxLength: null.NewInt(1000)},
+						"psychology": schema.String{MaxLength: null.NewInt(1000)},
+						"ontology":   schema.String{MaxLength: null.NewInt(1000)},
+					},
+				},
 			},
 		},
 	}

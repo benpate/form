@@ -1,27 +1,36 @@
 package form
 
 import (
-	"strings"
-
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
 func init() {
-	Register("textarea", HTMLTextArea)
+	Register("textarea", WidgetTextArea{})
 }
 
-// HTMLTextarea registers a <textarea> input widget into the library
-func HTMLTextArea(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+// WidgetTextArea renders a long text <textarea> widget
+type WidgetTextArea struct{}
+
+func (WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	// find the path and schema to use
+	valueString := element.GetString(value, s)
+
+	// TODO: apply schema formats?
+	b.Div().Class("layout-value").InnerHTML(valueString).Close()
+	return nil
+}
+
+func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, schemaElement := element.GetString(value, s)
-	id := "textarea-" + strings.ReplaceAll(element.Path, ".", "-")
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
 
 	// Start building a new tag
 	tag := b.Container("textarea").
 		Name(element.Path).
-		ID(id).
+		ID(element.ID).
 		Attr("hint", element.Description).
 		Attr("rows", element.Options.GetString("rows"))
 
@@ -48,4 +57,12 @@ func HTMLTextArea(element *Element, s *schema.Schema, lookupProvider LookupProvi
 	tag.TabIndex("0")
 	tag.InnerHTML(valueString).Close()
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetTextArea) ShowLabels() bool {
+	return true
 }

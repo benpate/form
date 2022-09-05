@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/benpate/derp"
+	"github.com/benpate/html"
 	"github.com/benpate/rosetta/maps"
 
 	"github.com/stretchr/testify/assert"
@@ -11,7 +12,7 @@ import (
 
 func TestLayoutVertical(t *testing.T) {
 
-	form := Element{
+	element := Element{
 		Type:  "layout-vertical",
 		Label: "This is my Vertical Layout",
 		Children: []Element{
@@ -39,10 +40,12 @@ func TestLayoutVertical(t *testing.T) {
 		"age":   27,
 	}
 
-	actual, err := form.HTML(value, getTestSchema(), nil)
+	schema := getTestSchema()
+	builder := html.New()
+	err := element.Edit(&schema, nil, value, builder)
 
 	assert.Nil(t, err)
-	t.Log(actual)
+	t.Log(builder.String())
 }
 
 func TestRules(t *testing.T) {
@@ -69,9 +72,11 @@ func TestRules(t *testing.T) {
 		},
 	}
 
-	actual, err := form.HTML(nil, getTestSchema(), nil)
+	builder := html.New()
+	schema := getTestSchema()
+	err := form.Edit(&schema, nil, nil, builder)
 
 	assert.Nil(t, err)
 	derp.Report(err)
-	t.Log(actual)
+	t.Log(builder.String())
 }

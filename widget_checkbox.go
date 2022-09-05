@@ -9,24 +9,47 @@ import (
 )
 
 func init() {
-	Register("checkbox", HTMLCheckbox)
+	Register("checkbox", WidgetCheckbox{})
 }
 
-func HTMLCheckbox(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetCheckbox struct{}
 
-	// find the path and schema to use
-	valueSlice, schemaElement := element.GetSliceOfString(value, schema)
+func (widget WidgetCheckbox) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	// find the schema and value to use
+	schemaElement := element.getElement(schema)
+	valueSlice := element.GetSliceOfString(value, schema)
+	lookupCodes := widget.getLookupCodes(element, schemaElement, lookupProvider)
 
-	if len(lookupCodes) == 0 {
-		lookupCodes = []LookupCode{
-			{Value: "true", Label: element.Label},
+	first := true
+
+	b.Div().Class("layout-value")
+	for _, lookupCode := range lookupCodes {
+
+		if slice.Contains(valueSlice, lookupCode.Value) {
+
+			if first {
+				first = false
+			} else {
+				b.WriteString(", ")
+			}
+
+			b.WriteString(lookupCode.Label)
 		}
 	}
+	b.Close()
+
+	return nil
+}
+
+func (widget WidgetCheckbox) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	// find the path and schema to use
+	schemaElement := element.getElement(schema)
+	valueSlice := element.GetSliceOfString(value, schema)
+	lookupCodes := widget.getLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag
-
 	for _, lookupCode := range lookupCodes {
 		id := "checkbox-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + lookupCode.Value
 		b.Label(id)
@@ -44,4 +67,26 @@ func HTMLCheckbox(element *Element, schema *schema.Schema, lookupProvider Lookup
 	}
 
 	return nil
+}
+
+// getLookupCodes returns a list of LookupCodes for this element
+func (WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
+
+	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+
+	if len(lookupCodes) == 0 {
+		lookupCodes = []LookupCode{
+			{Value: "true", Label: element.Label},
+		}
+	}
+
+	return lookupCodes
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetCheckbox) ShowLabels() bool {
+	return false
 }

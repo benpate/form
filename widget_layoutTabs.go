@@ -12,10 +12,16 @@ import (
 )
 
 func init() {
-	Register("layout-tabs", HTMLLayoutTabs)
+	Register("layout-tabs", WidgetLayoutTabs{})
 }
 
-func HTMLLayoutTabs(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetLayoutTabs struct{}
+
+func (WidgetLayoutTabs) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	return nil
+}
+
+func (WidgetLayoutTabs) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if len(element.Label) > 0 {
 		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
@@ -85,7 +91,7 @@ func HTMLLayoutTabs(element *Element, schema *schema.Schema, lookupProvider Look
 
 		panel.EndBracket()
 
-		if err := child.WriteHTML(schema, lookupProvider, value, b.SubTree()); err != nil {
+		if err := child.Edit(schema, lookupProvider, value, b.SubTree()); err != nil {
 			return derp.Wrap(err, "form.HTMLLayoutTabs", "Error writing child", child)
 		}
 
@@ -95,4 +101,12 @@ func HTMLLayoutTabs(element *Element, schema *schema.Schema, lookupProvider Look
 	b.Close() // role=tabs
 
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetLayoutTabs) ShowLabels() bool {
+	return false
 }

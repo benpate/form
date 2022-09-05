@@ -3,46 +3,26 @@ package form
 import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
-	"github.com/segmentio/ksuid"
-
-	"github.com/benpate/derp"
 )
 
 func init() {
-	Register("layoutGroup", HTMLLayoutGroup)
+	Register("layoutGroup", WidgetLayoutGroup{})
 }
 
-func HTMLLayoutGroup(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetLayoutGroup struct{}
 
-	var result error
+func (WidgetLayoutGroup) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(element, schema, lookupProvider, value, b, "group", false)
+}
 
-	b.Div().Class("layout-group")
+func (WidgetLayoutGroup) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(element, schema, lookupProvider, value, b, "group", true)
+}
 
-	if element.Label != "" {
-		b.Div().Class("layout-group-label").InnerHTML(element.Label).Close()
-	}
+/***********************************
+ * Wiget Metadata
+ ***********************************/
 
-	b.Div().Class("layout-group-elements")
-
-	for index := range element.Children {
-
-		// Default ID for this child element
-		if element.Children[index].ID == "" {
-			element.Children[index].ID = ksuid.New().String()
-		}
-
-		child := element.Children[index]
-
-		tag := b.Div().Class("layout-group-element")
-
-		if err := child.WriteHTML(schema, lookupProvider, value, b.SubTree()); err != nil {
-			result = derp.Wrap(err, "form.widget.LayoutGroup", "Error rendering child", index, child)
-		}
-
-		tag.Close()
-	}
-
-	b.CloseAll()
-
-	return result
+func (WidgetLayoutGroup) ShowLabels() bool {
+	return false
 }

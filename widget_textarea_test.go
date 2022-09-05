@@ -3,18 +3,22 @@ package form
 import (
 	"testing"
 
+	"github.com/benpate/html"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestTextarea(t *testing.T) {
 
-	form := Element{
+	element := Element{
 		Type: "textarea",
 		Path: "username",
 	}
 
-	html, err := form.HTML(nil, getTestSchema(), testLookupProvider{})
+	builder := html.New()
+	schema := getTestSchema()
+	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	expected := `<textarea name="username" id="textarea-username" minlength="10" maxlength="100" pattern="[a-z]+" required="true" tabIndex="0"></textarea>`
 
 	assert.Nil(t, err)
-	assert.Equal(t, `<textarea name="username" id="textarea-username" minlength="10" maxlength="100" pattern="[a-z]+" required="true" tabIndex="0"></textarea>`, html)
+	assert.Equal(t, expected, builder.String())
 }

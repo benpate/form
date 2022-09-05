@@ -1,27 +1,35 @@
 package form
 
 import (
-	"strings"
-
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
 func init() {
-	Register("text", HTMLText)
+	Register("text", WidgetText{})
 }
 
-// HTMLText registers a text <input> widget into the library
-func HTMLText(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetText struct{}
+
+func (WidgetText) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	// find the path and schema to use
+	valueString := element.GetString(value, s)
+
+	// TODO: Apply formatting options?
+	b.Div().Class("layout-value").InnerHTML(valueString).Close()
+	return nil
+}
+
+func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, schemaElement := element.GetString(value, s)
-	id := "text-" + strings.ReplaceAll(element.Path, ".", "-")
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
 
 	// Start building a new tag
 	tag := b.Input("", element.Path).
-		ID(id).
+		ID(element.ID).
 		Value(valueString)
 
 	// Enumeration Options
@@ -116,6 +124,14 @@ func HTMLText(element *Element, s *schema.Schema, lookupProvider LookupProvider,
 
 	b.CloseAll()
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetText) ShowLabels() bool {
+	return true
 }
 
 /*

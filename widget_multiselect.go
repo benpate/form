@@ -6,17 +6,47 @@ import (
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/first"
 	"github.com/benpate/rosetta/schema"
+	"github.com/benpate/rosetta/slice"
 )
 
 func init() {
-	Register("multiselect", HTMLMultiselect)
+	Register("multiselect", WidgetMultiselect{})
 }
 
-// Multiselect registers a custom multi-select widget into the library
-func HTMLMultiselect(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetMultiselect struct{}
+
+func (WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	schemaElement := element.getElement(s)
+	valueSlice := element.GetSliceOfString(value, s)
+	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	first := true
+
+	b.Div().Class("layout-value")
+	for _, lookupCode := range lookupCodes {
+
+		if slice.Contains(valueSlice, lookupCode.Value) {
+
+			if first {
+				first = false
+			} else {
+				b.WriteString(", ")
+			}
+
+			b.WriteString(lookupCode.Label)
+		}
+	}
+	b.Close()
+
+	return nil
+}
+
+// WidgetMultiselect registers a custom multi-select widget into the library
+func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueSlice, schemaElement := element.GetSliceOfString(value, s)
+	schemaElement := element.getElement(s)
+	valueSlice := element.GetSliceOfString(value, s)
 
 	sortable := element.Options.GetBool("sort")
 	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")
@@ -28,11 +58,9 @@ func HTMLMultiselect(element *Element, s *schema.Schema, lookupProvider LookupPr
 	b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
 
 	for _, option := range options {
-		id := element.Path + "." + option.Value
+		b.Label(element.ID)
 
-		b.Label(id)
-
-		input := b.Input("checkbox", element.Path).ID(id).Value(option.Value)
+		input := b.Input("checkbox", element.Path).ID(element.ID).Value(option.Value)
 
 		if compare.Contains(valueSlice, option.Value) {
 			input.Attr("checked", "true")
@@ -62,4 +90,12 @@ func HTMLMultiselect(element *Element, s *schema.Schema, lookupProvider LookupPr
 
 	b.CloseAll()
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetMultiselect) ShowLabels() bool {
+	return true
 }

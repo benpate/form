@@ -7,14 +7,30 @@ import (
 )
 
 func init() {
-	Register("toggle", HTMLToggle)
+	Register("toggle", WidgetToggle{})
 }
 
-// HTMLToggle registers a custom toggle widget into the library
-func HTMLToggle(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+// WidgetToggle renders a custom toggle widget
+type WidgetToggle struct{}
+
+func (WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	valueString := element.GetString(value, s)
+	valueBool := convert.Bool(valueString)
+
+	if valueBool {
+		b.Div().Class("layout-value").InnerHTML(element.Options.GetString("true-text")).Close()
+	} else {
+		b.Div().Class("layout-value").InnerHTML(element.Options.GetString("false-text")).Close()
+	}
+
+	return nil
+}
+
+func (WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, _ := element.GetString(value, s)
+	valueString := element.GetString(value, s)
 
 	// Start building a new tag
 	tag := b.Span().Script("install toggle").Name(element.Path)
@@ -28,4 +44,12 @@ func HTMLToggle(element *Element, s *schema.Schema, lookupProvider LookupProvide
 
 	b.CloseAll()
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetToggle) ShowLabels() bool {
+	return true
 }

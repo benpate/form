@@ -1,50 +1,59 @@
 package form
 
 import (
-	"encoding/json"
-
-	"github.com/benpate/derp"
+	"github.com/benpate/html"
+	"github.com/benpate/rosetta/schema"
 )
 
-// Parse attempts to convert a value into a Form.
-// Currently supports map[string]any, []byte, string, and UnmarshalMaper interface.
-func Parse(data any) (Element, error) {
-
-	result := Element{}
-
-	switch typedData := data.(type) {
-
-	case Element:
-		return typedData, nil
-
-	case UnmarshalMaper:
-		err := result.UnmarshalMap(typedData.UnmarshalMap())
-		return result, err
-
-	case map[string]any:
-		err := result.UnmarshalMap(typedData)
-		return result, err
-
-	case []byte:
-		err := json.Unmarshal(typedData, &result)
-		return result, err
-
-	case string:
-		err := json.Unmarshal([]byte(typedData), &result)
-		return result, err
-	}
-
-	return result, derp.NewInternalError("form.Parse", "Cannot Parse Value: Unknown Datatype", data)
+type Form struct {
+	Schema  schema.Schema
+	Element Element
 }
 
-// MustParse guarantees that a value has been parsed into a Form, or else it panics the application.
-func MustParse(data any) Element {
-
-	result, err := Parse(data)
-
-	if err != nil {
-		panic(err)
+// New returns a fully initialized Form object (with all required values)
+func New(schema schema.Schema, element Element) Form {
+	return Form{
+		Schema:  schema,
+		Element: element,
 	}
+}
 
-	return result
+// Viewer creates an in-place form and executes its "Viewer" method
+func Viewer(schema schema.Schema, element Element, value any, lookupProvider LookupProvider) (string, error) {
+	form := New(schema, element)
+	return form.Viewer(value, lookupProvider)
+}
+
+// Viewer creates an in-place form and executes its "Editorr" method
+func Editor(schema schema.Schema, element Element, value any, lookupProvider LookupProvider) (string, error) {
+	form := New(schema, element)
+	return form.Editor(value, lookupProvider)
+}
+
+/*********************************
+ * Drawing Methods
+ ********************************/
+
+// DrawString() generates this form as a string
+func (form *Form) Editor(value any, lookupProvider LookupProvider) (string, error) {
+	builder := html.New()
+	err := form.BuildEditor(value, lookupProvider, builder)
+	return builder.String(), err
+}
+
+// DrawString() generates this form as a string
+func (form *Form) Viewer(value any, lookupProvider LookupProvider) (string, error) {
+	builder := html.New()
+	err := form.BuildViewer(value, lookupProvider, builder)
+	return builder.String(), err
+}
+
+// BuildEditor generates an editable view of this form
+func (form *Form) BuildEditor(value any, lookupProvider LookupProvider, builder *html.Builder) error {
+	return form.Element.Edit(&form.Schema, lookupProvider, value, builder)
+}
+
+// BuildViewer generates a read-only view of this form
+func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder *html.Builder) error {
+	return form.Element.View(&form.Schema, lookupProvider, value, builder)
 }

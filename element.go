@@ -5,7 +5,6 @@ import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/maps"
-	"github.com/benpate/rosetta/path"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -27,66 +26,74 @@ func NewElement() Element {
 	}
 }
 
-// HTML returns a populated HTML string for the provided value
-func (element *Element) HTML(value any, schema *schema.Schema, lookupProvider LookupProvider) (string, error) {
+func (element *Element) Widget() (Widget, error) {
 
-	b := html.New()
-
-	if err := element.WriteHTML(schema, lookupProvider, value, b); err != nil {
-		return "", derp.Wrap(err, "form.HTML", "Error rendering element", element)
-	}
-
-	return b.String(), nil
-}
-
-func (element *Element) WriteHTML(schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
-
-	widgetFunc, ok := registry[element.Type]
+	widget, ok := registry[element.Type]
 
 	if !ok {
-		return derp.NewInternalError("form.html", "Unrecognized form widget", element)
+		return nil, derp.New(500, "form.Widget", "Unrecognized form widget", element)
 	}
 
-	return widgetFunc(element, schema, lookupProvider, value, b)
+	return widget, nil
+}
+
+func (element *Element) View(schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	widget, err := element.Widget()
+
+	if err != nil {
+		return err
+	}
+
+	return widget.View(element, schema, lookupProvider, value, b)
+
+}
+
+func (element *Element) Edit(schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	widget, err := element.Widget()
+
+	if err != nil {
+		return err
+	}
+
+	return widget.Edit(element, schema, lookupProvider, value, b)
+
 }
 
 // GetValue returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
-func (element *Element) GetString(value any, s *schema.Schema) (string, schema.Element) {
+func (element *Element) GetString(value any, s *schema.Schema) string {
 
-	result, schemaElement := element.getValue(value, s)
-
-	switch schemaElement := schemaElement.(type) {
-	case schema.Array:
-		return convert.JoinString(result, schemaElement.Delimiter), schemaElement.Items
-	}
-
-	return convert.String(result), schemaElement
+	return convert.String(element.getValue(value, s))
 }
 
-func (element *Element) GetSliceOfString(value any, s *schema.Schema) ([]string, schema.Element) {
-
-	result, schemaElement := element.getValue(value, s)
-
-	switch schemaElement := schemaElement.(type) {
-	case schema.Array:
-		return convert.SplitSliceOfString(result, schemaElement.Delimiter), schemaElement.Items
-	}
-	return convert.SliceOfString(result), schemaElement
+func (element *Element) GetSliceOfString(value any, s *schema.Schema) []string {
+	return convert.SliceOfString(element.getValue(value, s))
 }
 
 // getValue returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
-func (element *Element) getValue(value any, s *schema.Schema) (any, schema.Element) {
+func (element *Element) getValue(value any, s *schema.Schema) any {
 
 	// If there is a schema, use it to get the value
 	if s != nil {
-		result, schemaElement, _ := s.Get(value, element.Path)
-		return result, schemaElement
+		result, _ := s.Get(value, element.Path)
+		return result
 	}
 
-	// Fall back to using path lookup.
-	return path.Get(value, element.Path), nil
+	return nil
+}
+
+func (element *Element) getElement(s *schema.Schema) schema.Element {
+
+	// If there is a schema, use it to get the value
+	if s != nil {
+		schemaElement, _ := s.GetElement(element.Path)
+		return schemaElement
+	}
+
+	return nil
 }
 
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete

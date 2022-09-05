@@ -8,31 +8,69 @@ import (
 )
 
 func init() {
-	Register("radio", HTMLRadio)
+	Register("radio", WidgetRadio{})
 }
 
-func HTMLRadio(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetRadio struct{}
+
+func (WidgetRadio) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, schemaElement := element.GetString(value, schema)
+	schemaElement := element.getElement(schema)
+	valueString := element.GetString(value, schema)
+	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+
+	// Start building a new tag
+	b.Div().Class("layout-value")
+	for _, lookupCode := range lookupCodes {
+		if lookupCode.Value == valueString {
+			b.WriteString(lookupCode.Label)
+			break
+		}
+	}
+	b.Close()
+
+	return nil
+}
+
+func (WidgetRadio) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	// Calculate the element's ID
+	id := element.ID
+
+	if id == "" {
+		id = "radio-" + strings.ReplaceAll(element.Path, ".", "-")
+	}
+
+	// find the path and schema to use
+	schemaElement := element.getElement(schema)
+	valueString := element.GetString(value, schema)
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
-		id := "radio-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + lookupCode.Value
-		b.Label(id)
+		radioID := id + "-" + lookupCode.Value
+		b.Label(radioID)
 
-		checkbox := b.Input("radio", element.Path).
-			ID(id).
+		radio := b.Input("radio", element.Path).
+			ID(radioID).
 			Value(lookupCode.Value)
 
 		if lookupCode.Value == valueString {
-			checkbox.Attr("checked", "true")
+			radio.Attr("checked", "true")
 		}
 
-		checkbox.InnerHTML(lookupCode.Label).Close()
+		radio.InnerHTML(lookupCode.Label).Close()
 		b.CloseAll()
 	}
 
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetRadio) ShowLabels() bool {
+	return true
 }

@@ -6,13 +6,22 @@ import (
 )
 
 func init() {
-	Register("wysiwyg", HTMLWYSIWYG)
+	Register("wysiwyg", WidgetWYSIWYG{})
 }
 
-func HTMLWYSIWYG(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+type WidgetWYSIWYG struct{}
+
+func (WidgetWYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	// find the path and schema to use
+	valueString := element.GetString(value, s)
+	b.WriteString(valueString) // TODO: apply schema formats?
+	return nil
+}
+
+func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString, _ := element.GetString(value, s)
+	valueString := element.GetString(value, s)
 
 	// Start building a new tag
 	b.Input("hidden", element.Path).
@@ -62,4 +71,12 @@ func HTMLWYSIWYG(element *Element, s *schema.Schema, lookupProvider LookupProvid
 	b.CloseAll()
 
 	return nil
+}
+
+/***********************************
+ * Wiget Metadata
+ ***********************************/
+
+func (WidgetWYSIWYG) ShowLabels() bool {
+	return true
 }
