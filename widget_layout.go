@@ -13,13 +13,13 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 	const location = "form.drawLayout"
 	var result error
 
-	b.Div().Class("layout").Data("alignment", alignment)
+	b.Div().Class("layout", "layout-"+alignment)
 
 	if len(element.Label) > 0 {
 		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
 	}
 
-	b.Div().Class("layout-elements")
+	b.Div().Class("layout-" + alignment + "-elements")
 
 	for index := range element.Children {
 
@@ -39,7 +39,7 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 
 		// All elements (except hidden) get wrapped in a div
 		if child.Type != "hidden" {
-			b.Div().Class("layout-element")
+			b.Div().Class("layout-" + alignment + "-element")
 
 			if widget.ShowLabels() {
 				b.Label(child.ID).InnerHTML(child.Label).Close()
