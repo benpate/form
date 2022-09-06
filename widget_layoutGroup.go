@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	Register("layoutGroup", WidgetLayoutGroup{})
+	Register("layout-group", WidgetLayoutGroup{})
 }
 
 type WidgetLayoutGroup struct{}
