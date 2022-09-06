@@ -1,7 +1,9 @@
 package form
 
 import (
+	"github.com/benpate/derp"
 	"github.com/benpate/html"
+	"github.com/benpate/rosetta/maps"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -30,7 +32,7 @@ func Editor(schema schema.Schema, element Element, value any, lookupProvider Loo
 	return form.Editor(value, lookupProvider)
 }
 
-/*********************************
+/********************************
  * Drawing Methods
  ********************************/
 
@@ -56,4 +58,28 @@ func (form *Form) BuildEditor(value any, lookupProvider LookupProvider, builder 
 // BuildViewer generates a read-only view of this form
 func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder *html.Builder) error {
 	return form.Element.View(&form.Schema, lookupProvider, value, builder)
+}
+
+/********************************
+ * Data Update Methods
+ ********************************/
+
+// Do applies all of the data from the value map into the target object
+func (form *Form) Do(value maps.Map, object any) error {
+
+	// Try to apply all values from the form to the object
+	for _, element := range form.Element.AllElements() {
+		if elementValue, ok := value[element.Path]; ok {
+			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
+				return derp.Wrap(err, "form.Form.Do", "Error setting value", element.Path, elementValue)
+			}
+		}
+	}
+
+	// Validate that all of the data in the object are valid.
+	if err := form.Schema.Validate(object); err != nil {
+		return derp.Wrap(err, "form.Form.Do", "Error validating object")
+	}
+
+	return nil
 }
