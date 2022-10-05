@@ -27,9 +27,15 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 	schemaElement := element.getElement(s)
 	valueString := element.GetString(value, s)
 
+	elementID := element.ID
+
+	if elementID == "" {
+		elementID = "text-" + element.Path
+	}
+
 	// Start building a new tag
 	tag := b.Input("", element.Path).
-		ID(element.ID).
+		ID(elementID).
 		Value(valueString)
 
 	// Enumeration Options

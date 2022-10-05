@@ -45,8 +45,14 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	// Get all lookupCodes for this element...
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
+	elementID := element.ID
+
+	if elementID == "" {
+		elementID = "select-" + element.Path
+	}
+
 	b.Container("select").
-		ID(element.ID).
+		ID(elementID).
 		Name(element.Path).
 		TabIndex("0")
 

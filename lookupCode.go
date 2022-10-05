@@ -3,6 +3,7 @@ package form
 import (
 	"strings"
 
+	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 )
@@ -33,12 +34,16 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 
 	// If we already have an array of LookupCodes, then just return it.
 	if values, ok := element.Options["enum"].(string); ok {
-		return slice.Map(strings.Split(values, ","), NewLookupCode)
+		if values != "" {
+			return slice.Map(strings.Split(values, ","), NewLookupCode)
+		}
 	}
 
 	// If we already have an array of LookupCodes, then just return it.
 	if values, ok := element.Options["enum"].([]LookupCode); ok {
-		return values
+		if len(values) > 0 {
+			return values
+		}
 	}
 
 	// If we have a valid LookupProvider, then try to use it to generate lookup codes
@@ -50,13 +55,27 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 
 	// If we have a schemaElement (type definition), then try to use it to generate lookup codes
 	if schemaElement != nil {
-
-		// If this schema element is an Enumerator, then convert its values to []LookupCode
-		if enumerator, ok := schemaElement.(schema.Enumerator); ok {
-			return slice.Map(enumerator.Enumerate(), NewLookupCode)
-		}
+		enum := getSchemaEnumeration(schemaElement)
+		return slice.Map(enum, NewLookupCode)
 	}
 
 	// Fall through to "no options available"
 	return make([]LookupCode, 0)
+}
+
+func getSchemaEnumeration(schemaElement schema.Element) []string {
+
+	switch s := schemaElement.(type) {
+
+	case schema.Array:
+		return getSchemaEnumeration(s.Items)
+	case schema.Integer:
+		return convert.SliceOfString(s.Enum)
+	case schema.Number:
+		return convert.SliceOfString(s.Enum)
+	case schema.String:
+		return s.Enum
+	}
+
+	return make([]string, 0)
 }

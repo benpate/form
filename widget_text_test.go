@@ -119,7 +119,7 @@ func TestTextOptions(t *testing.T) {
 	builder := html.New()
 	schema := getTestSchema()
 	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
-	expected := `<input name="tag" id="text-tag" list="datalist-tag" type="text" tabIndex="0"><datalist id="datalist-tag"><option value="ONE"><option value="TWO"><option value="THREE"><option value="FOUR"><option value="FIVE"></datalist>`
+	expected := `<input name="tag" id="tag" list="datalist-tag" type="text" tabIndex="0"><datalist id="datalist-tag"><option value="ONE"><option value="TWO"><option value="THREE"><option value="FOUR"><option value="FIVE"></datalist>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())

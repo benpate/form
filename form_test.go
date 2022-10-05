@@ -54,12 +54,14 @@ func TestAllPaths(t *testing.T) {
 
 	paths := form.AllElements()
 
-	require.Equal(t, 5, len(paths))
-	require.Equal(t, "data.firstName", paths[0].Path)
-	require.Equal(t, "data.lastName", paths[1].Path)
-	require.Equal(t, "data.biography", paths[2].Path)
-	require.Equal(t, "data.psychology", paths[3].Path)
-	require.Equal(t, "data.ontology", paths[4].Path)
+	require.Equal(t, 7, len(paths))
+	require.Equal(t, "name", paths[0].Path)
+	require.Equal(t, "email", paths[1].Path)
+	require.Equal(t, "age", paths[2].Path)
+	require.Equal(t, "human", paths[3].Path)
+	require.Equal(t, "ology.biology", paths[4].Path)
+	require.Equal(t, "ology.psychology", paths[5].Path)
+	require.Equal(t, "ology.ontology", paths[6].Path)
 }
 
 func getTestForm() Form {

@@ -2,8 +2,6 @@ package form
 
 import (
 	"github.com/benpate/derp"
-	"github.com/segmentio/ksuid"
-
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
@@ -28,13 +26,6 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 		widget, err := child.Widget()
 		if err != nil {
 			return derp.Wrap(err, location, "Error rendering child", index, child)
-		}
-
-		// Default ID for this element
-		if !edit {
-			child.ID = ""
-		} else if child.ID == "" {
-			child.ID = ksuid.New().String()
 		}
 
 		// All elements (except hidden) get wrapped in a div

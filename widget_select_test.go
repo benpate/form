@@ -19,7 +19,7 @@ func TestSelectOne(t *testing.T) {
 	schema := getTestSchema()
 	builder := html.New()
 	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
-	expected := `<select name="color" tabIndex="0"><option></option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Red">Red</option><option value="Violet">Violet</option><option value="Blue">Blue</option><option value="Green">Green</option></select>`
+	expected := `<select id="select-color" name="color" tabIndex="0"><option></option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Red">Red</option><option value="Violet">Violet</option><option value="Blue">Blue</option><option value="Green">Green</option></select>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())
@@ -48,7 +48,7 @@ func TestSelectOne_WithEnum(t *testing.T) {
 
 	builder := html.New()
 	err := element.Edit(&schema, nil, value, builder)
-	expected := `<select name="data.color" tabIndex="0"><option></option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Red">Red</option><option value="Violet">Violet</option><option value="Blue" selected="true">Blue</option><option value="Green">Green</option></select>`
+	expected := `<select id="select-data.color" name="data.color" tabIndex="0"><option></option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Red">Red</option><option value="Violet">Violet</option><option value="Blue" selected="true">Blue</option><option value="Green">Green</option></select>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())

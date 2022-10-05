@@ -57,10 +57,19 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 	b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
 	b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
 
-	for _, option := range options {
-		b.Label(element.ID)
+	elementID := element.ID
 
-		input := b.Input("checkbox", element.Path).ID(element.ID).Value(option.Value)
+	if elementID == "" {
+		elementID = "multiselect-" + element.Path
+	}
+
+	for _, option := range options {
+
+		optionID := elementID + "-" + option.Value
+
+		b.Label(optionID)
+
+		input := b.Input("checkbox", element.Path).ID(optionID).Value(option.Value)
 
 		if compare.Contains(valueSlice, option.Value) {
 			input.Attr("checked", "true")

@@ -27,10 +27,16 @@ func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 	schemaElement := element.getElement(s)
 	valueString := element.GetString(value, s)
 
+	elementID := element.ID
+
+	if elementID == "" {
+		elementID = "textarea-" + element.Path
+	}
+
 	// Start building a new tag
 	tag := b.Container("textarea").
 		Name(element.Path).
-		ID(element.ID).
+		ID(elementID).
 		Attr("hint", element.Description).
 		Attr("rows", element.Options.GetString("rows"))
 
