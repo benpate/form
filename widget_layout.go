@@ -17,6 +17,10 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
 	}
 
+	if len(element.Description) > 0 {
+		b.Div().Class("layout-description").InnerHTML(element.Description).Close()
+	}
+
 	b.Div().Class("layout-" + alignment + "-elements")
 
 	for index := range element.Children {
