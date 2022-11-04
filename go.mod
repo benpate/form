@@ -7,7 +7,7 @@ require (
 	github.com/benpate/html v0.14.1
 	github.com/benpate/rosetta v0.6.3
 	github.com/segmentio/ksuid v1.0.4
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 )
 
 require (
