@@ -6,7 +6,7 @@ replace github.com/benpate/rosetta => ../rosetta
 require (
 	github.com/benpate/derp v0.25.0
 	github.com/benpate/html v0.14.1
-	github.com/benpate/rosetta v0.6.2
+	github.com/benpate/rosetta v0.6.3
 	github.com/segmentio/ksuid v1.0.4
 	github.com/stretchr/testify v1.8.0
 )
