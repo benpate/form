@@ -13,11 +13,11 @@ func init() {
 
 type WidgetRadio struct{}
 
-func (WidgetRadio) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (WidgetRadio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	schemaElement := element.getElement(schema)
-	valueString := element.GetString(value, schema)
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag
@@ -33,7 +33,11 @@ func (WidgetRadio) View(element *Element, schema *schema.Schema, lookupProvider 
 	return nil
 }
 
-func (WidgetRadio) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetRadio{}.View(element, s, lookupProvider, value, b)
+	}
 
 	// Calculate the element's ID
 	id := element.ID
@@ -43,8 +47,8 @@ func (WidgetRadio) Edit(element *Element, schema *schema.Schema, lookupProvider 
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(schema)
-	valueString := element.GetString(value, schema)
+	schemaElement := element.getElement(s)
+	valueString := element.GetString(value, s)
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag

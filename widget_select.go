@@ -34,6 +34,10 @@ func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider Look
 
 func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
+	if element.ReadOnly {
+		return WidgetSelect{}.View(element, s, lookupProvider, value, b)
+	}
+
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
 	valueString := element.GetString(value, s)
@@ -51,10 +55,18 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		elementID = "select-" + element.Path
 	}
 
-	b.Container("select").
+	selectBox := b.Container("select").
 		ID(elementID).
 		Name(element.Path).
 		TabIndex("0")
+
+	if element.Options.GetBool("focus") {
+		selectBox.Attr("autofocus", "true")
+	}
+
+	if optionURL := element.Options.GetString("optionUrl"); optionURL != "" {
+		selectBox.Script("on load fetch " + optionURL + " as json then set options to it.map(\\x -> new Option(x.Label, x.Value)) the set my.options to options")
+	}
 
 	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
 		b.Container("option").Value("").InnerHTML("").Close()

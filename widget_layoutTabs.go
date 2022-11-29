@@ -17,11 +17,15 @@ func init() {
 
 type WidgetLayoutTabs struct{}
 
-func (WidgetLayoutTabs) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (WidgetLayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (WidgetLayoutTabs) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetLayoutTabs{}.View(element, s, lookupProvider, value, b)
+	}
 
 	if len(element.Label) > 0 {
 		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
@@ -91,7 +95,7 @@ func (WidgetLayoutTabs) Edit(element *Element, schema *schema.Schema, lookupProv
 
 		panel.EndBracket()
 
-		if err := child.Edit(schema, lookupProvider, value, b.SubTree()); err != nil {
+		if err := child.Edit(s, lookupProvider, value, b.SubTree()); err != nil {
 			return derp.Wrap(err, "form.HTMLLayoutTabs", "Error writing child", child)
 		}
 

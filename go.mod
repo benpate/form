@@ -2,6 +2,7 @@ module github.com/benpate/form
 
 go 1.18
 
+replace github.com/benpate/rosetta => ../rosetta
 require (
 	github.com/benpate/derp v0.25.0
 	github.com/benpate/html v0.14.1

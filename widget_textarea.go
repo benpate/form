@@ -2,6 +2,7 @@ package form
 
 import (
 	"github.com/benpate/html"
+	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -16,12 +17,16 @@ func (WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider Lo
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
-	// TODO: apply schema formats?
+	// TODO: LOW: apply schema formats?
 	b.Div().Class("layout-value").InnerHTML(valueString).Close()
 	return nil
 }
 
 func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetTextArea{}.View(element, s, lookupProvider, value, b)
+	}
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -40,15 +45,19 @@ func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 		Attr("hint", element.Description).
 		Attr("rows", element.Options.GetString("rows"))
 
+	if element.Options.GetBool("focus") {
+		tag.Attr("autofocus", "true")
+	}
+
 	// Add attributes that depend on what KIND of input we have.
 	if schemaString, ok := schemaElement.(schema.String); ok {
 
-		if schemaString.MinLength.IsPresent() {
-			tag.Attr("minlength", schemaString.MinLength.String())
+		if schemaString.MinLength > 0 {
+			tag.Attr("minlength", convert.String(schemaString.MinLength))
 		}
 
-		if schemaString.MaxLength.IsPresent() {
-			tag.Attr("maxlength", schemaString.MaxLength.String())
+		if schemaString.MaxLength > 0 {
+			tag.Attr("maxlength", convert.String(schemaString.MaxLength))
 		}
 
 		if schemaString.Pattern != "" {

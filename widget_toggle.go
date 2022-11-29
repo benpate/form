@@ -29,6 +29,10 @@ func (WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider Look
 
 func (WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
+	if element.ReadOnly {
+		return WidgetToggle{}.View(element, s, lookupProvider, value, b)
+	}
+
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 

@@ -14,11 +14,15 @@ type WidgetWYSIWYG struct{}
 func (WidgetWYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
-	b.WriteString(valueString) // TODO: apply schema formats?
+	b.WriteString(valueString) // TODO: LOW: apply schema formats?
 	return nil
 }
 
 func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetWYSIWYG{}.View(element, s, lookupProvider, value, b)
+	}
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)

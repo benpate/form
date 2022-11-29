@@ -42,11 +42,15 @@ func (widget WidgetCheckbox) View(element *Element, schema *schema.Schema, looku
 	return nil
 }
 
-func (widget WidgetCheckbox) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetCheckbox{}.View(element, s, lookupProvider, value, b)
+	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(schema)
-	valueSlice := element.GetSliceOfString(value, schema)
+	schemaElement := element.getElement(s)
+	valueSlice := element.GetSliceOfString(value, s)
 	lookupCodes := widget.getLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag

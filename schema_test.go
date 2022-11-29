@@ -13,18 +13,18 @@ func getTestSchema() schema.Schema {
 		Element: schema.Object{
 			Properties: map[string]schema.Element{
 				"username": schema.String{
-					MinLength: null.NewInt(10),
-					MaxLength: null.NewInt(100),
+					MinLength: 10,
+					MaxLength: 100,
 					Pattern:   "[a-z]+",
 					Required:  true,
 				},
 				"name": schema.String{
-					MaxLength: null.NewInt(50),
+					MaxLength: 50,
 				},
 				"email": schema.String{
 					Format:    "email",
-					MinLength: null.NewInt(10),
-					MaxLength: null.NewInt(100),
+					MinLength: 10,
+					MaxLength: 100,
 					Required:  true,
 				},
 				"age": schema.Integer{
@@ -49,10 +49,10 @@ func getTestSchema() schema.Schema {
 				"terms": schema.Boolean{},
 				"ology": schema.Object{
 					Properties: map[string]schema.Element{
-						"biology":    schema.String{MaxLength: null.NewInt(1000)},
-						"geology":    schema.String{MaxLength: null.NewInt(1000)},
-						"psychology": schema.String{MaxLength: null.NewInt(1000)},
-						"ontology":   schema.String{MaxLength: null.NewInt(1000)},
+						"biology":    schema.String{MaxLength: 1000},
+						"geology":    schema.String{MaxLength: 1000},
+						"psychology": schema.String{MaxLength: 1000},
+						"ontology":   schema.String{MaxLength: 1000},
 					},
 				},
 			},

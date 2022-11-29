@@ -44,6 +44,10 @@ func (WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider
 // WidgetMultiselect registers a custom multi-select widget into the library
 func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
+	if element.ReadOnly {
+		return WidgetMultiselect{}.View(element, s, lookupProvider, value, b)
+	}
+
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)

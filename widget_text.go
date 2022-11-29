@@ -16,12 +16,16 @@ func (WidgetText) View(element *Element, s *schema.Schema, lookupProvider Lookup
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
-	// TODO: Apply formatting options?
+	// TODO: LOW: Apply formatting options?
 	b.Div().Class("layout-value").InnerHTML(valueString).Close()
 	return nil
 }
 
 func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetText{}.View(element, s, lookupProvider, value, b)
+	}
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -37,6 +41,10 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 	tag := b.Input("", element.Path).
 		ID(elementID).
 		Value(valueString)
+
+	if element.Options.GetBool("focus") {
+		tag.Attr("autofocus", "true")
+	}
 
 	// Enumeration Options
 	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
@@ -96,12 +104,12 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 			tag.Type("text")
 		}
 
-		if s.MinLength.IsPresent() {
-			tag.Attr("minlength", s.MinLength.String())
+		if s.MinLength > 0 {
+			tag.Attr("minlength", convert.String(s.MinLength))
 		}
 
-		if s.MaxLength.IsPresent() {
-			tag.Attr("maxlength", s.MaxLength.String())
+		if s.MaxLength > 0 {
+			tag.Attr("maxlength", convert.String(s.MaxLength))
 		}
 
 		if s.Pattern != "" {

@@ -17,6 +17,7 @@ type Element struct {
 	Description string    `json:"description,omitempty"` // Longer description text to be displayed on the form element
 	Options     maps.Map  `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
 	Children    []Element `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
+	ReadOnly    bool      `json:"readOnly,omitempty"`    // If true, then this element is read-only
 }
 
 func NewElement() Element {
@@ -102,6 +103,10 @@ func (element *Element) getElement(s *schema.Schema) schema.Element {
 func (element *Element) AllElements() []*Element {
 
 	var result []*Element
+
+	if element.ReadOnly {
+		return result
+	}
 
 	// If THIS element has a Path, then add it to the result
 	if element.Path == "" {

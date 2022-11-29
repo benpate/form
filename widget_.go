@@ -18,11 +18,6 @@ func init() {
 	registry = make(map[string]Widget)
 }
 
-// TODO:
-// date
-// datetime
-// time
-
 // Register adds a new widget into the widget registry.
 func Register(name string, widget Widget) {
 	registry[name] = widget

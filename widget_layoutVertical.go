@@ -11,12 +11,17 @@ func init() {
 
 type WidgetLayoutVertical struct{}
 
-func (WidgetLayoutVertical) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
-	return drawLayout(element, schema, lookupProvider, value, b, "vertical", false)
+func (WidgetLayoutVertical) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(element, s, lookupProvider, value, b, "vertical", false)
 }
 
-func (WidgetLayoutVertical) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
-	return drawLayout(element, schema, lookupProvider, value, b, "vertical", true)
+func (WidgetLayoutVertical) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	if element.ReadOnly {
+		return WidgetLayoutVertical{}.View(element, s, lookupProvider, value, b)
+	}
+
+	return drawLayout(element, s, lookupProvider, value, b, "vertical", true)
 }
 
 /***********************************
