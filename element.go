@@ -32,7 +32,7 @@ func (element *Element) Widget() (Widget, error) {
 	widget, ok := registry[element.Type]
 
 	if !ok {
-		return nil, derp.New(500, "form.Widget", "Unrecognized form widget", element)
+		return nil, derp.NewInternalError("form.Widget", "Unrecognized form widget", element)
 	}
 
 	return widget, nil
