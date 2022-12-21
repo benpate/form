@@ -49,7 +49,7 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 
 		// Default ID for this child element
 		if child.ID == "" {
-			child.ID = ksuid.New().String()
+			child.ID = ksuid.New().String() // TODO: LOW: Remove KSUID dependency from tabs (this is the only place)
 		}
 
 		var label string
