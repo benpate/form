@@ -27,6 +27,9 @@ func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider Look
 			break
 		}
 	}
+
+	// TODO: HIGH: Add Support for WritableLookupProvider
+
 	b.Close()
 
 	return nil
@@ -37,6 +40,8 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	if element.ReadOnly {
 		return WidgetSelect{}.View(element, s, lookupProvider, value, b)
 	}
+
+	_, isWritable := lookupProvider.(WritableLookupGroup)
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -64,8 +69,14 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		selectBox.Attr("autofocus", "true")
 	}
 
-	if optionURL := element.Options.GetString("optionUrl"); optionURL != "" {
-		selectBox.Script("on load fetch " + optionURL + " as json then set options to it.map(\\x -> new Option(x.Label, x.Value)) the set my.options to options")
+	// Calculate scripts
+	if isWritable {
+		selectBox.Script(`on change if my value is '::NEWVALUE::' then 
+			set newName to window.prompt("Add New Value")
+			if newName is not null then 
+				make an Option from newName, ("::NEWVALUE::" + newName), true, true called newOption 
+				call me.add(newOption)
+			end`)
 	}
 
 	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
@@ -78,6 +89,15 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 			opt.Attr("selected", "true")
 		}
 		opt.InnerHTML(lookupCode.Label).Close()
+	}
+
+	if isWritable {
+		b.Container("option").
+			Class("add-new").
+			Script("on change log me").
+			Value("::NEWVALUE::").
+			InnerHTML("+ Add Another...").
+			Close()
 	}
 
 	b.CloseAll()

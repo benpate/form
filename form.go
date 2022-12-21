@@ -1,6 +1,8 @@
 package form
 
 import (
+	"strings"
+
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/maps"
@@ -65,10 +67,16 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
  ********************************/
 
 // Do applies all of the data from the value map into the target object
-func (form *Form) Do(value maps.Map, object any) error {
+func (form *Form) SetAll(object any, value maps.Map, lookupProvider LookupProvider) error {
+
+	// Replace "NEW" values in LookupCodes
+	if err := form.replaceNewLookups(object, value, lookupProvider); err != nil {
+		return derp.Wrap(err, "form.Form.Do", "Error replacing new lookups")
+	}
 
 	// Try to apply all values from the form to the object
 	for _, element := range form.Element.AllElements() {
+
 		if elementValue, ok := value[element.Path]; ok {
 			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
 				return derp.Wrap(err, "form.Form.Do", "Error setting value", element.Path, elementValue)
@@ -81,5 +89,55 @@ func (form *Form) Do(value maps.Map, object any) error {
 		return derp.Wrap(err, "form.Form.Do", "Error validating object")
 	}
 
+	return nil
+}
+
+func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider LookupProvider) error {
+
+	const newItemIdentifier = "::NEWVALUE::"
+
+	if lookupProvider == nil {
+		return nil
+	}
+
+	for _, element := range form.Element.AllElements() {
+
+		// Get the original form value
+		formValue := value.GetString(element.Path)
+
+		// Value MUST match the "new item" identifier
+		if !strings.HasPrefix(formValue, newItemIdentifier) {
+			continue
+		}
+
+		// Get the lookup provider name
+		providerName := element.Options.GetString("provider")
+
+		if providerName == "" {
+			continue
+		}
+
+		// User the LookupProvider to get the ProviderGroup
+		group := lookupProvider.Group(providerName)
+
+		if group == nil {
+			continue
+		}
+
+		// If the group is writable, then try to add a new value
+		if writableGroup, ok := group.(WritableLookupGroup); ok {
+
+			formValue = strings.TrimPrefix(formValue, newItemIdentifier)
+			formValue, err := writableGroup.Add(formValue)
+
+			if err != nil {
+				return derp.Wrap(err, "form.Form.SetAll", "Error adding new lookup value", element.Path, formValue)
+			}
+
+			value.SetString(element.Path, formValue)
+		}
+	}
+
+	// Woot.
 	return nil
 }

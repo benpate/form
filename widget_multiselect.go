@@ -91,6 +91,8 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 		b.Close() // label
 	}
 
+	// TODO: LOW: Add support for WritableLookupProvider
+
 	b.Close() // .options
 
 	// Buttons

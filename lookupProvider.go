@@ -3,5 +3,14 @@ package form
 // OptionProvider is an external object that
 // can inject LookupCodes based on their URL.
 type LookupProvider interface {
-	LookupCodes(name string) []LookupCode
+	Group(name string) LookupGroup
+}
+
+type LookupGroup interface {
+	Get() []LookupCode
+}
+
+type WritableLookupGroup interface {
+	LookupGroup
+	Add(name string) (string, error)
 }
