@@ -69,9 +69,11 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
 // Do applies all of the data from the value map into the target object
 func (form *Form) SetAll(object any, value maps.Map, lookupProvider LookupProvider) error {
 
+	const location = "form.Form.SetAll"
+
 	// Replace "NEW" values in LookupCodes
 	if err := form.replaceNewLookups(object, value, lookupProvider); err != nil {
-		return derp.Wrap(err, "form.Form.Do", "Error replacing new lookups")
+		return derp.Wrap(err, location, "Error replacing new lookups")
 	}
 
 	// Try to apply all values from the form to the object
@@ -79,14 +81,14 @@ func (form *Form) SetAll(object any, value maps.Map, lookupProvider LookupProvid
 
 		if elementValue, ok := value[element.Path]; ok {
 			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
-				return derp.Wrap(err, "form.Form.Do", "Error setting value", element.Path, elementValue)
+				return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
 			}
 		}
 	}
 
 	// Validate that all of the data in the object are valid.
 	if err := form.Schema.Validate(object); err != nil {
-		return derp.Wrap(err, "form.Form.Do", "Error validating object")
+		return derp.Wrap(err, location, "Error validating object")
 	}
 
 	return nil
