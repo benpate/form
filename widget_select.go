@@ -65,7 +65,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		Name(element.Path).
 		TabIndex("0")
 
-	if element.Options.GetBool("focus") {
+	if focus, ok := element.Options.GetBool("focus"); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
 

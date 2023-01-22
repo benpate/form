@@ -105,7 +105,11 @@ func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider L
 	for _, element := range form.Element.AllElements() {
 
 		// Get the original form value
-		formValue := value.GetString(element.Path)
+		formValue, ok := value.GetString(element.Path)
+
+		if !ok {
+			continue
+		}
 
 		// Value MUST match the "new item" identifier
 		if !strings.HasPrefix(formValue, newItemIdentifier) {
@@ -113,7 +117,11 @@ func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider L
 		}
 
 		// Get the lookup provider name
-		providerName := element.Options.GetString("provider")
+		providerName, ok := element.Options.GetString("provider")
+
+		if !ok {
+			continue
+		}
 
 		if providerName == "" {
 			continue

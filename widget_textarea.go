@@ -43,9 +43,9 @@ func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 		Name(element.Path).
 		ID(elementID).
 		Attr("hint", element.Description).
-		Attr("rows", element.Options.GetString("rows"))
+		Attr("rows", getValue(element.Options.GetString("rows")))
 
-	if element.Options.GetBool("focus") {
+	if focus, ok := element.Options.GetBool("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 

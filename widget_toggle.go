@@ -19,9 +19,9 @@ func (WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider Look
 	valueBool := convert.Bool(valueString)
 
 	if valueBool {
-		b.Div().Class("layout-value").InnerHTML(element.Options.GetString("true-text")).Close()
+		b.Div().Class("layout-value").InnerHTML(getValue(element.Options.GetString("true-text"))).Close()
 	} else {
-		b.Div().Class("layout-value").InnerHTML(element.Options.GetString("false-text")).Close()
+		b.Div().Class("layout-value").InnerHTML(getValue(element.Options.GetString("false-text"))).Close()
 	}
 
 	return nil
@@ -43,8 +43,8 @@ func (WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		tag.Value("true")
 	}
 
-	tag.Attr("true-text", element.Options.GetString("true-text"))
-	tag.Attr("false-text", element.Options.GetString("false-text"))
+	tag.Attr("true-text", getValue(element.Options.GetString("true-text")))
+	tag.Attr("false-text", getValue(element.Options.GetString("false-text")))
 
 	b.CloseAll()
 	return nil
