@@ -1,7 +1,7 @@
 # Form 🤔
 
 [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://pkg.go.dev/github.com/benpate/form)
-[![Build Status](https://img.shields.io/github/workflow/status/benpate/form/Go/master)](https://github.com/benpate/form/actions/workflows/go.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/benpate/form/go.yml?branch=master)](https://github.com/benpate/form/actions/workflows/go.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/benpate/form.svg?style=flat-square)](https://codecov.io/gh/benpate/form)
 [![Go Report Card](https://goreportcard.com/badge/github.com/benpate/form?style=flat-square)](https://goreportcard.com/report/github.com/benpate/form)
 [![Version](https://img.shields.io/github/v/release/benpate/form?include_prereleases&style=flat-square&color=brightgreen)](https://github.com/benpate/form/releases)
