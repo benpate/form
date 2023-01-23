@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/maps"
 	"github.com/stretchr/testify/require"
 )
 
@@ -111,7 +110,7 @@ func TestTextOptions(t *testing.T) {
 		Type: "text",
 		Path: "tag",
 		ID:   "tag",
-		Options: maps.Map{
+		Options: map[string]any{
 			"provider": "test",
 		},
 	}

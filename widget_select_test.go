@@ -4,8 +4,9 @@ import (
 	"testing"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/maps"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
+	"github.com/benpate/rosetta/sliceof"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,10 +45,10 @@ func TestSelectOne_WithEnum(t *testing.T) {
 		Path: "data.color",
 	}
 
-	value := maps.Map{"data": maps.Map{"color": "Blue"}}
+	value := mapof.Any{"data": mapof.Any{"color": "Blue"}}
 
 	builder := html.New()
-	err := element.Edit(&schema, nil, value, builder)
+	err := element.Edit(&schema, nil, &value, builder)
 	expected := `<select id="select-data.color" name="data.color" tabIndex="0"><option></option><option value="Yellow">Yellow</option><option value="Orange">Orange</option><option value="Red">Red</option><option value="Violet">Violet</option><option value="Blue" selected="true">Blue</option><option value="Green">Green</option></select>`
 
 	require.Nil(t, err)
@@ -59,11 +60,11 @@ func TestSelectOneFromProvider(t *testing.T) {
 	element := Element{
 		Type:    "select",
 		Path:    "color",
-		Options: maps.Map{"provider": "test"},
+		Options: map[string]any{"provider": "test"},
 	}
 
 	schema := getTestSchema()
-	value := maps.Map{"color": "FOUR"}
+	value := mapof.Any{"color": "FOUR"}
 	builder := html.New()
 	err := element.Edit(&schema, testLookupProvider{}, value, builder)
 	expected := `<select id="select-color" name="color" tabIndex="0"><option></option><option value="ONE">This is the first code</option><option value="TWO">This is the second code</option><option value="THREE">This is the third code</option><option value="FOUR" selected="true">This is the fourth code</option><option value="FIVE">This is the fifth code</option></select>`
@@ -95,12 +96,13 @@ func TestSelectMany(t *testing.T) {
 		Path: "tags",
 	}
 
-	value := maps.Map{"tags": []string{"pretty", "please"}}
+	value := mapof.Any{"tags": sliceof.String{"pretty", "please"}}
 
 	schema := getTestSchema()
+
 	builder := html.New()
-	err := element.Edit(&schema, testLookupProvider{}, value, builder)
-	expected := `<select id="select-tags" name="tags" tabIndex="0"><option></option><option value="pretty" selected="true">pretty</option><option value="please">please</option><option value="my">my</option><option value="dear">dear</option><option value="aunt">aunt</option><option value="sally">sally</option></select>`
+	err := element.Edit(&schema, testLookupProvider{}, &value, builder)
+	expected := `<select id="select-tags" name="tags" tabIndex="0"><option></option><option value="pretty" selected="true">pretty</option><option value="please" selected="true">please</option><option value="my">my</option><option value="dear">dear</option><option value="aunt">aunt</option><option value="sally">sally</option></select>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())

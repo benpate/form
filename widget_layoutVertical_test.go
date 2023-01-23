@@ -3,11 +3,9 @@ package form
 import (
 	"testing"
 
-	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/maps"
-
-	"github.com/stretchr/testify/assert"
+	"github.com/benpate/rosetta/mapof"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLayoutVertical(t *testing.T) {
@@ -34,7 +32,7 @@ func TestLayoutVertical(t *testing.T) {
 		},
 	}
 
-	value := maps.Map{
+	value := mapof.Any{
 		"name":  "John Connor",
 		"email": "john@resistance.mil",
 		"age":   27,
@@ -42,10 +40,11 @@ func TestLayoutVertical(t *testing.T) {
 
 	schema := getTestSchema()
 	builder := html.New()
-	err := element.Edit(&schema, nil, value, builder)
+	err := element.Edit(&schema, nil, &value, builder)
+	expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" value="John Connor" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" value="john@resistance.mil" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" value="27" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`
 
-	assert.Nil(t, err)
-	t.Log(builder.String())
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
 }
 
 func TestRules(t *testing.T) {
@@ -75,8 +74,8 @@ func TestRules(t *testing.T) {
 	builder := html.New()
 	schema := getTestSchema()
 	err := form.Edit(&schema, nil, nil, builder)
+	expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`
 
-	assert.Nil(t, err)
-	derp.Report(err)
-	t.Log(builder.String())
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
 }

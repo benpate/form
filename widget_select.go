@@ -3,6 +3,7 @@ package form
 import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
+	"github.com/benpate/rosetta/slice"
 )
 
 func init() {
@@ -45,7 +46,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
-	valueString := element.GetString(value, s)
+	valueSlice := element.GetSliceOfString(value, s)
 
 	if element, ok := schemaElement.(schema.Array); ok {
 		schemaElement = element.Items
@@ -65,7 +66,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		Name(element.Path).
 		TabIndex("0")
 
-	if focus, ok := element.Options.GetBool("focus"); ok && focus {
+	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
 
@@ -85,7 +86,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 
 	for _, lookupCode := range lookupCodes {
 		opt := b.Container("option").Value(lookupCode.Value)
-		if lookupCode.Value == valueString {
+		if slice.Contains(valueSlice, lookupCode.Value) {
 			opt.Attr("selected", "true")
 		}
 		opt.InnerHTML(lookupCode.Label).Close()

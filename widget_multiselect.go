@@ -52,8 +52,8 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)
 
-	sortable, _ := element.Options.GetBool("sort")
-	maxHeight := first.String(getValue(element.Options.GetString("maxHeight")), "300")
+	sortable, _ := element.Options.GetBoolOK("sort")
+	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")
 
 	// Get all options for this element...
 	options := GetLookupCodes(element, schemaElement, lookupProvider)

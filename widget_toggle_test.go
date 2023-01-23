@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/maps"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,10 +26,13 @@ func TestToggle(t *testing.T) {
 	}
 
 	{
-		value := maps.Map{"terms": "true"}
+		value := mapof.Any{
+			"terms": "true",
+		}
+
 		builder := html.New()
 		schema := getTestSchema()
-		err := form.Edit(&schema, testLookupProvider{}, value, builder)
+		err := form.Edit(&schema, testLookupProvider{}, &value, builder)
 		expected := `<span data-script="install toggle" name="terms" value="true"></span>`
 
 		require.Nil(t, err)

@@ -4,7 +4,7 @@ import (
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
-	"github.com/benpate/rosetta/maps"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -15,14 +15,14 @@ type Element struct {
 	Path        string    `json:"path"`                  // Path to the data value displayed in for this form element
 	Label       string    `json:"label,omitempty"`       // Short label to be displayed on the form element
 	Description string    `json:"description,omitempty"` // Longer description text to be displayed on the form element
-	Options     maps.Map  `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
+	Options     mapof.Any `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
 	Children    []Element `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
 	ReadOnly    bool      `json:"readOnly,omitempty"`    // If true, then this element is read-only
 }
 
 func NewElement() Element {
 	return Element{
-		Options:  make(map[string]any),
+		Options:  make(mapof.Any),
 		Children: make([]Element, 0),
 	}
 }
@@ -65,7 +65,6 @@ func (element *Element) Edit(schema *schema.Schema, lookupProvider LookupProvide
 // GetValue returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
 func (element *Element) GetString(value any, s *schema.Schema) string {
-
 	return convert.String(element.getValue(value, s))
 }
 
@@ -128,7 +127,7 @@ func (element *Element) AllElements() []*Element {
  * SERIALIZATION METHODS
  ******************************/
 
-// UnmarshalMap parses data from a generic structure (map[string]any) into a Form record.
+// UnmarshalMap parses data from a generic structure (mapof.Any) into a Form record.
 func (element *Element) UnmarshalMap(data map[string]any) error {
 
 	element.Type = convert.String(data["type"])
@@ -136,7 +135,7 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 	element.Label = convert.String(data["label"])
 	element.Description = convert.String(data["description"])
 
-	element.Options = make(map[string]any)
+	element.Options = make(mapof.Any)
 	if options, ok := data["options"].(map[string]any); ok {
 		for key, value := range options {
 			element.Options[key] = convert.String(value)

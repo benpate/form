@@ -36,7 +36,7 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 
 	// If we have a configuration option for labels,
 	// parse it into a slice
-	if labelString, ok := element.Options.GetString("labels"); ok && (labelString != "") {
+	if labelString, ok := element.Options.GetStringOK("labels"); ok && (labelString != "") {
 		labels = strings.Split(labelString, ",")
 	}
 

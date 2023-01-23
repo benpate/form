@@ -5,7 +5,7 @@ import (
 
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/maps"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -67,7 +67,7 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
  ********************************/
 
 // Do applies all of the data from the value map into the target object
-func (form *Form) SetAll(object any, value maps.Map, lookupProvider LookupProvider) error {
+func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvider) error {
 
 	const location = "form.Form.SetAll"
 
@@ -94,7 +94,7 @@ func (form *Form) SetAll(object any, value maps.Map, lookupProvider LookupProvid
 	return nil
 }
 
-func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider LookupProvider) error {
+func (form *Form) replaceNewLookups(object any, value mapof.Any, lookupProvider LookupProvider) error {
 
 	const newItemIdentifier = "::NEWVALUE::"
 
@@ -105,7 +105,7 @@ func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider L
 	for _, element := range form.Element.AllElements() {
 
 		// Get the original form value
-		formValue, ok := value.GetString(element.Path)
+		formValue, ok := value.GetStringOK(element.Path)
 
 		if !ok {
 			continue
@@ -117,7 +117,7 @@ func (form *Form) replaceNewLookups(object any, value maps.Map, lookupProvider L
 		}
 
 		// Get the lookup provider name
-		providerName, ok := element.Options.GetString("provider")
+		providerName, ok := element.Options.GetStringOK("provider")
 
 		if !ok {
 			continue

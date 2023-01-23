@@ -42,7 +42,7 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 		ID(elementID).
 		Value(valueString)
 
-	if focus, ok := element.Options.GetBool("focus"); ok && focus {
+	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
@@ -124,7 +124,7 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 		tag.Type("text")
 	}
 
-	if autocomplete, ok := element.Options.GetString("autocomplete"); ok {
+	if autocomplete := element.Options.GetString("autocomplete"); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
 	}
 	tag.TabIndex("0")
