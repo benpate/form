@@ -18,7 +18,7 @@ func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider Look
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
 	valueString := element.GetString(value, s)
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	// Start building a new tag
 	b.Div().Class("layout-value").EndBracket()
@@ -42,8 +42,6 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		return WidgetSelect{}.View(element, s, lookupProvider, value, b)
 	}
 
-	_, isWritable := lookupProvider.(WritableLookupGroup)
-
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)
@@ -53,7 +51,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	}
 
 	// Get all lookupCodes for this element...
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, isWritable := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	elementID := element.ID
 

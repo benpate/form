@@ -47,7 +47,7 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 	}
 
 	// Enumeration Options
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 	if len(lookupCodes) > 0 {
 		tag.Attr("list", "datalist-"+element.Path)
 	}

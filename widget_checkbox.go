@@ -76,7 +76,7 @@ func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProv
 // getLookupCodes returns a list of LookupCodes for this element
 func (WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
 
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	if len(lookupCodes) == 0 {
 		lookupCodes = []LookupCode{

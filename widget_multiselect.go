@@ -19,7 +19,7 @@ func (WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider
 
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)
-	lookupCodes := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 	first := true
 
 	b.Div().Class("layout-value")
@@ -56,7 +56,7 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")
 
 	// Get all options for this element...
-	options := GetLookupCodes(element, schemaElement, lookupProvider)
+	options, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 
 	b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
 	b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")

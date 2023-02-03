@@ -36,37 +36,42 @@ func (lookupCode LookupCode) ID() string {
 // 1) an "enum" (string or slice-of-lookupCode) in the form element,
 // 2) a "datasource" value that is looked up in the lookupProvider
 // 3) a value enumerated in the schema
-func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
+//
+// The boolean value is TRUE if this comes from a WritableLookupGroup
+func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) ([]LookupCode, bool) {
+
+	// If we have a valid LookupProvider, then try to use it to generate lookup codes first
+	if lookupProvider != nil {
+		if provider, ok := element.Options["provider"].(string); ok {
+			group := lookupProvider.Group(provider)
+
+			_, isWritable := group.(WritableLookupGroup)
+			return group.Get(), isWritable
+		}
+	}
 
 	// If we already have an array of LookupCodes, then just return it.
 	if values, ok := element.Options["enum"].(string); ok {
 		if values != "" {
-			return slice.Map(strings.Split(values, ","), NewLookupCode)
+			return slice.Map(strings.Split(values, ","), NewLookupCode), false
 		}
 	}
 
 	// If we already have an array of LookupCodes, then just return it.
 	if values, ok := element.Options["enum"].([]LookupCode); ok {
 		if len(values) > 0 {
-			return values
-		}
-	}
-
-	// If we have a valid LookupProvider, then try to use it to generate lookup codes
-	if lookupProvider != nil {
-		if provider, ok := element.Options["provider"].(string); ok {
-			return lookupProvider.Group(provider).Get()
+			return values, false
 		}
 	}
 
 	// If we have a schemaElement (type definition), then try to use it to generate lookup codes
 	if schemaElement != nil {
 		enum := getSchemaEnumeration(schemaElement)
-		return slice.Map(enum, NewLookupCode)
+		return slice.Map(enum, NewLookupCode), false
 	}
 
 	// Fall through to "no options available"
-	return make([]LookupCode, 0)
+	return make([]LookupCode, 0), false
 }
 
 func getSchemaEnumeration(schemaElement schema.Element) []string {
