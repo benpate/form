@@ -1,6 +1,7 @@
 package form
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/benpate/html"
@@ -78,4 +79,64 @@ func TestRules(t *testing.T) {
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())
+}
+
+func TestLayoutVertical_Unmarshal(t *testing.T) {
+
+	var element Element
+
+	formJSON := `{
+		"type": "layout-tabs",
+		"label":"Edit Follow Settings",
+		"id":"tab-container",
+		"children":[{
+			"type":"layout-vertical",
+			"id":"tab-settings",
+			"label":"Settings",
+			"children": [
+				{
+					"type":"text",
+					"label":"Fediverse Address or Website URL",
+					"path":"url",
+					"description":"Enter the URL of the website you want to subscribe to."
+				},
+				{
+					"type":"select",
+					"label":"Folder",
+					"path":"folderId",
+					"options":{"provider": "folders"},
+					"description": "Automatically add items to this folder."
+				}
+			]
+		}, {
+			"type":"layout-vertical",
+			"id":"tab-info",
+			"label":"Info",
+			"readOnly":true,
+			"children":[{
+				"type":"text",
+				"label":"Method",
+				"path":"method"
+			}, {
+				"type":"text",
+				"label":"Status",
+				"path":"status"
+			}, {
+				"type":"text",
+				"label":"Notes",
+				"path":"statusMessag"
+			}]
+		}]
+	}`
+
+	require.Nil(t, json.Unmarshal([]byte(formJSON), &element))
+
+	form := New(getTestSchema(), element)
+
+	actual, err := form.Editor(nil, nil)
+
+	expected := `<div class="layout-title">Edit Follow Settings</div><div class="tabs" data-script="install TabContainer"><div role="tablist"><button type="button" role="tab" id="tab-tab-settings" class="tab-label" aria-controls="panel-tab-settings" tabIndex="0" aria-selected="true">Settings</button><button type="button" role="tab" id="tab-tab-info" class="tab-label" aria-controls="panel-tab-info" tabIndex="0">Info</button></div><div role="tabpanel" id="panel-tab-settings" aria-labelledby="tab-tab-settings"><div class="layout layout-vertical"><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Fediverse Address or Website URL</label><input name="url" id="text-url" type="text" tabIndex="0"><div class="text-sm gray40">Enter the URL of the website you want to subscribe to.</div></div><div class="layout-vertical-element"><label>Folder</label><select id="select-folderId" name="folderId" tabIndex="0"></select><div class="text-sm gray40">Automatically add items to this folder.</div></div></div></div></div><div role="tabpanel" id="panel-tab-info" aria-labelledby="tab-tab-info" hidden="true"><div class="layout layout-vertical"><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Method</label><div class="layout-value"></div></div><div class="layout-vertical-element"><label>Status</label><div class="layout-value"></div></div><div class="layout-vertical-element"><label>Notes</label><div class="layout-value"></div></div></div></div></div></div>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, actual)
 }
