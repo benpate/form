@@ -18,7 +18,7 @@ func (WidgetLayoutVertical) View(element *Element, s *schema.Schema, lookupProvi
 func (WidgetLayoutVertical) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetLayoutVertical{}.View(element, s, lookupProvider, value, b)
+		return drawLayout(element, s, lookupProvider, value, b, "vertical", false)
 	}
 
 	return drawLayout(element, s, lookupProvider, value, b, "vertical", true)
