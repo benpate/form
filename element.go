@@ -134,6 +134,7 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 	element.Path = convert.String(data["path"])
 	element.Label = convert.String(data["label"])
 	element.Description = convert.String(data["description"])
+	element.ReadOnly = convert.Bool(data["readOnly"])
 
 	element.Options = make(mapof.Any)
 	if options, ok := data["options"].(map[string]any); ok {
