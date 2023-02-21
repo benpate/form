@@ -1,13 +1,13 @@
 package form
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/benpate/derp"
 	"github.com/segmentio/ksuid"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -27,6 +27,10 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 		return WidgetLayoutTabs{}.View(element, s, lookupProvider, value, b)
 	}
 
+	if len(element.ID) == 0 {
+		element.ID = ksuid.New().String()
+	}
+
 	if len(element.Label) > 0 {
 		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
 	}
@@ -43,14 +47,10 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 	b.Div().Class("tabs").Script("install TabContainer")
 	b.Div().Role("tablist")
 
-	for index := range element.Children {
+	for index, child := range element.Children {
 
-		child := &element.Children[index]
-
-		// Default ID for this child element
-		if child.ID == "" {
-			child.ID = ksuid.New().String() // TODO: LOW: Remove KSUID dependency from tabs (this is the only place)
-		}
+		indexString := strconv.Itoa(index)
+		child.ID = element.ID + "-" + indexString // Set ID for tab + panel
 
 		var label string
 
@@ -59,9 +59,8 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 			label = labels[index]
 		} else if child.Label != "" {
 			label = child.Label
-			child.Label = ""
 		} else {
-			label = "Tab " + convert.String(index)
+			label = "Tab " + indexString
 		}
 
 		// Go!
@@ -83,6 +82,10 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 	b.Close() // role=tablist
 
 	for index, child := range element.Children {
+
+		// Data overrides (just for this loop)
+		child.ID = element.ID + "-" + strconv.Itoa(index) // Set ID for tab + panel
+		child.Label = ""                                  // Remove remaining labels labels
 
 		panel := b.Div().
 			Role("tabpanel").
