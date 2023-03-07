@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/benpate/derp"
-	"github.com/segmentio/ksuid"
 
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
@@ -27,8 +26,8 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 		return WidgetLayoutTabs{}.View(element, s, lookupProvider, value, b)
 	}
 
-	if len(element.ID) == 0 {
-		element.ID = ksuid.New().String()
+	if element.ID == "" {
+		element.ID = "tabcontainer"
 	}
 
 	if len(element.Label) > 0 {
