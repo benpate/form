@@ -37,17 +37,17 @@ func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider Loo
 	b.Div().Class("wysiwyg-toolbar").Attr("hidden", "true")
 	{
 		b.Span().Class("wysiwyg-toolbar-group").EndBracket()
-		b.Button().Data("command", "formatBlock").Data("command-value", "h1").InnerHTML("H1").Close()
-		b.Button().Data("command", "formatBlock").Data("command-value", "h2").InnerHTML("H2").Close()
-		b.Button().Data("command", "formatBlock").Data("command-value", "h3").InnerHTML("H3").Close()
-		b.Button().Data("command", "formatBlock").Data("command-value", "p").InnerHTML("P").Close()
+		b.Button().Data("command", "formatBlock").Data("command-value", "h1").InnerText("H1").Close()
+		b.Button().Data("command", "formatBlock").Data("command-value", "h2").InnerText("H2").Close()
+		b.Button().Data("command", "formatBlock").Data("command-value", "h3").InnerText("H3").Close()
+		b.Button().Data("command", "formatBlock").Data("command-value", "p").InnerText("P").Close()
 		b.Close()
 	}
 	{
 		b.Span().Class("wysiwyg-toolbar-group").EndBracket()
-		b.Button().Data("command", "bold").Aria("keyshortcuts", "Ctrl+B").InnerHTML("B").Close()
-		b.Button().Data("command", "italic").Aria("keyshortcuts", "Ctrl+I").InnerHTML("I").Close()
-		b.Button().Data("command", "underline").Aria("keyshortcuts", "Ctrl+U").InnerHTML("U").Close()
+		b.Button().Data("command", "bold").Aria("keyshortcuts", "Ctrl+B").InnerText("B").Close()
+		b.Button().Data("command", "italic").Aria("keyshortcuts", "Ctrl+I").InnerText("I").Close()
+		b.Button().Data("command", "underline").Aria("keyshortcuts", "Ctrl+U").InnerText("U").Close()
 		b.Close()
 	}
 	{
@@ -62,16 +62,16 @@ func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider Loo
 	}
 	{
 		b.Span().Class("wysiwyg-toolbar-group").Attr("hidden", "true").EndBracket()
-		b.Button().Data("command", "cut").Aria("keyshortcuts", "Ctrl+X").InnerHTML("Cut").Close()
-		b.Button().Data("command", "copy").Aria("keyshortcuts", "Ctrl+C").InnerHTML("Copy").Close()
-		b.Button().Data("command", "paste").Aria("keyshortcuts", "Ctrl+V").InnerHTML("Paste").Close()
-		b.Button().Data("command", "undo").Aria("keyshortcuts", "Ctrl+Z").InnerHTML("Undo").Close()
-		b.Button().Data("command", "redo").Aria("keyshortcuts", "Ctrl+Shift+Z").InnerHTML("Redo").Close()
+		b.Button().Data("command", "cut").Aria("keyshortcuts", "Ctrl+X").InnerText("Cut").Close()
+		b.Button().Data("command", "copy").Aria("keyshortcuts", "Ctrl+C").InnerText("Copy").Close()
+		b.Button().Data("command", "paste").Aria("keyshortcuts", "Ctrl+V").InnerText("Paste").Close()
+		b.Button().Data("command", "undo").Aria("keyshortcuts", "Ctrl+Z").InnerText("Undo").Close()
+		b.Button().Data("command", "redo").Aria("keyshortcuts", "Ctrl+Shift+Z").InnerText("Redo").Close()
 		b.Close()
 	}
 	b.Close()
 
-	b.Div().Class("wysiwyg-editor").InnerHTML(valueString)
+	b.Div().Class("wysiwyg-editor").InnerText(valueString)
 	b.CloseAll()
 
 	return nil

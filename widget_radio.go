@@ -64,7 +64,7 @@ func (WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider Looku
 			radio.Attr("checked", "true")
 		}
 
-		radio.InnerHTML(lookupCode.Label).Close()
+		radio.InnerText(lookupCode.Label).Close()
 		b.CloseAll()
 	}
 

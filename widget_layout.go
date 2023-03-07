@@ -14,11 +14,11 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 	b.Div().Class("layout", "layout-"+alignment)
 
 	if len(element.Label) > 0 {
-		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
+		b.Div().Class("layout-title").InnerText(element.Label).Close()
 	}
 
 	if len(element.Description) > 0 {
-		b.Div().Class("layout-description").InnerHTML(element.Description).Close()
+		b.Div().Class("layout-description").InnerText(element.Description).Close()
 	}
 
 	b.Div().Class("layout-" + alignment + "-elements")
@@ -37,7 +37,7 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 			b.Div().Class("layout-" + alignment + "-element")
 
 			if widget.ShowLabels() {
-				b.Label(child.ID).InnerHTML(child.Label).Close()
+				b.Label(child.ID).InnerText(child.Label).Close()
 			}
 		}
 
@@ -54,7 +54,7 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 
 		// If there's a description on this element, draw it here
 		if widget.ShowLabels() && (child.Description != "") {
-			b.Div().Class("text-sm gray40").InnerHTML(child.Description).Close()
+			b.Div().Class("text-sm gray40").InnerText(child.Description).Close()
 		}
 
 		// Close the DIV wrapper from above

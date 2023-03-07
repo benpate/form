@@ -32,7 +32,7 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 	}
 
 	if len(element.Label) > 0 {
-		b.Div().Class("layout-title").InnerHTML(element.Label).Close()
+		b.Div().Class("layout-title").InnerText(element.Label).Close()
 	}
 
 	// Make a placeholder for labels
@@ -76,7 +76,7 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 			tab.Aria("selected", "true")
 		}
 
-		tab.InnerHTML(label).Close()
+		tab.InnerText(label).Close()
 	}
 
 	b.Close() // role=tablist

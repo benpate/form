@@ -82,10 +82,10 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 		b.Close() // input
 
 		b.Div()
-		b.Div().InnerHTML(option.Label).Close()
+		b.Div().InnerText(option.Label).Close()
 
 		if option.Description != "" {
-			b.Div().Class("text-sm", "gray50").InnerHTML(option.Description).Close()
+			b.Div().Class("text-sm", "gray50").InnerText(option.Description).Close()
 		}
 		b.Close() // div
 		b.Close() // label
@@ -98,8 +98,8 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
 	// Buttons
 	if sortable {
 		b.Div().Class("buttons").EndBracket()
-		b.Button().Type("button").Data("sort", "up").InnerHTML("△").Close()
-		b.Button().Type("button").Data("sort", "down").InnerHTML("▽").Close()
+		b.Button().Type("button").Data("sort", "up").InnerText("△").Close()
+		b.Button().Type("button").Data("sort", "down").InnerText("▽").Close()
 		b.Close()
 	}
 

@@ -2,8 +2,8 @@ github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuP
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/benpate/derp v0.27.0 h1:qjKlTC2gv5MtqFgz2vSGWoz2WyMNT6i2ALyIyBJ7s6Q=
 github.com/benpate/derp v0.27.0/go.mod h1:Qrtco2SAercNzKqb6WsaXvxn1E+/4DHBaWB+BwehJAo=
-github.com/benpate/html v0.15.0 h1:E8ePO2XMf2P/WgTRSaEI1H3Rb4EzvrfbU4wTW6Svq3s=
-github.com/benpate/html v0.15.0/go.mod h1:i5RSHmjum4SB9Xa1nGlDRZVmu7313iBBd80boQiLxFw=
+github.com/benpate/html v0.16.0 h1:n+O0JbnlG/aM6iW889soFS8a3F9EPZqWaEN2chG4+TM=
+github.com/benpate/html v0.16.0/go.mod h1:ud21gMylifTKhQI443PtHO9D66HUrnShOhQpcV4Bu5I=
 github.com/benpate/rosetta v0.11.2 h1:mbxjindlEzK8rVZcO6+YravIpsCx9OjsFolX0wn8RyA=
 github.com/benpate/rosetta v0.11.2/go.mod h1:nEsQ0fLnoo/RgelVB0e+V/nyaLJE8TBFaEsNUKIW1y4=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
@@ -28,8 +28,8 @@ github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSS
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
-github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKsk=
-github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
+github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
+github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 golang.org/x/net v0.7.0 h1:rJrUqqhjsgNp7KqAIc25s9pZnjU7TUcSY7HcVZjdn1g=
 golang.org/x/net v0.7.0/go.mod h1:2Tu9+aMcznHK/AK1HMvgo6xiTLG5rD5rZLDS+rp2Bjs=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

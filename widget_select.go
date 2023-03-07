@@ -79,7 +79,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	}
 
 	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
-		b.Container("option").Value("").InnerHTML("").Close()
+		b.Container("option").Value("").InnerText("").Close()
 	}
 
 	for _, lookupCode := range lookupCodes {
@@ -87,7 +87,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		if slice.Contains(valueSlice, lookupCode.Value) {
 			opt.Attr("selected", "true")
 		}
-		opt.InnerHTML(lookupCode.Label).Close()
+		opt.InnerText(lookupCode.Label).Close()
 	}
 
 	if isWritable {

@@ -66,7 +66,7 @@ func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProv
 			checkbox.Attr("checked", "true")
 		}
 
-		checkbox.InnerHTML(lookupCode.Label).Close()
+		checkbox.InnerText(lookupCode.Label).Close()
 		b.CloseAll()
 	}
 

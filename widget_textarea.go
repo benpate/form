@@ -18,7 +18,7 @@ func (WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider Lo
 	valueString := element.GetString(value, s)
 
 	// TODO: LOW: apply schema formats?
-	b.Div().Class("layout-value").InnerHTML(valueString).Close()
+	b.Div().Class("layout-value").InnerText(valueString).Close()
 	return nil
 }
 
@@ -70,7 +70,7 @@ func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 	}
 
 	tag.TabIndex("0")
-	tag.InnerHTML(valueString).Close()
+	tag.InnerText(valueString).Close()
 	return nil
 }
 
