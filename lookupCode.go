@@ -26,6 +26,34 @@ func NewLookupCode(value string) LookupCode {
 	}
 }
 
+func ParseLookupCode(value any) LookupCode {
+
+	switch typed := value.(type) {
+
+	case LookupCode:
+		return typed
+
+	case string:
+
+		return LookupCode{
+			Value: typed,
+			Label: typed,
+		}
+
+	case map[string]any:
+
+		return LookupCode{
+			Value:       convert.String(typed["value"]),
+			Label:       convert.String(typed["label"]),
+			Description: convert.String(typed["description"]),
+			Icon:        convert.String(typed["icon"]),
+			Group:       convert.String(typed["group"]),
+		}
+	}
+
+	return LookupCode{}
+}
+
 // ID returns the unique ID of the LookupCode, allowing them to
 // be used as a set.Value
 func (lookupCode LookupCode) ID() string {
@@ -50,21 +78,26 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 		}
 	}
 
-	// If we already have an array of LookupCodes, then just return it.
-	if values, ok := element.Options["enum"].(string); ok {
-		if values != "" {
-			return slice.Map(strings.Split(values, ","), NewLookupCode), false
+	// If an "enum" option is present, then try to use it to generate LookupCodes
+	if enumValue, ok := element.Options["enum"]; ok {
+
+		switch typed := enumValue.(type) {
+
+		case string:
+			return slice.Map(strings.Split(typed, ","), NewLookupCode), false
+
+		case []LookupCode:
+			return typed, false
+
+		case []string:
+			return slice.Map(typed, NewLookupCode), false
+
+		case []any:
+			return slice.Map(typed, ParseLookupCode), false
 		}
 	}
 
-	// If we already have an array of LookupCodes, then just return it.
-	if values, ok := element.Options["enum"].([]LookupCode); ok {
-		if len(values) > 0 {
-			return values, false
-		}
-	}
-
-	// If we have a schemaElement (type definition), then try to use it to generate lookup codes
+	// Last, if we have a schemaElement (type definition), then try to use it to generate lookup codes
 	if schemaElement != nil {
 		enum := getSchemaEnumeration(schemaElement)
 		return slice.Map(enum, NewLookupCode), false
@@ -88,5 +121,5 @@ func getSchemaEnumeration(schemaElement schema.Element) []string {
 		return s.Enum
 	}
 
-	return make([]string, 0)
+	return make([]string, 0) // This should probably never happen.
 }

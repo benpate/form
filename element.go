@@ -138,9 +138,7 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 
 	element.Options = make(mapof.Any)
 	if options, ok := data["options"].(map[string]any); ok {
-		for key, value := range options {
-			element.Options[key] = convert.String(value)
-		}
+		element.Options = options
 	}
 
 	if children, ok := data["children"].([]any); ok {
