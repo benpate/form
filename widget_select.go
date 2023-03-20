@@ -29,8 +29,6 @@ func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider Look
 		}
 	}
 
-	// TODO: HIGH: Add Support for WritableLookupProvider
-
 	b.Close()
 
 	return nil
@@ -68,7 +66,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		selectBox.Attr("autofocus", "true")
 	}
 
-	// Calculate scripts
+	// Support for writable lookup providers
 	if isWritable {
 		selectBox.Script(`on change if my value is '::NEWVALUE::' then 
 			set newName to window.prompt("Add New Value")
@@ -78,10 +76,12 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 			end`)
 	}
 
+	// Allow null options if not required
 	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
 		b.Container("option").Value("").InnerText("").Close()
 	}
 
+	// Display all lookup codes
 	for _, lookupCode := range lookupCodes {
 		opt := b.Container("option").Value(lookupCode.Value)
 		if slice.Contains(valueSlice, lookupCode.Value) {
@@ -90,6 +90,7 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 		opt.InnerText(lookupCode.Label).Close()
 	}
 
+	// Support for writable lookup providers
 	if isWritable {
 		b.Container("option").
 			Class("add-new").
