@@ -71,6 +71,10 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
 			Aria("controls", "panel-"+child.ID).
 			TabIndex("0")
 
+		if script, ok := child.Options.GetStringOK("script"); ok {
+			tab.Script(script)
+		}
+
 		if index == 0 {
 			tab.Aria("selected", "true")
 		}
