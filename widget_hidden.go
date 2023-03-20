@@ -2,6 +2,7 @@ package form
 
 import (
 	"github.com/benpate/html"
+	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -23,7 +24,13 @@ func (WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	}
 
 	// find the path and schema to use
-	elementValue := element.GetString(value, s)
+	var elementValue string
+
+	if optionValue, ok := element.Options["value"]; ok {
+		elementValue = convert.String(optionValue)
+	} else {
+		elementValue = element.GetString(value, s)
+	}
 
 	// Start building a new tag
 	b.Input("hidden", element.Path).
