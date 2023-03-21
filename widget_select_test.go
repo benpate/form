@@ -26,6 +26,35 @@ func TestSelectOne(t *testing.T) {
 	require.Equal(t, expected, builder.String())
 }
 
+func TestSelectOne_ReadOnly(t *testing.T) {
+
+	element := Element{
+		Type: "select",
+		Path: "color",
+		Options: mapof.Any{
+			"enum": []LookupCode{
+				{Value: "YELLOW", Label: "Yellow"},
+				{Value: "ORANGE", Label: "Orange"},
+				{Value: "RED", Label: "Red"},
+				{Value: "VIOLET", Label: "Violet"},
+			},
+		},
+		ReadOnly: true,
+	}
+
+	value := mapof.String{
+		"color": "RED",
+	}
+
+	schema := getTestSchema()
+	builder := html.New()
+	err := element.View(&schema, nil, value, builder)
+	expected := `<div class="layout-value">Red</div>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
+}
+
 func TestSelectOne_WithEnum(t *testing.T) {
 
 	schema := schema.Schema{
