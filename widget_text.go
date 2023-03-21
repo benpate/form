@@ -17,7 +17,7 @@ func (WidgetText) View(element *Element, s *schema.Schema, lookupProvider Lookup
 	valueString := element.GetString(value, s)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value").InnerText(valueString).Close()
+	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
