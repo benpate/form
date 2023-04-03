@@ -3,17 +3,18 @@ package form
 import (
 	"testing"
 
+	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
 )
 
 func TestFormEditor(t *testing.T) {
 
-	data := map[string]any{
+	data := mapof.Any{
 		"name":  "John Connor",
 		"email": "john@connor.mil",
 		"age":   42,
 		"human": true,
-		"ology": map[string]any{
+		"ology": mapof.Any{
 			"biology":    "I am a biological human",
 			"psychology": "I think, therefore I am",
 			"ontology":   "Here's why I am a human",
@@ -30,12 +31,12 @@ func TestFormEditor(t *testing.T) {
 
 func TestFormViewer(t *testing.T) {
 
-	data := map[string]any{
+	data := mapof.Any{
 		"name":  "John Connor",
 		"email": "john@connor.mil",
 		"age":   42,
 		"human": true,
-		"ology": map[string]any{
+		"ology": mapof.Any{
 			"biology":    "I am a biological human",
 			"psychology": "I think, therefore I am",
 			"ontology":   "Here's why I am a human",

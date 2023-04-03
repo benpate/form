@@ -2,6 +2,7 @@ package form
 
 import (
 	"github.com/benpate/derp"
+	"github.com/benpate/exp"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/mapof"
@@ -94,6 +95,21 @@ func (element *Element) getElement(s *schema.Schema) schema.Element {
 	}
 
 	return nil
+}
+
+func (element *Element) inputVisible(s *schema.Schema, values any) bool {
+
+	// RULE: if the element is read-only, then it should not be used as an input value
+	if element.ReadOnly {
+		return false
+	}
+
+	// If a "show-if" option is present, then we need to evaluate it to see if the input value should be considered "present" or not.
+	if showIf := element.Options.GetString("show-if"); showIf != "" {
+		return s.Match(values, exp.Parse(showIf))
+	}
+
+	return true
 }
 
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete

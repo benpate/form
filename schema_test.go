@@ -53,6 +53,7 @@ func getTestSchema() schema.Schema {
 						"geology":    schema.String{MaxLength: 1000},
 						"psychology": schema.String{MaxLength: 1000},
 						"ontology":   schema.String{MaxLength: 1000},
+						"phlebotomy": schema.String{MaxLength: 1000, RequiredIf: "biology == I am a biological human"},
 					},
 				},
 			},

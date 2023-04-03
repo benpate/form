@@ -80,8 +80,10 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	for _, element := range form.Element.AllElements() {
 
 		if elementValue, ok := value[element.Path]; ok {
-			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
-				return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
+			if element.inputVisible(&form.Schema, value) {
+				if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
+					return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
+				}
 			}
 		}
 	}

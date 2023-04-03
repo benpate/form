@@ -32,9 +32,19 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 			return derp.Wrap(err, location, "Error rendering child", index, child)
 		}
 
+		var container *html.Element
+
 		// All elements (except hidden) get wrapped in a div
 		if child.Type != "hidden" {
-			b.Div().Class("layout-" + alignment + "-element")
+			container = b.Div()
+
+			container.Class("layout-element", "layout-"+alignment+"-element")
+
+			if showIf := child.Options.GetString("show-if"); showIf != "" {
+				container.Data("script", "install showIf(condition:'"+showIf+"')")
+			}
+
+			container.EndBracket()
 
 			if widget.ShowLabels() {
 				b.Label(child.ID).InnerText(child.Label).Close()
@@ -57,9 +67,9 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 			b.Div().Class("text-sm gray40").InnerText(child.Description).Close()
 		}
 
-		// Close the DIV wrapper from above
-		if child.Type != "hidden" {
-			b.Close()
+		// Close the DIV wrapper from above (if applicable)
+		if container != nil {
+			container.Close()
 		}
 	}
 
