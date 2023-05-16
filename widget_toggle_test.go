@@ -8,34 +8,42 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestToggle(t *testing.T) {
+func TestToggle_View(t *testing.T) {
 
 	form := Element{
 		Type: "toggle",
 		Path: "terms",
 	}
 
-	{
-		builder := html.New()
-		schema := getTestSchema()
-		err := form.Edit(&schema, testLookupProvider{}, nil, builder)
-		expected := `<span data-script="install toggle" name="terms"></span>`
-
-		require.Nil(t, err)
-		require.Equal(t, expected, builder.String())
+	value := mapof.Any{
+		"terms": "true",
 	}
 
-	{
-		value := mapof.Any{
-			"terms": "true",
-		}
+	builder := html.New()
+	schema := getTestSchema()
+	err := form.Edit(&schema, testLookupProvider{}, &value, builder)
+	expected := `<span data-script="install toggle" name="terms" value="true"></span>`
 
-		builder := html.New()
-		schema := getTestSchema()
-		err := form.Edit(&schema, testLookupProvider{}, &value, builder)
-		expected := `<span data-script="install toggle" name="terms" value="true"></span>`
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
+}
 
-		require.Nil(t, err)
-		require.Equal(t, expected, builder.String())
+func TestToggle_Edit(t *testing.T) {
+
+	form := Element{
+		Type: "toggle",
+		Path: "terms",
 	}
+
+	value := mapof.Any{
+		"terms": "true",
+	}
+
+	builder := html.New()
+	schema := getTestSchema()
+	err := form.Edit(&schema, testLookupProvider{}, &value, builder)
+	expected := `<span data-script="install toggle" name="terms" value="true"></span>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
 }
