@@ -73,6 +73,10 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 			tag.Attr("required", "true")
 		}
 
+		if s.RequiredIf != "" {
+			tag.Script("install requiredIf(condition:'" + s.RequiredIf + "')")
+		}
+
 	case schema.Number:
 
 		tag.Type("number")
