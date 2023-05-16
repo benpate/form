@@ -11,11 +11,11 @@ import (
 // LookupCode represents a single value/label pair
 // to be used in place of Enums for optional lists.
 type LookupCode struct {
-	Value       string `json:"value"        form:"value"       path:"value"       bson:"value"`       // Internal value of the LookupCode
-	Label       string `json:"label"        form:"label"       path:"label"       bson:"label"`       // Human-friendly label/name of the LookupCode
-	Description string `json:"description"  form:"description" path:"description" bson:"description"` // Optional long description of the LookupCode
-	Icon        string `json:"icon"         form:"icon"        path:"icon"        bson:"icon"`        // Optional icon to use when displaying the LookupCode
-	Group       string `json:"group"        form:"group"       path:"group"       bson:"group"`       // Optiional grouping to use when displaying the LookupCode
+	Value       string `json:"value,omitempty"        form:"value"       bson:"value,omitempty"`       // Internal value of the LookupCode
+	Label       string `json:"label,omitempty"        form:"label"       bson:"label,omitempty"`       // Human-friendly label/name of the LookupCode
+	Description string `json:"description,omitempty"  form:"description" bson:"description,omitempty"` // Optional long description of the LookupCode
+	Icon        string `json:"icon,omitempty"         form:"icon"        bson:"icon,omitempty"`        // Optional icon to use when displaying the LookupCode
+	Group       string `json:"group,omitempty"        form:"group"       bson:"group,omitempty"`       // Optiional grouping to use when displaying the LookupCode
 }
 
 // NewLookupCode creates a new LookupCode from a string
@@ -105,6 +105,30 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 
 	// Fall through to "no options available"
 	return make([]LookupCode, 0), false
+}
+
+func (lookupCode *LookupCode) GetPointer(name string) (any, bool) {
+
+	switch name {
+
+	case "value":
+		return &lookupCode.Value, true
+
+	case "label":
+		return &lookupCode.Label, true
+
+	case "description":
+		return &lookupCode.Description, true
+
+	case "icon":
+		return &lookupCode.Icon, true
+
+	case "group":
+		return &lookupCode.Group, true
+
+	}
+
+	return nil, false
 }
 
 func getSchemaEnumeration(schemaElement schema.Element) []string {
