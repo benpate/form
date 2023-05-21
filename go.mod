@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/benpate/derp v0.27.1
 	github.com/benpate/exp v0.7.0
-	github.com/benpate/html v0.16.1
+	github.com/benpate/html v0.16.2
 	github.com/benpate/rosetta v0.15.0
 	github.com/stretchr/testify v1.8.3
 )
