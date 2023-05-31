@@ -35,16 +35,18 @@ func TestFormSetAll(t *testing.T) {
 	{
 		// First Test Email IS SET because showEmail is true
 		data := mapof.Any{
-			"name":      "John Connor",
-			"email":     "john@connor.mil",
-			"showEmail": "true",
+			"name":       "John Connor",
+			"email":      "john@connor.mil",
+			"age":        42,
+			"requireAge": "false",
+			"showEmail":  "true",
 		}
 
 		target := mapof.Any{}
 		err := form.SetAll(&target, data, nil)
+		require.Nil(t, err)
 		require.Equal(t, "John Connor", target["name"])
 		require.Equal(t, "john@connor.mil", target["email"])
-		require.Nil(t, err)
 	}
 
 	{
