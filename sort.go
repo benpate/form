@@ -36,3 +36,11 @@ func SortLookupCodesBySelectedValues(selected []string) func(a LookupCode, b Loo
 		return aIndex < bIndex
 	}
 }
+
+type LookupCodeMaker interface {
+	LookupCode() LookupCode
+}
+
+func AsLookupCode[T LookupCodeMaker](maker T) LookupCode {
+	return maker.LookupCode()
+}
