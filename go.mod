@@ -3,10 +3,10 @@ module github.com/benpate/form
 go 1.18
 
 require (
-	github.com/benpate/derp v0.27.2
+	github.com/benpate/derp v0.28.0
 	github.com/benpate/exp v0.7.1
 	github.com/benpate/html v0.16.3
-	github.com/benpate/rosetta v0.17.0
+	github.com/benpate/rosetta v0.18.0
 	github.com/stretchr/testify v1.8.4
 )
 
