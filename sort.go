@@ -1,46 +1,41 @@
 package form
 
-import "math"
-
-func SortLookupCodeByLabel(a LookupCode, b LookupCode) bool {
-	return a.Label < b.Label
+// SortLookupCodeByLabel is a sort function that works with the slices.SortFunc
+// function.
+func SortLookupCodeByLabel(a LookupCode, b LookupCode) int {
+	if a.Label < b.Label {
+		return -1
+	}
+	return 1
 }
 
-func SortLookupCodeByGroupThenLabel(a LookupCode, b LookupCode) bool {
-	if a.Group == b.Group {
-		return a.Label < b.Label
+// SortLookupCodeByGroupThenLabel is a sort function that works with the
+// slices.SortFunc function.
+func SortLookupCodeByGroupThenLabel(a LookupCode, b LookupCode) int {
+
+	if a.Group < b.Group {
+		return -1
 	}
-	return a.Group < b.Group
+
+	if a.Group > b.Group {
+		return 1
+	}
+
+	if a.Label < b.Label {
+		return -1
+	}
+
+	return 1
 }
 
-func SortLookupCodesBySelectedValues(selected []string) func(a LookupCode, b LookupCode) bool {
-
-	indexOf := func(slice []string, value string) int {
-		for index, item := range slice {
-			if item == value {
-				return index
-			}
-		}
-		return math.MaxInt
-	}
-
-	return func(a LookupCode, b LookupCode) bool {
-
-		aIndex := indexOf(selected, a.Value)
-		bIndex := indexOf(selected, b.Value)
-
-		if aIndex == bIndex {
-			return false
-		}
-
-		return aIndex < bIndex
-	}
-}
-
+// LookupCodeMaker is an interface that wraps the LookupCode method
 type LookupCodeMaker interface {
+	// LookupCode returns the data from current object in the form of a form.LookupCode
 	LookupCode() LookupCode
 }
 
+// AsLookupCode is a helper function that converts any object that implements
+// the LookupCodeMaker interface into a form.LookupCode
 func AsLookupCode[T LookupCodeMaker](maker T) LookupCode {
 	return maker.LookupCode()
 }
