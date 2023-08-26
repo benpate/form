@@ -163,7 +163,9 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 		for index, childInterface := range children {
 			if childData, ok := childInterface.(map[string]any); ok {
 				var child Element
-				child.UnmarshalMap(childData)
+				if err := child.UnmarshalMap(childData); err != nil {
+					return derp.Wrap(err, "form.UnmarshalMap", "Error parsing child form information.", childInterface)
+				}
 				element.Children[index] = child
 			} else {
 				return derp.NewInternalError("form.UnmarshalMap", "Error parsing child form information.", childInterface)
