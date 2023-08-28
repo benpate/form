@@ -1,7 +1,7 @@
 package form
 
 import (
-	"slices"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -18,7 +18,9 @@ func TestSortByLabel(t *testing.T) {
 		{Value: "A", Label: "A"},
 	}
 
-	slices.SortFunc(data, SortLookupCodeByLabel)
+	sort.Slice(data, func(a int, b int) bool {
+		return SortLookupCodeByLabel(data[a], data[b])
+	})
 
 	require.Equal(t, "A", data[0].Label)
 	require.Equal(t, "B", data[1].Label)
@@ -27,7 +29,9 @@ func TestSortByLabel(t *testing.T) {
 	require.Equal(t, "E", data[4].Label)
 	require.Equal(t, "F", data[5].Label)
 
-	slices.SortFunc(data, SortLookupCodeByLabel)
+	sort.Slice(data, func(a int, b int) bool {
+		return SortLookupCodeByLabel(data[a], data[b])
+	})
 
 	require.Equal(t, "A", data[0].Label)
 	require.Equal(t, "B", data[1].Label)
@@ -48,7 +52,9 @@ func TestSortByBGroupThenLabel(t *testing.T) {
 		{Value: "A", Label: "A", Group: "B"},
 	}
 
-	slices.SortFunc(data, SortLookupCodeByGroupThenLabel)
+	sort.Slice(data, func(a int, b int) bool {
+		return SortLookupCodeByGroupThenLabel(data[a], data[b])
+	})
 
 	require.Equal(t, "D", data[0].Label)
 	require.Equal(t, "E", data[1].Label)
@@ -57,7 +63,9 @@ func TestSortByBGroupThenLabel(t *testing.T) {
 	require.Equal(t, "B", data[4].Label)
 	require.Equal(t, "C", data[5].Label)
 
-	slices.SortFunc(data, SortLookupCodeByGroupThenLabel)
+	sort.Slice(data, func(a int, b int) bool {
+		return SortLookupCodeByGroupThenLabel(data[a], data[b])
+	})
 
 	require.Equal(t, "D", data[0].Label)
 	require.Equal(t, "E", data[1].Label)

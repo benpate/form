@@ -1,31 +1,28 @@
 package form
 
-// SortLookupCodeByLabel is a sort function that works with the slices.SortFunc
+// SortLookupCodeByLabel is a sort function that works with the sort.Slice
 // function.
-func SortLookupCodeByLabel(a LookupCode, b LookupCode) int {
-	if a.Label < b.Label {
-		return -1
-	}
-	return 1
+func SortLookupCodeByLabel(a LookupCode, b LookupCode) bool {
+	return a.Label < b.Label
 }
 
 // SortLookupCodeByGroupThenLabel is a sort function that works with the
-// slices.SortFunc function.
-func SortLookupCodeByGroupThenLabel(a LookupCode, b LookupCode) int {
+// sort.Slice function.
+func SortLookupCodeByGroupThenLabel(a LookupCode, b LookupCode) bool {
 
 	if a.Group < b.Group {
-		return -1
+		return true
 	}
 
 	if a.Group > b.Group {
-		return 1
+		return false
 	}
 
 	if a.Label < b.Label {
-		return -1
+		return true
 	}
 
-	return 1
+	return false
 }
 
 // LookupCodeMaker is an interface that wraps the LookupCode method
