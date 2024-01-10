@@ -94,7 +94,6 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	if isWritable {
 		b.Container("option").
 			Class("add-new").
-			Script("on change log me").
 			Value("::NEWVALUE::").
 			InnerHTML("+ Add Another...").
 			Close()
