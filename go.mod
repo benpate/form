@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/benpate/derp v0.30.0
-	github.com/benpate/exp v0.8.1
+	github.com/benpate/exp v0.8.3
 	github.com/benpate/html v0.16.4
-	github.com/benpate/rosetta v0.19.1
+	github.com/benpate/rosetta v0.19.2
 	github.com/stretchr/testify v1.8.4
 )
 
