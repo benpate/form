@@ -69,8 +69,14 @@ func (element *Element) GetString(value any, s *schema.Schema) string {
 	return convert.String(element.getValue(value, s))
 }
 
+// GetSliceOfString rturns a slice of strings for a provided path.
 func (element *Element) GetSliceOfString(value any, s *schema.Schema) []string {
 	return convert.SliceOfString(element.getValue(value, s))
+}
+
+// IsEmpty returns TRUE if the element is not defined
+func (element Element) IsEmpty() bool {
+	return element.Type == ""
 }
 
 // getValue returns the value of the element at the provided path.  If the schema is present,
