@@ -98,8 +98,17 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
 	case schema.String:
 
 		switch s.Format {
+
+		case "color":
+			tag.Type("color")
+		case "date":
+			tag.Type("date")
+		case "datetime":
+			tag.Type("datetime-local")
 		case "email":
 			tag.Type("email")
+		case "time":
+			tag.Type("time")
 		case "tel":
 			tag.Type("tel")
 		case "url":
