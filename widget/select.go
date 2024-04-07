@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	Register("select", WidgetSelect{})
+	Register("select", Select{})
 }
 
-// WidgetSelect renders a select box widget
-type WidgetSelect struct{}
+// Select renders a select box widget
+type Select struct{}
 
-func (widget WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Select) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -34,10 +34,10 @@ func (widget WidgetSelect) View(element *Element, s *schema.Schema, lookupProvid
 	return nil
 }
 
-func (widget WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Select) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetSelect{}.View(element, s, lookupProvider, value, b)
+		return Select{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -107,10 +107,10 @@ func (widget WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvid
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetSelect) ShowLabels() bool {
+func (widget Select) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetSelect) Encoding(_ *Element) string {
+func (widget Select) Encoding(_ *Element) string {
 	return ""
 }

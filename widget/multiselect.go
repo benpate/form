@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -10,12 +10,12 @@ import (
 )
 
 func init() {
-	Register("multiselect", WidgetMultiselect{})
+	Register("multiselect", Multiselect{})
 }
 
-type WidgetMultiselect struct{}
+type Multiselect struct{}
 
-func (widget WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Multiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)
@@ -41,11 +41,11 @@ func (widget WidgetMultiselect) View(element *Element, s *schema.Schema, lookupP
 	return nil
 }
 
-// WidgetMultiselect registers a custom multi-select widget into the library
-func (widget WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+// Multiselect registers a custom multi-select widget into the library
+func (widget Multiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetMultiselect{}.View(element, s, lookupProvider, value, b)
+		return Multiselect{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -111,10 +111,10 @@ func (widget WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupP
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetMultiselect) ShowLabels() bool {
+func (widget Multiselect) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetMultiselect) Encoding(_ *Element) string {
+func (widget Multiselect) Encoding(_ *Element) string {
 	return ""
 }

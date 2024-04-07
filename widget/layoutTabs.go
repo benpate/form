@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"strconv"
@@ -11,19 +11,19 @@ import (
 )
 
 func init() {
-	Register("layout-tabs", WidgetLayoutTabs{})
+	Register("layout-tabs", LayoutTabs{})
 }
 
-type WidgetLayoutTabs struct{}
+type LayoutTabs struct{}
 
-func (widget WidgetLayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (widget WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetLayoutTabs{}.View(element, s, lookupProvider, value, b)
+		return LayoutTabs{}.View(element, s, lookupProvider, value, b)
 	}
 
 	if element.ID == "" {
@@ -117,10 +117,10 @@ func (widget WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupPr
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetLayoutTabs) ShowLabels() bool {
+func (widget LayoutTabs) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetLayoutTabs) Encoding(element *Element) string {
+func (widget LayoutTabs) Encoding(element *Element) string {
 	return collectEncoding(element.Children)
 }

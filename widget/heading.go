@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,12 +6,12 @@ import (
 )
 
 func init() {
-	Register("heading", WidgetHeading{})
+	Register("heading", Heading{})
 }
 
-type WidgetHeading struct{}
+type Heading struct{}
 
-func (widget WidgetHeading) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Heading) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -19,7 +19,7 @@ func (widget WidgetHeading) View(element *Element, s *schema.Schema, lookupProvi
 	return nil
 }
 
-func (widget WidgetHeading) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Heading) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -31,10 +31,10 @@ func (widget WidgetHeading) Edit(element *Element, s *schema.Schema, lookupProvi
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetHeading) ShowLabels() bool {
+func (widget Heading) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetHeading) Encoding(_ *Element) string {
+func (widget Heading) Encoding(_ *Element) string {
 	return ""
 }

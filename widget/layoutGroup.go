@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,16 +6,16 @@ import (
 )
 
 func init() {
-	Register("layout-group", WidgetLayoutGroup{})
+	Register("layout-group", LayoutGroup{})
 }
 
-type WidgetLayoutGroup struct{}
+type LayoutGroup struct{}
 
-func (WidgetLayoutGroup) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (LayoutGroup) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return drawLayout(element, schema, lookupProvider, value, b, "group", false)
 }
 
-func (WidgetLayoutGroup) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (LayoutGroup) Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return drawLayout(element, schema, lookupProvider, value, b, "group", true)
 }
 
@@ -23,10 +23,10 @@ func (WidgetLayoutGroup) Edit(element *Element, schema *schema.Schema, lookupPro
  * Wiget Metadata
  ***********************************/
 
-func (WidgetLayoutGroup) ShowLabels() bool {
+func (LayoutGroup) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetLayoutGroup) Encoding(element *Element) string {
+func (widget LayoutGroup) Encoding(element *Element) string {
 	return collectEncoding(element.Children)
 }

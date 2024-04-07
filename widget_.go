@@ -19,7 +19,7 @@ func init() {
 	registry = make(map[string]Widget)
 }
 
-// Register adds a new widget into the widget registry.
-func Register(name string, widget Widget) {
+// Use adds a new widget into the widget registry.
+func Use(name string, widget Widget) {
 	registry[name] = widget
 }

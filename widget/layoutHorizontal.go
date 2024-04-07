@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,19 +6,19 @@ import (
 )
 
 func init() {
-	Register("layout-horizontal", WidgetLayoutHorizontal{})
+	Register("layout-horizontal", LayoutHorizontal{})
 }
 
-type WidgetLayoutHorizontal struct{}
+type LayoutHorizontal struct{}
 
-func (widget WidgetLayoutHorizontal) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutHorizontal) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return drawLayout(element, s, lookupProvider, value, b, "horizontal", false)
 }
 
-func (widget WidgetLayoutHorizontal) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutHorizontal) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetLayoutHorizontal{}.View(element, s, lookupProvider, value, b)
+		return LayoutHorizontal{}.View(element, s, lookupProvider, value, b)
 	}
 
 	return drawLayout(element, s, lookupProvider, value, b, "horizontal", true)
@@ -28,10 +28,10 @@ func (widget WidgetLayoutHorizontal) Edit(element *Element, s *schema.Schema, lo
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetLayoutHorizontal) ShowLabels() bool {
+func (widget LayoutHorizontal) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetLayoutHorizontal) Encoding(element *Element) string {
+func (widget LayoutHorizontal) Encoding(element *Element) string {
 	return collectEncoding(element.Children)
 }

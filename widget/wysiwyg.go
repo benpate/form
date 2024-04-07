@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,22 +6,22 @@ import (
 )
 
 func init() {
-	Register("wysiwyg", WidgetWYSIWYG{})
+	Register("wysiwyg", WYSIWYG{})
 }
 
-type WidgetWYSIWYG struct{}
+type WYSIWYG struct{}
 
-func (widget WidgetWYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 	b.WriteString(valueString) // TODO: LOW: apply schema formats?
 	return nil
 }
 
-func (widget WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetWYSIWYG{}.View(element, s, lookupProvider, value, b)
+		return WYSIWYG{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -81,10 +81,10 @@ func (widget WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvi
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetWYSIWYG) ShowLabels() bool {
+func (widget WYSIWYG) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetWYSIWYG) Encoding(_ *Element) string {
+func (widget WYSIWYG) Encoding(_ *Element) string {
 	return ""
 }

@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,12 +6,12 @@ import (
 )
 
 func init() {
-	Register("label", WidgetLabel{})
+	Register("label", Label{})
 }
 
-type WidgetLabel struct{}
+type Label struct{}
 
-func (widget WidgetLabel) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Label) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -19,7 +19,7 @@ func (widget WidgetLabel) View(element *Element, s *schema.Schema, lookupProvide
 	return nil
 }
 
-func (widget WidgetLabel) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Label) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -31,10 +31,10 @@ func (widget WidgetLabel) Edit(element *Element, s *schema.Schema, lookupProvide
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetLabel) ShowLabels() bool {
+func (widget Label) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetLabel) Encoding(_ *Element) string {
+func (widget Label) Encoding(_ *Element) string {
 	return ""
 }

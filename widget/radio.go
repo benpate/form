@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"strings"
@@ -8,12 +8,12 @@ import (
 )
 
 func init() {
-	Register("radio", WidgetRadio{})
+	Register("radio", Radio{})
 }
 
-type WidgetRadio struct{}
+type Radio struct{}
 
-func (widget WidgetRadio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -33,10 +33,10 @@ func (widget WidgetRadio) View(element *Element, s *schema.Schema, lookupProvide
 	return nil
 }
 
-func (widget WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetRadio{}.View(element, s, lookupProvider, value, b)
+		return Radio{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// Calculate the element's ID
@@ -75,10 +75,10 @@ func (widget WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvide
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetRadio) ShowLabels() bool {
+func (widget Radio) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetRadio) Encoding(_ *Element) string {
+func (widget Radio) Encoding(_ *Element) string {
 	return ""
 }

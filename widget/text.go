@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -7,12 +7,12 @@ import (
 )
 
 func init() {
-	Register("text", WidgetText{})
+	Register("text", Text{})
 }
 
-type WidgetText struct{}
+type Text struct{}
 
-func (widget WidgetText) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Text) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -21,10 +21,10 @@ func (widget WidgetText) View(element *Element, s *schema.Schema, lookupProvider
 	return nil
 }
 
-func (widget WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Text) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetText{}.View(element, s, lookupProvider, value, b)
+		return Text{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -159,11 +159,11 @@ func (widget WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetText) ShowLabels() bool {
+func (widget Text) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetText) Encoding(_ *Element) string {
+func (widget Text) Encoding(_ *Element) string {
 	return ""
 }
 

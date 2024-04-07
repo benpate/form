@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	Register("toggle", WidgetToggle{})
+	Register("toggle", Toggle{})
 }
 
-// WidgetToggle renders a custom toggle widget
-type WidgetToggle struct{}
+// Toggle renders a custom toggle widget
+type Toggle struct{}
 
-func (widget WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Toggle) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	valueString := element.GetString(value, s)
 	valueBool := convert.Bool(valueString)
@@ -27,10 +27,10 @@ func (widget WidgetToggle) View(element *Element, s *schema.Schema, lookupProvid
 	return nil
 }
 
-func (widget WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Toggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetToggle{}.View(element, s, lookupProvider, value, b)
+		return Toggle{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -54,10 +54,10 @@ func (widget WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvid
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetToggle) ShowLabels() bool {
+func (widget Toggle) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetToggle) Encoding(_ *Element) string {
+func (widget Toggle) Encoding(_ *Element) string {
 	return ""
 }

@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"strings"
@@ -9,12 +9,12 @@ import (
 )
 
 func init() {
-	Register("checkbox", WidgetCheckbox{})
+	Register("checkbox", Checkbox{})
 }
 
-type WidgetCheckbox struct{}
+type Checkbox struct{}
 
-func (widget WidgetCheckbox) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Checkbox) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
 	schemaElement := element.getElement(schema)
@@ -42,10 +42,10 @@ func (widget WidgetCheckbox) View(element *Element, schema *schema.Schema, looku
 	return nil
 }
 
-func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Checkbox) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetCheckbox{}.View(element, s, lookupProvider, value, b)
+		return Checkbox{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -74,7 +74,7 @@ func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProv
 }
 
 // getLookupCodes returns a list of LookupCodes for this element
-func (widget WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
+func (widget Checkbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
 
 	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 
@@ -91,10 +91,10 @@ func (widget WidgetCheckbox) getLookupCodes(element *Element, schemaElement sche
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetCheckbox) ShowLabels() bool {
+func (widget Checkbox) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetCheckbox) Encoding(_ *Element) string {
+func (widget Checkbox) Encoding(_ *Element) string {
 	return ""
 }

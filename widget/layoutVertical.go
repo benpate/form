@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -6,16 +6,16 @@ import (
 )
 
 func init() {
-	Register("layout-vertical", WidgetLayoutVertical{})
+	Register("layout-vertical", LayoutVertical{})
 }
 
-type WidgetLayoutVertical struct{}
+type LayoutVertical struct{}
 
-func (widget WidgetLayoutVertical) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutVertical) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return drawLayout(element, s, lookupProvider, value, b, "vertical", false)
 }
 
-func (widget WidgetLayoutVertical) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutVertical) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return drawLayout(element, s, lookupProvider, value, b, "vertical", false)
@@ -28,10 +28,10 @@ func (widget WidgetLayoutVertical) Edit(element *Element, s *schema.Schema, look
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetLayoutVertical) ShowLabels() bool {
+func (widget LayoutVertical) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetLayoutVertical) Encoding(element *Element) string {
+func (widget LayoutVertical) Encoding(element *Element) string {
 	return collectEncoding(element.Children)
 }

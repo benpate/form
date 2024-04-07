@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -7,13 +7,13 @@ import (
 )
 
 func init() {
-	Register("textarea", WidgetTextArea{})
+	Register("textarea", TextArea{})
 }
 
-// WidgetTextArea renders a long text <textarea> widget
-type WidgetTextArea struct{}
+// TextArea renders a long text <textarea> widget
+type TextArea struct{}
 
-func (widget WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -22,10 +22,10 @@ func (widget WidgetTextArea) View(element *Element, s *schema.Schema, lookupProv
 	return nil
 }
 
-func (widget WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetTextArea{}.View(element, s, lookupProvider, value, b)
+		return TextArea{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -78,10 +78,10 @@ func (widget WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProv
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetTextArea) ShowLabels() bool {
+func (widget TextArea) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetTextArea) Encoding(_ *Element) string {
+func (widget TextArea) Encoding(_ *Element) string {
 	return ""
 }

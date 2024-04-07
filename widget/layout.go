@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/derp"

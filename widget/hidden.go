@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"github.com/benpate/html"
@@ -7,20 +7,20 @@ import (
 )
 
 func init() {
-	Register("hidden", WidgetHidden{})
+	Register("hidden", Hidden{})
 }
 
-type WidgetHidden struct{}
+type Hidden struct{}
 
-func (widget WidgetHidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-// WidgetHidden registers a text <input> widget into the library
-func (widget WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+// Hidden registers a text <input> widget into the library
+func (widget Hidden) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetHidden{}.View(element, s, lookupProvider, value, b)
+		return Hidden{}.View(element, s, lookupProvider, value, b)
 	}
 
 	// find the path and schema to use
@@ -45,10 +45,10 @@ func (widget WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvid
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetHidden) ShowLabels() bool {
+func (widget Hidden) ShowLabels() bool {
 	return false
 }
 
-func (widget WidgetHidden) Encoding(_ *Element) string {
+func (widget Hidden) Encoding(_ *Element) string {
 	return ""
 }

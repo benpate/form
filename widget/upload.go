@@ -1,4 +1,4 @@
-package form
+package widget
 
 import (
 	"strings"
@@ -8,12 +8,12 @@ import (
 )
 
 func init() {
-	Register("upload", WidgetUpload{})
+	Register("upload", Upload{})
 }
 
-type WidgetUpload struct{}
+type Upload struct{}
 
-func (widget WidgetUpload) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -26,10 +26,10 @@ func (widget WidgetUpload) View(element *Element, s *schema.Schema, lookupProvid
 	return nil
 }
 
-func (widget WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WidgetUpload{}.View(element, s, lookupProvider, value, b)
+		return Upload{}.View(element, s, lookupProvider, value, b)
 	}
 
 	elementID := element.ID
@@ -49,7 +49,7 @@ func (widget WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvid
 	return nil
 }
 
-func (widget WidgetUpload) preview(element *Element, s *schema.Schema, value any, b *html.Builder) {
+func (widget Upload) preview(element *Element, s *schema.Schema, value any, b *html.Builder) {
 
 	// Get the URL for the uploaded file
 	valueString := element.GetString(value, s)
@@ -84,10 +84,10 @@ func (widget WidgetUpload) preview(element *Element, s *schema.Schema, value any
  * Wiget Metadata
  ***********************************/
 
-func (widget WidgetUpload) ShowLabels() bool {
+func (widget Upload) ShowLabels() bool {
 	return true
 }
 
-func (widget WidgetUpload) Encoding(_ *Element) string {
+func (widget Upload) Encoding(_ *Element) string {
 	return "multipart/form-data"
 }
