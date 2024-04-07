@@ -1,27 +1,24 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("wysiwyg", WYSIWYG{})
-}
-
 type WYSIWYG struct{}
 
-func (widget WYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 	b.WriteString(valueString) // TODO: LOW: apply schema formats?
 	return nil
 }
 
-func (widget WYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return WYSIWYG{}.View(element, s, lookupProvider, value, b)
+		return WYSIWYG{}.View(element, s, nil, value, b)
 	}
 
 	// find the path and schema to use
@@ -85,6 +82,6 @@ func (widget WYSIWYG) ShowLabels() bool {
 	return true
 }
 
-func (widget WYSIWYG) Encoding(_ *Element) string {
+func (widget WYSIWYG) Encoding(_ *form.Element) string {
 	return ""
 }

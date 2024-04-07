@@ -5,25 +5,22 @@ import (
 	"strings"
 
 	"github.com/benpate/derp"
+	"github.com/benpate/form"
 
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("layout-tabs", LayoutTabs{})
-}
-
 type LayoutTabs struct{}
 
-func (widget LayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (widget LayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return LayoutTabs{}.View(element, s, lookupProvider, value, b)
+		return LayoutTabs{}.View(element, s, provider, value, b)
 	}
 
 	if element.ID == "" {
@@ -101,7 +98,7 @@ func (widget LayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider
 
 		panel.EndBracket()
 
-		if err := child.Edit(s, lookupProvider, value, b.SubTree()); err != nil {
+		if err := child.Edit(s, provider, value, b.SubTree()); err != nil {
 			return derp.Wrap(err, "form.HTMLLayoutTabs", "Error writing child", child)
 		}
 
@@ -121,6 +118,6 @@ func (widget LayoutTabs) ShowLabels() bool {
 	return false
 }
 
-func (widget LayoutTabs) Encoding(element *Element) string {
+func (widget LayoutTabs) Encoding(element *form.Element) string {
 	return collectEncoding(element.Children)
 }

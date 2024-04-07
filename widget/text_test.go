@@ -3,13 +3,16 @@ package widget
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/stretchr/testify/require"
 )
 
 func TestInteger(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "age",
 	}
@@ -25,7 +28,9 @@ func TestInteger(t *testing.T) {
 
 func TestFloat(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "distance",
 	}
@@ -41,7 +46,9 @@ func TestFloat(t *testing.T) {
 
 func TestText(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "username",
 	}
@@ -57,7 +64,9 @@ func TestText(t *testing.T) {
 
 func TestDescription(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type:        "text",
 		Path:        "name",
 		Description: "Hint text no longer added to widgets",
@@ -74,7 +83,9 @@ func TestDescription(t *testing.T) {
 
 func TestTextTags(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "tags",
 	}
@@ -90,7 +101,9 @@ func TestTextTags(t *testing.T) {
 
 func TestTextTagsWithID(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "tags",
 	}
@@ -106,7 +119,9 @@ func TestTextTagsWithID(t *testing.T) {
 
 func TestTextOptions(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "text",
 		Path: "tag",
 		ID:   "tag",

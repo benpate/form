@@ -3,6 +3,7 @@ package widget
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/sliceof"
@@ -11,7 +12,9 @@ import (
 
 func TestMultiselect(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "multiselect",
 		Path: "tags",
 	}

@@ -3,6 +3,7 @@ package widget
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
@@ -12,7 +13,9 @@ import (
 
 func TestSelectOne(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "select",
 		Path: "color",
 	}
@@ -28,11 +31,13 @@ func TestSelectOne(t *testing.T) {
 
 func TestSelectOne_ReadOnly(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "select",
 		Path: "color",
 		Options: mapof.Any{
-			"enum": []LookupCode{
+			"enum": []form.LookupCode{
 				{Value: "YELLOW", Label: "Yellow"},
 				{Value: "ORANGE", Label: "Orange"},
 				{Value: "RED", Label: "Red"},
@@ -57,6 +62,8 @@ func TestSelectOne_ReadOnly(t *testing.T) {
 
 func TestSelectOne_WithEnum(t *testing.T) {
 
+	UseAll()
+
 	schema := schema.Schema{
 		Element: schema.Object{
 			Properties: schema.ElementMap{
@@ -69,7 +76,7 @@ func TestSelectOne_WithEnum(t *testing.T) {
 		},
 	}
 
-	element := Element{
+	element := form.Element{
 		Type: "select",
 		Path: "data.color",
 	}
@@ -86,7 +93,9 @@ func TestSelectOne_WithEnum(t *testing.T) {
 
 func TestSelectOneFromProvider(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type:    "select",
 		Path:    "color",
 		Options: map[string]any{"provider": "test"},
@@ -104,7 +113,9 @@ func TestSelectOneFromProvider(t *testing.T) {
 
 func TestSelectOneRadio(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "radio",
 		Path: "color",
 	}
@@ -120,7 +131,9 @@ func TestSelectOneRadio(t *testing.T) {
 
 func TestSelectMany(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "select",
 		Path: "tags",
 	}

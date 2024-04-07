@@ -2,6 +2,8 @@ module github.com/benpate/form
 
 go 1.21
 
+replace github.com/benpate/html =>  ../../benpate/html
+
 require (
 	github.com/benpate/derp v0.31.0
 	github.com/benpate/exp v0.8.3

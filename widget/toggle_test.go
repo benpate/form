@@ -3,6 +3,7 @@ package widget
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
@@ -10,7 +11,9 @@ import (
 
 func TestToggle_View(t *testing.T) {
 
-	form := Element{
+	UseAll()
+
+	form := form.Element{
 		Type: "toggle",
 		Path: "terms",
 	}
@@ -30,7 +33,9 @@ func TestToggle_View(t *testing.T) {
 
 func TestToggle_Edit(t *testing.T) {
 
-	form := Element{
+	UseAll()
+
+	form := form.Element{
 		Type: "toggle",
 		Path: "terms",
 	}

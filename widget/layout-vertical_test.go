@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
@@ -11,10 +12,12 @@ import (
 
 func TestLayoutVertical(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type:  "layout-vertical",
 		Label: "This is my Vertical Layout",
-		Children: []Element{
+		Children: []form.Element{
 			{
 				Type:  "text",
 				Label: "Name",
@@ -50,10 +53,10 @@ func TestLayoutVertical(t *testing.T) {
 
 func TestRules(t *testing.T) {
 
-	form := Element{
+	form := form.Element{
 		Type:  "layout-vertical",
 		Label: "This is my Vertical Layout",
-		Children: []Element{
+		Children: []form.Element{
 			{
 				Type:  "text",
 				Label: "Name",
@@ -83,7 +86,7 @@ func TestRules(t *testing.T) {
 
 func TestLayoutVertical_Unmarshal(t *testing.T) {
 
-	var element Element
+	var element form.Element
 
 	formJSON := `{
 		"type": "layout-tabs",
@@ -131,7 +134,7 @@ func TestLayoutVertical_Unmarshal(t *testing.T) {
 
 	require.Nil(t, json.Unmarshal([]byte(formJSON), &element))
 
-	form := New(getTestSchema(), element)
+	form := form.New(getTestSchema(), element)
 
 	_, err := form.Editor(nil, nil)
 

@@ -8,16 +8,18 @@ import (
 
 func TestElement_AllElements(t *testing.T) {
 
+	useTestWidget()
+
 	element := Element{
-		Type: "layout-vertical",
+		Type: "test",
 		Children: []Element{{
-			Type: "textarea",
+			Type: "test",
 			Path: "name",
 		}, {
-			Type: "text",
+			Type: "test",
 			Path: "email",
 		}, {
-			Type: "number",
+			Type: "test",
 			Path: "phone",
 		}},
 	}
@@ -25,10 +27,10 @@ func TestElement_AllElements(t *testing.T) {
 	elements := element.AllElements()
 
 	require.Equal(t, 3, len(elements))
-	require.Equal(t, "textarea", elements[0].Type)
+	require.Equal(t, "test", elements[0].Type)
 	require.Equal(t, "name", elements[0].Path)
-	require.Equal(t, "text", elements[1].Type)
+	require.Equal(t, "test", elements[1].Type)
 	require.Equal(t, "email", elements[1].Path)
-	require.Equal(t, "number", elements[2].Type)
+	require.Equal(t, "test", elements[2].Type)
 	require.Equal(t, "phone", elements[2].Path)
 }

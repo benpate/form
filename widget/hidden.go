@@ -1,26 +1,23 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("hidden", Hidden{})
-}
-
 type Hidden struct{}
 
-func (widget Hidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) View(_ *form.Element, _ *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
 // Hidden registers a text <input> widget into the library
-func (widget Hidden) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Hidden{}.View(element, s, lookupProvider, value, b)
+		return Hidden{}.View(element, s, nil, value, b)
 	}
 
 	// find the path and schema to use
@@ -49,6 +46,6 @@ func (widget Hidden) ShowLabels() bool {
 	return false
 }
 
-func (widget Hidden) Encoding(_ *Element) string {
+func (widget Hidden) Encoding(_ *form.Element) string {
 	return ""
 }

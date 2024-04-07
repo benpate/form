@@ -2,11 +2,12 @@ package widget
 
 import (
 	"github.com/benpate/derp"
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder, alignment string, edit bool) error {
+func drawLayout(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder, alignment string, edit bool) error {
 
 	const location = "form.drawLayout"
 	var result error
@@ -53,11 +54,11 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 
 		// Draw the edit or view version of this element
 		if edit {
-			if err := widget.Edit(&child, schema, lookupProvider, value, b.SubTree()); err != nil {
+			if err := widget.Edit(&child, schema, provider, value, b.SubTree()); err != nil {
 				return derp.Wrap(err, location, "Error rendering child (edit)", element, index, child)
 			}
 		} else {
-			if err := widget.View(&child, schema, lookupProvider, value, b.SubTree()); err != nil {
+			if err := widget.View(&child, schema, provider, value, b.SubTree()); err != nil {
 				return derp.Wrap(err, location, "Error rendering child (view)", element, index, child)
 			}
 		}
@@ -79,7 +80,7 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 }
 
 // collectEncoding returns the first non-empty encoding found in a slice of child elements
-func collectEncoding(children []Element) string {
+func collectEncoding(children []form.Element) string {
 
 	for _, child := range children {
 

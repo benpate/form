@@ -1,26 +1,28 @@
-package form
+package widget
+
+import "github.com/benpate/form"
 
 type testLookupProvider struct{}
 
-func (t testLookupProvider) Group(_ string) LookupGroup {
-	return NewReadOnlyLookupGroup(
-		LookupCode{
+func (t testLookupProvider) Group(_ string) form.LookupGroup {
+	return form.NewReadOnlyLookupGroup(
+		form.LookupCode{
 			Label: "This is the first code",
 			Value: "ONE",
 		},
-		LookupCode{
+		form.LookupCode{
 			Label: "This is the second code",
 			Value: "TWO",
 		},
-		LookupCode{
+		form.LookupCode{
 			Label: "This is the third code",
 			Value: "THREE",
 		},
-		LookupCode{
+		form.LookupCode{
 			Label: "This is the fourth code",
 			Value: "FOUR",
 		},
-		LookupCode{
+		form.LookupCode{
 			Label: "This is the fifth code",
 			Value: "FIVE",
 		},

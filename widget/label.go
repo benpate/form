@@ -1,17 +1,14 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("label", Label{})
-}
-
 type Label struct{}
 
-func (widget Label) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Label) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -19,7 +16,7 @@ func (widget Label) View(element *Element, s *schema.Schema, lookupProvider Look
 	return nil
 }
 
-func (widget Label) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Label) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -35,6 +32,6 @@ func (widget Label) ShowLabels() bool {
 	return false
 }
 
-func (widget Label) Encoding(_ *Element) string {
+func (widget Label) Encoding(_ *form.Element) string {
 	return ""
 }

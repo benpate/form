@@ -72,7 +72,7 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	const location = "form.Form.SetAll"
 
 	// Replace "NEW" values in LookupCodes
-	if err := form.replaceNewLookups(object, value, lookupProvider); err != nil {
+	if err := form.replaceNewLookups(value, lookupProvider); err != nil {
 		return derp.Wrap(err, location, "Error replacing new lookups")
 	}
 
@@ -80,7 +80,7 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	for _, element := range form.Element.AllElements() {
 
 		if elementValue, ok := value[element.Path]; ok {
-			if element.inputVisible(&form.Schema, value) {
+			if element.isInputVisible(&form.Schema, value) {
 				if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
 					return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
 				}
@@ -96,7 +96,7 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	return nil
 }
 
-func (form *Form) replaceNewLookups(object any, value mapof.Any, lookupProvider LookupProvider) error {
+func (form *Form) replaceNewLookups(value mapof.Any, lookupProvider LookupProvider) error {
 
 	const newItemIdentifier = "::NEWVALUE::"
 

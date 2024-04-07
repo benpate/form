@@ -3,22 +3,19 @@ package widget
 import (
 	"strings"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("radio", Radio{})
-}
-
 type Radio struct{}
 
-func (widget Radio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
-	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 
 	// Start building a new tag
 	b.Div().Class("layout-value")
@@ -33,10 +30,10 @@ func (widget Radio) View(element *Element, s *schema.Schema, lookupProvider Look
 	return nil
 }
 
-func (widget Radio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Radio{}.View(element, s, lookupProvider, value, b)
+		return Radio{}.View(element, s, provider, value, b)
 	}
 
 	// Calculate the element's ID
@@ -47,9 +44,9 @@ func (widget Radio) Edit(element *Element, s *schema.Schema, lookupProvider Look
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
-	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
@@ -79,6 +76,6 @@ func (widget Radio) ShowLabels() bool {
 	return true
 }
 
-func (widget Radio) Encoding(_ *Element) string {
+func (widget Radio) Encoding(_ *form.Element) string {
 	return ""
 }

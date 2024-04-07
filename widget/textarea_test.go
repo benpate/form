@@ -3,13 +3,16 @@ package widget
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/stretchr/testify/require"
 )
 
 func TestTextarea(t *testing.T) {
 
-	element := Element{
+	UseAll()
+
+	element := form.Element{
 		Type: "textarea",
 		Path: "username",
 	}

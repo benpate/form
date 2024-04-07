@@ -1,6 +1,7 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/compare"
 	"github.com/benpate/rosetta/convert"
@@ -9,17 +10,13 @@ import (
 	"github.com/benpate/rosetta/slice"
 )
 
-func init() {
-	Register("multiselect", Multiselect{})
-}
-
 type Multiselect struct{}
 
-func (widget Multiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Multiselect) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueSlice := element.GetSliceOfString(value, s)
-	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 	first := true
 
 	b.Div().Class("layout-value")
@@ -42,21 +39,21 @@ func (widget Multiselect) View(element *Element, s *schema.Schema, lookupProvide
 }
 
 // Multiselect registers a custom multi-select widget into the library
-func (widget Multiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Multiselect{}.View(element, s, lookupProvider, value, b)
+		return Multiselect{}.View(element, s, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueSlice := element.GetSliceOfString(value, s)
 
 	sortable, _ := element.Options.GetBoolOK("sort")
 	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")
 
 	// Get all options for this element...
-	options, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	options, _ := form.GetLookupCodes(element, schemaElement, provider)
 
 	b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
 	b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
@@ -115,6 +112,6 @@ func (widget Multiselect) ShowLabels() bool {
 	return true
 }
 
-func (widget Multiselect) Encoding(_ *Element) string {
+func (widget Multiselect) Encoding(_ *form.Element) string {
 	return ""
 }

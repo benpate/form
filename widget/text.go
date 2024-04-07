@@ -1,18 +1,15 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("text", Text{})
-}
-
 type Text struct{}
 
-func (widget Text) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Text) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -21,14 +18,14 @@ func (widget Text) View(element *Element, s *schema.Schema, lookupProvider Looku
 	return nil
 }
 
-func (widget Text) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Text{}.View(element, s, lookupProvider, value, b)
+		return Text{}.View(element, s, nil, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
 
 	elementID := element.ID
@@ -47,7 +44,7 @@ func (widget Text) Edit(element *Element, s *schema.Schema, lookupProvider Looku
 	}
 
 	// Enumeration Options
-	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 	if len(lookupCodes) > 0 {
 		tag.Attr("list", "datalist-"+element.Path)
 	}
@@ -163,7 +160,7 @@ func (widget Text) ShowLabels() bool {
 	return true
 }
 
-func (widget Text) Encoding(_ *Element) string {
+func (widget Text) Encoding(_ *form.Element) string {
 	return ""
 }
 

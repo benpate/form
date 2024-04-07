@@ -3,17 +3,14 @@ package widget
 import (
 	"strings"
 
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("upload", Upload{})
-}
-
 type Upload struct{}
 
-func (widget Upload) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -26,10 +23,10 @@ func (widget Upload) View(element *Element, s *schema.Schema, lookupProvider Loo
 	return nil
 }
 
-func (widget Upload) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Upload{}.View(element, s, lookupProvider, value, b)
+		return Upload{}.View(element, s, nil, value, b)
 	}
 
 	elementID := element.ID
@@ -49,7 +46,7 @@ func (widget Upload) Edit(element *Element, s *schema.Schema, lookupProvider Loo
 	return nil
 }
 
-func (widget Upload) preview(element *Element, s *schema.Schema, value any, b *html.Builder) {
+func (widget Upload) preview(element *form.Element, s *schema.Schema, value any, b *html.Builder) {
 
 	// Get the URL for the uploaded file
 	valueString := element.GetString(value, s)
@@ -88,6 +85,6 @@ func (widget Upload) ShowLabels() bool {
 	return true
 }
 
-func (widget Upload) Encoding(_ *Element) string {
+func (widget Upload) Encoding(_ *form.Element) string {
 	return "multipart/form-data"
 }

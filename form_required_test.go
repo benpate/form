@@ -10,6 +10,8 @@ import (
 
 func TestFormSetAll(t *testing.T) {
 
+	useTestWidget()
+
 	form := New(
 		schema.New(schema.Object{
 			Properties: schema.ElementMap{
@@ -21,13 +23,13 @@ func TestFormSetAll(t *testing.T) {
 			},
 		}),
 		Element{
-			Type: "layout-vertical",
+			Type: "test",
 			Children: []Element{
-				{Type: "text", Path: "name"},
-				{Type: "text", Path: "age"},
-				{Type: "text", Path: "email", Options: mapof.Any{"show-if": "showEmail is true"}},
-				{Type: "toggle", Path: "requireAge"},
-				{Type: "toggle", Path: "showEmail"},
+				{Type: "test", Path: "name"},
+				{Type: "test", Path: "age"},
+				{Type: "test", Path: "email", Options: mapof.Any{"show-if": "showEmail is true"}},
+				{Type: "test", Path: "requireAge"},
+				{Type: "test", Path: "showEmail"},
 			},
 		},
 	)

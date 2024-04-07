@@ -87,6 +87,18 @@ func (element Element) IsEmpty() bool {
 	return element.Type == ""
 }
 
+// GetSchema finds and returns the schema.Element associated with this Element path
+func (element *Element) GetSchema(s *schema.Schema) schema.Element {
+
+	// If there is a schema, use it to get the value
+	if s != nil {
+		schemaElement, _ := s.GetElement(element.Path)
+		return schemaElement
+	}
+
+	return nil
+}
+
 // getValue returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
 func (element *Element) getValue(value any, s *schema.Schema) any {
@@ -101,18 +113,7 @@ func (element *Element) getValue(value any, s *schema.Schema) any {
 	return nil
 }
 
-func (element *Element) getElement(s *schema.Schema) schema.Element {
-
-	// If there is a schema, use it to get the value
-	if s != nil {
-		schemaElement, _ := s.GetElement(element.Path)
-		return schemaElement
-	}
-
-	return nil
-}
-
-func (element *Element) inputVisible(s *schema.Schema, values any) bool {
+func (element *Element) isInputVisible(s *schema.Schema, values any) bool {
 
 	// RULE: if the element is read-only, then it should not be used as an input value
 	if element.ReadOnly {

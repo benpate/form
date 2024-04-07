@@ -1,24 +1,21 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 )
 
-func init() {
-	Register("select", Select{})
-}
-
 // Select renders a select box widget
 type Select struct{}
 
-func (widget Select) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Select) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
-	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 
 	// Start building a new tag
 	b.Div().Class("layout-value").EndBracket()
@@ -34,14 +31,14 @@ func (widget Select) View(element *Element, s *schema.Schema, lookupProvider Loo
 	return nil
 }
 
-func (widget Select) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget Select) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return Select{}.View(element, s, lookupProvider, value, b)
+		return Select{}.View(element, s, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueSlice := element.GetSliceOfString(value, s)
 
 	if element, ok := schemaElement.(schema.Array); ok {
@@ -49,7 +46,7 @@ func (widget Select) Edit(element *Element, s *schema.Schema, lookupProvider Loo
 	}
 
 	// Get all lookupCodes for this element...
-	lookupCodes, isWritable := GetLookupCodes(element, schemaElement, lookupProvider)
+	lookupCodes, isWritable := form.GetLookupCodes(element, schemaElement, provider)
 
 	elementID := element.ID
 
@@ -111,6 +108,6 @@ func (widget Select) ShowLabels() bool {
 	return true
 }
 
-func (widget Select) Encoding(_ *Element) string {
+func (widget Select) Encoding(_ *form.Element) string {
 	return ""
 }

@@ -1,19 +1,16 @@
 package widget
 
 import (
+	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
-func init() {
-	Register("textarea", TextArea{})
-}
-
 // TextArea renders a long text <textarea> widget
 type TextArea struct{}
 
-func (widget TextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -22,14 +19,14 @@ func (widget TextArea) View(element *Element, s *schema.Schema, lookupProvider L
 	return nil
 }
 
-func (widget TextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
-		return TextArea{}.View(element, s, lookupProvider, value, b)
+		return TextArea{}.View(element, s, nil, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.getElement(s)
+	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
 
 	elementID := element.ID
@@ -82,6 +79,6 @@ func (widget TextArea) ShowLabels() bool {
 	return true
 }
 
-func (widget TextArea) Encoding(_ *Element) string {
+func (widget TextArea) Encoding(_ *form.Element) string {
 	return ""
 }
