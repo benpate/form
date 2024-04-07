@@ -9,6 +9,7 @@ type Widget interface {
 	View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	ShowLabels() bool
+	Encoding(element *Element) string
 }
 
 // registry is the system-wide registry of all form widgets

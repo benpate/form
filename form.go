@@ -153,3 +153,9 @@ func (form *Form) replaceNewLookups(object any, value mapof.Any, lookupProvider 
 	// Woot.
 	return nil
 }
+
+// Encoding returns the "enctype" attribute for the form.
+// Default is ""
+func (form *Form) Encoding() string {
+	return form.Element.Encoding()
+}

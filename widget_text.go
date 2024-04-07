@@ -12,7 +12,7 @@ func init() {
 
 type WidgetText struct{}
 
-func (WidgetText) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetText) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -21,7 +21,7 @@ func (WidgetText) View(element *Element, s *schema.Schema, lookupProvider Lookup
 	return nil
 }
 
-func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetText{}.View(element, s, lookupProvider, value, b)
@@ -159,8 +159,12 @@ func (WidgetText) Edit(element *Element, s *schema.Schema, lookupProvider Lookup
  * Wiget Metadata
  ***********************************/
 
-func (WidgetText) ShowLabels() bool {
+func (widget WidgetText) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetText) Encoding(_ *Element) string {
+	return ""
 }
 
 /*

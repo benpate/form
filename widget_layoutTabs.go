@@ -16,11 +16,11 @@ func init() {
 
 type WidgetLayoutTabs struct{}
 
-func (WidgetLayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLayoutTabs) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetLayoutTabs{}.View(element, s, lookupProvider, value, b)
@@ -117,6 +117,10 @@ func (WidgetLayoutTabs) Edit(element *Element, s *schema.Schema, lookupProvider 
  * Wiget Metadata
  ***********************************/
 
-func (WidgetLayoutTabs) ShowLabels() bool {
+func (widget WidgetLayoutTabs) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetLayoutTabs) Encoding(element *Element) string {
+	return collectEncoding(element.Children)
 }

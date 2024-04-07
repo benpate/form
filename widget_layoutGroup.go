@@ -26,3 +26,7 @@ func (WidgetLayoutGroup) Edit(element *Element, schema *schema.Schema, lookupPro
 func (WidgetLayoutGroup) ShowLabels() bool {
 	return false
 }
+
+func (widget WidgetLayoutGroup) Encoding(element *Element) string {
+	return collectEncoding(element.Children)
+}

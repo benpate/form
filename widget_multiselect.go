@@ -15,7 +15,7 @@ func init() {
 
 type WidgetMultiselect struct{}
 
-func (WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	schemaElement := element.getElement(s)
 	valueSlice := element.GetSliceOfString(value, s)
@@ -42,7 +42,7 @@ func (WidgetMultiselect) View(element *Element, s *schema.Schema, lookupProvider
 }
 
 // WidgetMultiselect registers a custom multi-select widget into the library
-func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetMultiselect{}.View(element, s, lookupProvider, value, b)
@@ -111,6 +111,10 @@ func (WidgetMultiselect) Edit(element *Element, s *schema.Schema, lookupProvider
  * Wiget Metadata
  ***********************************/
 
-func (WidgetMultiselect) ShowLabels() bool {
+func (widget WidgetMultiselect) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetMultiselect) Encoding(_ *Element) string {
+	return ""
 }

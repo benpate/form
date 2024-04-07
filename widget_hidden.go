@@ -12,12 +12,12 @@ func init() {
 
 type WidgetHidden struct{}
 
-func (WidgetHidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetHidden) View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
 // WidgetHidden registers a text <input> widget into the library
-func (WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetHidden{}.View(element, s, lookupProvider, value, b)
@@ -45,6 +45,10 @@ func (WidgetHidden) Edit(element *Element, s *schema.Schema, lookupProvider Look
  * Wiget Metadata
  ***********************************/
 
-func (WidgetHidden) ShowLabels() bool {
+func (widget WidgetHidden) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetHidden) Encoding(_ *Element) string {
+	return ""
 }

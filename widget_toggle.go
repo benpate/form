@@ -13,7 +13,7 @@ func init() {
 // WidgetToggle renders a custom toggle widget
 type WidgetToggle struct{}
 
-func (WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	valueString := element.GetString(value, s)
 	valueBool := convert.Bool(valueString)
@@ -27,7 +27,7 @@ func (WidgetToggle) View(element *Element, s *schema.Schema, lookupProvider Look
 	return nil
 }
 
-func (WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetToggle{}.View(element, s, lookupProvider, value, b)
@@ -54,6 +54,10 @@ func (WidgetToggle) Edit(element *Element, s *schema.Schema, lookupProvider Look
  * Wiget Metadata
  ***********************************/
 
-func (WidgetToggle) ShowLabels() bool {
+func (widget WidgetToggle) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetToggle) Encoding(_ *Element) string {
+	return ""
 }

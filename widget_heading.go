@@ -11,7 +11,7 @@ func init() {
 
 type WidgetHeading struct{}
 
-func (WidgetHeading) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetHeading) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -19,7 +19,7 @@ func (WidgetHeading) View(element *Element, s *schema.Schema, lookupProvider Loo
 	return nil
 }
 
-func (WidgetHeading) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetHeading) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -31,6 +31,10 @@ func (WidgetHeading) Edit(element *Element, s *schema.Schema, lookupProvider Loo
  * Wiget Metadata
  ***********************************/
 
-func (WidgetHeading) ShowLabels() bool {
+func (widget WidgetHeading) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetHeading) Encoding(_ *Element) string {
+	return ""
 }

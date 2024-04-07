@@ -11,14 +11,14 @@ func init() {
 
 type WidgetWYSIWYG struct{}
 
-func (WidgetWYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetWYSIWYG) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 	b.WriteString(valueString) // TODO: LOW: apply schema formats?
 	return nil
 }
 
-func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetWYSIWYG{}.View(element, s, lookupProvider, value, b)
@@ -81,6 +81,10 @@ func (WidgetWYSIWYG) Edit(element *Element, s *schema.Schema, lookupProvider Loo
  * Wiget Metadata
  ***********************************/
 
-func (WidgetWYSIWYG) ShowLabels() bool {
+func (widget WidgetWYSIWYG) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetWYSIWYG) Encoding(_ *Element) string {
+	return ""
 }

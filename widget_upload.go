@@ -13,7 +13,7 @@ func init() {
 
 type WidgetUpload struct{}
 
-func (w WidgetUpload) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetUpload) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -26,7 +26,7 @@ func (w WidgetUpload) View(element *Element, s *schema.Schema, lookupProvider Lo
 	return nil
 }
 
-func (w WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetUpload{}.View(element, s, lookupProvider, value, b)
@@ -38,7 +38,7 @@ func (w WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 		elementID = "upload-" + element.Path
 	}
 
-	w.preview(element, s, value, b.SubTree())
+	widget.preview(element, s, value, b.SubTree())
 
 	multiple := iif(element.Options.GetBool("multiple"), "multiple", "")
 	b.Input("file", element.Path).ID(elementID).
@@ -49,7 +49,7 @@ func (w WidgetUpload) Edit(element *Element, s *schema.Schema, lookupProvider Lo
 	return nil
 }
 
-func (w WidgetUpload) preview(element *Element, s *schema.Schema, value any, b *html.Builder) {
+func (widget WidgetUpload) preview(element *Element, s *schema.Schema, value any, b *html.Builder) {
 
 	// Get the URL for the uploaded file
 	valueString := element.GetString(value, s)
@@ -84,6 +84,10 @@ func (w WidgetUpload) preview(element *Element, s *schema.Schema, value any, b *
  * Wiget Metadata
  ***********************************/
 
-func (w WidgetUpload) ShowLabels() bool {
+func (widget WidgetUpload) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetUpload) Encoding(_ *Element) string {
+	return "multipart/form-data"
 }

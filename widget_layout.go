@@ -77,3 +77,18 @@ func drawLayout(element *Element, schema *schema.Schema, lookupProvider LookupPr
 
 	return result
 }
+
+// collectEncoding returns the first non-empty encoding found in a slice of child elements
+func collectEncoding(children []Element) string {
+
+	for _, child := range children {
+
+		if widget, err := child.Widget(); err == nil {
+			if encoding := widget.Encoding(&child); encoding != "" {
+				return encoding
+			}
+		}
+	}
+
+	return ""
+}

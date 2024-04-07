@@ -11,7 +11,7 @@ func init() {
 
 type WidgetLabel struct{}
 
-func (WidgetLabel) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLabel) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -19,7 +19,7 @@ func (WidgetLabel) View(element *Element, s *schema.Schema, lookupProvider Looku
 	return nil
 }
 
-func (WidgetLabel) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLabel) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
@@ -31,6 +31,10 @@ func (WidgetLabel) Edit(element *Element, s *schema.Schema, lookupProvider Looku
  * Wiget Metadata
  ***********************************/
 
-func (WidgetLabel) ShowLabels() bool {
+func (widget WidgetLabel) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetLabel) Encoding(_ *Element) string {
+	return ""
 }

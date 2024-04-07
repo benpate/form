@@ -13,7 +13,7 @@ func init() {
 
 type WidgetRadio struct{}
 
-func (WidgetRadio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetRadio) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -33,7 +33,7 @@ func (WidgetRadio) View(element *Element, s *schema.Schema, lookupProvider Looku
 	return nil
 }
 
-func (WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetRadio{}.View(element, s, lookupProvider, value, b)
@@ -75,6 +75,10 @@ func (WidgetRadio) Edit(element *Element, s *schema.Schema, lookupProvider Looku
  * Wiget Metadata
  ***********************************/
 
-func (WidgetRadio) ShowLabels() bool {
+func (widget WidgetRadio) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetRadio) Encoding(_ *Element) string {
+	return ""
 }

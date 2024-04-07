@@ -60,7 +60,15 @@ func (element *Element) Edit(schema *schema.Schema, lookupProvider LookupProvide
 	}
 
 	return widget.Edit(element, schema, lookupProvider, value, b)
+}
 
+func (element *Element) Encoding() string {
+
+	if widget, err := element.Widget(); err == nil {
+		return widget.Encoding(element)
+	}
+
+	return ""
 }
 
 // GetValue returns the value of the element at the provided path.  If the schema is present,

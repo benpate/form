@@ -11,11 +11,11 @@ func init() {
 
 type WidgetLayoutHorizontal struct{}
 
-func (WidgetLayoutHorizontal) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLayoutHorizontal) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	return drawLayout(element, s, lookupProvider, value, b, "horizontal", false)
 }
 
-func (WidgetLayoutHorizontal) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetLayoutHorizontal) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetLayoutHorizontal{}.View(element, s, lookupProvider, value, b)
@@ -28,6 +28,10 @@ func (WidgetLayoutHorizontal) Edit(element *Element, s *schema.Schema, lookupPro
  * Wiget Metadata
  ***********************************/
 
-func (WidgetLayoutHorizontal) ShowLabels() bool {
+func (widget WidgetLayoutHorizontal) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetLayoutHorizontal) Encoding(element *Element) string {
+	return collectEncoding(element.Children)
 }

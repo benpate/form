@@ -13,7 +13,7 @@ func init() {
 // WidgetTextArea renders a long text <textarea> widget
 type WidgetTextArea struct{}
 
-func (WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
@@ -22,7 +22,7 @@ func (WidgetTextArea) View(element *Element, s *schema.Schema, lookupProvider Lo
 	return nil
 }
 
-func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetTextArea{}.View(element, s, lookupProvider, value, b)
@@ -78,6 +78,10 @@ func (WidgetTextArea) Edit(element *Element, s *schema.Schema, lookupProvider Lo
  * Wiget Metadata
  ***********************************/
 
-func (WidgetTextArea) ShowLabels() bool {
+func (widget WidgetTextArea) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetTextArea) Encoding(_ *Element) string {
+	return ""
 }

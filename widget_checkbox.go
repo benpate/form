@@ -74,7 +74,7 @@ func (widget WidgetCheckbox) Edit(element *Element, s *schema.Schema, lookupProv
 }
 
 // getLookupCodes returns a list of LookupCodes for this element
-func (WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
+func (widget WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Element, lookupProvider LookupProvider) []LookupCode {
 
 	lookupCodes, _ := GetLookupCodes(element, schemaElement, lookupProvider)
 
@@ -91,6 +91,10 @@ func (WidgetCheckbox) getLookupCodes(element *Element, schemaElement schema.Elem
  * Wiget Metadata
  ***********************************/
 
-func (WidgetCheckbox) ShowLabels() bool {
+func (widget WidgetCheckbox) ShowLabels() bool {
 	return false
+}
+
+func (widget WidgetCheckbox) Encoding(_ *Element) string {
+	return ""
 }

@@ -13,7 +13,7 @@ func init() {
 // WidgetSelect renders a select box widget
 type WidgetSelect struct{}
 
-func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
 	schemaElement := element.getElement(s)
@@ -34,7 +34,7 @@ func (WidgetSelect) View(element *Element, s *schema.Schema, lookupProvider Look
 	return nil
 }
 
-func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (widget WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	if element.ReadOnly {
 		return WidgetSelect{}.View(element, s, lookupProvider, value, b)
@@ -107,6 +107,10 @@ func (WidgetSelect) Edit(element *Element, s *schema.Schema, lookupProvider Look
  * Wiget Metadata
  ***********************************/
 
-func (WidgetSelect) ShowLabels() bool {
+func (widget WidgetSelect) ShowLabels() bool {
 	return true
+}
+
+func (widget WidgetSelect) Encoding(_ *Element) string {
+	return ""
 }
