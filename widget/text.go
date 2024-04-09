@@ -43,6 +43,10 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		tag.Attr("autofocus", "true")
 	}
 
+	if placeholder := element.Options.GetString("placeholder"); placeholder != "" {
+		tag.Attr("placeholder", placeholder)
+	}
+
 	// Enumeration Options
 	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 	if len(lookupCodes) > 0 {
