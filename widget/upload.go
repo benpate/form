@@ -63,7 +63,19 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 
 	// Image preview (128px square)
 	case "image":
+		id := "upload-preview-" + element.ID
+		b.Span().ID(id).Close()
 		b.Img(valueString).Style("border:solid 1px black", "max-height:128px", "max-width:128px").Close()
+
+		if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
+			b.Span().Role("button").
+				Attr("hx-post", deleteLink).
+				Attr("hx-confirm", "Delete this file?").
+				Attr("script", "on htmx:afterLoad remove #"+id).
+				InnerText("Delete").
+				Close()
+		}
+		b.Close()
 
 	// Audio previoew (with controls)
 	case "audio":
