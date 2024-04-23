@@ -36,8 +36,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 	// Start building a new tag
 	tag := b.Input("", element.Path).
-		ID(elementID).
-		Value(valueString)
+		ID(elementID)
 
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
@@ -149,6 +148,8 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 	if autocomplete := element.Options.GetString("autocomplete"); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
 	}
+
+	tag.Value(valueString)
 	tag.TabIndex("0")
 	tag.Close()
 
