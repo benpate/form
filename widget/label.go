@@ -9,18 +9,26 @@ import (
 type Label struct{}
 
 func (widget Label) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+	if element.Label != "" {
+		b.Div().InnerText(element.Label).Close()
+	}
 
-	// find the path and schema to use
-	valueString := element.GetString(value, s)
-	b.Div().InnerText(valueString).Close()
+	if element.Description != "" {
+		b.Div().InnerHTML(element.Description).Close()
+	}
+
 	return nil
 }
 
 func (widget Label) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+	if element.Label != "" {
+		b.Div().InnerText(element.Label).Close()
+	}
 
-	// find the path and schema to use
-	valueString := element.GetString(value, s)
-	b.Div().InnerText(valueString).Close()
+	if element.Description != "" {
+		b.Div().InnerHTML(element.Description).Close()
+	}
+
 	return nil
 }
 
