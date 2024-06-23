@@ -147,6 +147,10 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 	if autocomplete := element.Options.GetString("autocomplete"); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
+
+		if autocomplete == "off" {
+			tag.Attr("data-1p-ignore", "true")
+		}
 	}
 
 	tag.Value(valueString)
