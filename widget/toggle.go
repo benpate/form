@@ -40,6 +40,7 @@ func (widget Toggle) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 		tag.Value("true")
 	}
 
+	tag.Attr("text", element.Options.GetString("text"))
 	tag.Attr("true-text", element.Options.GetString("true-text"))
 	tag.Attr("false-text", element.Options.GetString("false-text"))
 

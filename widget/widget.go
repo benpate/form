@@ -6,6 +6,7 @@ import (
 
 func UseAll() {
 	form.Use("checkbox", Checkbox{})
+	form.Use("colorpicker", Colorpicker{})
 	form.Use("datepicker", DatePicker{})
 	form.Use("heading", Heading{})
 	form.Use("hidden", Hidden{})

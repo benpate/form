@@ -99,10 +99,6 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 		switch s.Format {
 
-		// Removed because the default color widget is horrible.
-		// case "color":
-		//	tag.Type("color")
-
 		case "date":
 			tag.Type("date")
 
