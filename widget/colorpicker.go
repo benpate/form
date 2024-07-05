@@ -26,30 +26,13 @@ func (widget Colorpicker) Edit(element *form.Element, s *schema.Schema, provider
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
 
-	elementID := element.ID
-
-	if elementID == "" {
-		elementID = "colorpicker-" + element.Path
-	}
-
 	// Start building a new tag
-	tag := b.Input("", element.Path).
-		ID(elementID)
+	b.Div().
+		Data("path", element.Path).
+		Data("value", valueString).
+		Script("install colorpicker").
+		Close()
 
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
-		tag.Attr("autofocus", "true")
-	}
-
-	if placeholder := element.Options.GetString("placeholder"); placeholder != "" {
-		tag.Attr("placeholder", placeholder)
-	}
-
-	tag.TabIndex("0")
-	tag.Type("color")
-	tag.Value(valueString)
-	tag.Close()
-
-	b.CloseAll()
 	return nil
 }
 
