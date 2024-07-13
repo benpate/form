@@ -32,7 +32,7 @@ func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 	elementID := element.ID
 
 	if elementID == "" {
-		elementID = "upload-" + element.Path
+		elementID = element.Path + ".upload"
 	}
 
 	widget.preview(element, s, value, b.SubTree())
@@ -66,16 +66,18 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 
 	// Image preview (128px square)
 	case "image":
-		id := "upload-preview-" + element.ID
-		b.Span().ID(id).Close()
-		b.Img(valueString).Style("border:solid 1px black", "max-height:128px", "max-width:128px").Close()
+		b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
+		b.Img(valueString).Style("max-width:128px", "max-height:128px").Close()
 
 		if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
-			b.Span().Role("button").
+			b.Button().
+				Style("position:absolute", "top:4px", "right:4px").
+				Class("text-xs").
 				Attr("hx-post", deleteLink).
 				Attr("hx-confirm", "Delete this file?").
-				Attr("script", "on htmx:afterLoad remove #"+id).
-				InnerText("Delete").
+				Attr("script", "on htmx:afterRequest log me then log my parentNode then remove my parentNode").
+				Aria("label", "Delete").
+				InnerText("X").
 				Close()
 		}
 		b.Close()
