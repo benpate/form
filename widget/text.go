@@ -28,15 +28,16 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
 
-	elementID := element.ID
-
-	if elementID == "" {
-		elementID = "text-" + element.Path
+	if element.ID == "" {
+		element.ID = element.Path + "." + element.Type
 	}
 
 	// Start building a new tag
 	tag := b.Input("", element.Path).
-		ID(elementID)
+		ID(element.ID).
+		Aria("label", element.Label).
+		Aria("description", element.Description).
+		TabIndex("0")
 
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")

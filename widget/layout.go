@@ -28,6 +28,10 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 
 		child := element.Children[index]
 
+		if child.ID == "" {
+			child.ID = child.Path + "." + child.Type
+		}
+
 		widget, err := child.Widget()
 		if err != nil {
 			return derp.Wrap(err, location, "Error rendering child", index, child)
@@ -48,7 +52,7 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 			container.EndBracket()
 
 			if widget.ShowLabels() {
-				b.Label(child.ID).InnerText(child.Label).Close()
+				b.Label(child.ID).Aria("hidden", "true").InnerText(child.Label).Close()
 			}
 		}
 
@@ -65,7 +69,7 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 
 		// If there's a description on this element, draw it here
 		if widget.ShowLabels() && (child.Description != "") {
-			b.Div().Class("text-sm gray40").InnerText(child.Description).Close()
+			b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerText(child.Description).Close()
 		}
 
 		// Close the DIV wrapper from above (if applicable)

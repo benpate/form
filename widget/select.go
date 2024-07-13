@@ -57,6 +57,8 @@ func (widget Select) Edit(element *form.Element, s *schema.Schema, provider form
 	selectBox := b.Container("select").
 		ID(elementID).
 		Name(element.Path).
+		Aria("labelledby", element.ID+".label").
+		Aria("describedby", element.ID+".description").
 		TabIndex("0")
 
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {

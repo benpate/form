@@ -29,18 +29,19 @@ func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.Look
 	schemaElement := element.GetSchema(s)
 	valueString := element.GetString(value, s)
 
-	elementID := element.ID
-
-	if elementID == "" {
-		elementID = "textarea-" + element.Path
+	if element.ID == "" {
+		element.ID = element.Path + "." + element.Type
 	}
 
 	// Start building a new tag
 	tag := b.Container("textarea").
 		Name(element.Path).
-		ID(elementID).
+		ID(element.ID).
 		Attr("hint", element.Description).
-		Attr("rows", element.Options.GetString("rows"))
+		Attr("rows", element.Options.GetString("rows")).
+		Aria("labelledby", element.ID+".label").
+		Aria("describedby", element.ID+".description").
+		TabIndex("0")
 
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")

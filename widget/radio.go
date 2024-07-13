@@ -1,8 +1,6 @@
 package widget
 
 import (
-	"strings"
-
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
@@ -40,7 +38,7 @@ func (widget Radio) Edit(element *form.Element, s *schema.Schema, provider form.
 	id := element.ID
 
 	if id == "" {
-		id = "radio-" + strings.ReplaceAll(element.Path, ".", "-")
+		id = element.Path + "." + element.Type
 	}
 
 	// find the path and schema to use
@@ -50,19 +48,26 @@ func (widget Radio) Edit(element *form.Element, s *schema.Schema, provider form.
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
-		radioID := id + "-" + lookupCode.Value
-		b.Label(radioID)
+		radioID := id + "." + lookupCode.Value
+
+		label := b.Label(radioID).
+			ID(id + ".label")
 
 		radio := b.Input("radio", element.Path).
 			ID(radioID).
-			Value(lookupCode.Value)
+			Value(lookupCode.Value).
+			Aria("label", lookupCode.Label).
+			Aria("description", lookupCode.Description).
+			TabIndex("0")
 
 		if lookupCode.Value == valueString {
 			radio.Attr("checked", "true")
 		}
 
-		radio.InnerText(lookupCode.Label).Close()
-		b.CloseAll()
+		radio.Close()
+
+		b.Span().Aria("hidden", "true").InnerText(lookupCode.Label).Close()
+		label.Close()
 	}
 
 	return nil

@@ -28,6 +28,8 @@ func (widget Colorpicker) Edit(element *form.Element, s *schema.Schema, provider
 
 	// Start building a new tag
 	b.Div().
+		Data("label", element.Label).
+		Data("description", element.Description).
 		Data("path", element.Path).
 		Data("value", valueString).
 		Script("install colorpicker").

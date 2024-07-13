@@ -41,6 +41,9 @@ func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 	b.Input("file", element.Path).ID(elementID).
 		Attr("accept", element.Options.GetString("accept")).
 		Attr("multiple", multiple).
+		Aria("label", element.Label).
+		Aria("description", element.Description).
+		TabIndex("0").
 		Close()
 
 	return nil

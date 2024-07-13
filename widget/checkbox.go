@@ -53,18 +53,23 @@ func (widget Checkbox) Edit(element *form.Element, s *schema.Schema, provider fo
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
 		id := "checkbox-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + lookupCode.Value
-		b.Label(id)
+
+		label := b.Label(id).ID("label-" + id)
 
 		checkbox := b.Input("checkbox", element.Path).
 			ID(id).
-			Value(lookupCode.Value)
+			Value(lookupCode.Value).
+			Aria("label", lookupCode.Label).
+			Aria("description", lookupCode.Description).
+			TabIndex("0")
 
 		if slice.Contains(valueSlice, lookupCode.Value) {
 			checkbox.Attr("checked", "true")
 		}
+		checkbox.Close()
 
-		checkbox.InnerText(lookupCode.Label).Close()
-		b.CloseAll()
+		b.Span().Aria("hidden", "true").InnerText(lookupCode.Label).Close()
+		label.Close()
 	}
 
 	return nil
