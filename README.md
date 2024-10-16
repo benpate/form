@@ -8,7 +8,7 @@
 
 ## JSON to HTML (Forms for Go)
 
-This expandable [Go module](https://golang.org) generates HTML forms using JSON configurations.  It is inspired by JSON-Forms but is not compatable with that standard.
+This [Go module](https://golang.org) generates HTML forms using JSON configurations.  It is inspired by JSON-Forms but is not compatable with that standard.
 
 ## DO NOT USE
 
