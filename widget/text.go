@@ -151,7 +151,6 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 	}
 
 	tag.Value(valueString)
-	tag.TabIndex("0")
 	tag.Close()
 
 	if len(lookupCodes) > 0 {

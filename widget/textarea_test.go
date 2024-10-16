@@ -20,7 +20,7 @@ func TestTextarea(t *testing.T) {
 	builder := html.New()
 	schema := getTestSchema()
 	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
-	expected := `<textarea name="username" id="textarea-username" minlength="10" maxlength="100" pattern="[a-z]+" required="true" tabIndex="0"></textarea>`
+	expected := `<textarea name="username" id="username.textarea" aria-labelledby="username.textarea.label" aria-describedby="username.textarea.description" tabIndex="0" minlength="10" maxlength="100" pattern="[a-z]+" required="true"></textarea>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())

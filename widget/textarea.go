@@ -67,7 +67,6 @@ func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.Look
 		}
 	}
 
-	tag.TabIndex("0")
 	tag.InnerText(valueString).Close()
 	return nil
 }
