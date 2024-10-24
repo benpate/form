@@ -13,3 +13,14 @@ func NewReadOnlyLookupGroup(codes ...LookupCode) ReadOnlyLookupGroup {
 func (group ReadOnlyLookupGroup) Get() []LookupCode {
 	return group
 }
+
+// Value returns the LookupCode that matches the provided value,
+// and an empty LookupCode if no match is found.
+func (group ReadOnlyLookupGroup) Value(value string) LookupCode {
+	for _, code := range group {
+		if code.Value == value {
+			return code
+		}
+	}
+	return LookupCode{}
+}
