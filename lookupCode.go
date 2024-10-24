@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/benpate/rosetta/convert"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 )
@@ -11,11 +12,12 @@ import (
 // LookupCode represents a single value/label pair
 // to be used in place of Enums for optional lists.
 type LookupCode struct {
-	Value       string `json:"value,omitempty"        form:"value"       bson:"value,omitempty"`       // Internal value of the LookupCode
-	Label       string `json:"label,omitempty"        form:"label"       bson:"label,omitempty"`       // Human-friendly label/name of the LookupCode
-	Description string `json:"description,omitempty"  form:"description" bson:"description,omitempty"` // Optional long description of the LookupCode
-	Icon        string `json:"icon,omitempty"         form:"icon"        bson:"icon,omitempty"`        // Optional icon to use when displaying the LookupCode
-	Group       string `json:"group,omitempty"        form:"group"       bson:"group,omitempty"`       // Optiional grouping to use when displaying the LookupCode
+	Value       string `json:"value,omitempty"       form:"value"       bson:"value,omitempty"`       // Internal value of the LookupCode
+	Label       string `json:"label,omitempty"       form:"label"       bson:"label,omitempty"`       // Human-friendly label/name of the LookupCode
+	Description string `json:"description,omitempty" form:"description" bson:"description,omitempty"` // Optional long description of the LookupCode
+	Icon        string `json:"icon,omitempty"        form:"icon"        bson:"icon,omitempty"`        // Optional icon to use when displaying the LookupCode
+	Group       string `json:"group,omitempty"       form:"group"       bson:"group,omitempty"`       // Optiional grouping to use when displaying the LookupCode
+	Href        string `json:"href,omitempty"        form:"href"        bson:"href,omitempty"`        // Optional URL to use when using this LookupCode
 }
 
 // NewLookupCode creates a new LookupCode from a string
@@ -40,15 +42,33 @@ func ParseLookupCode(value any) LookupCode {
 			Label: typed,
 		}
 
-	case map[string]any:
+	case mapof.Any:
 
 		return LookupCode{
-			Value:       convert.String(typed["value"]),
-			Label:       convert.String(typed["label"]),
-			Description: convert.String(typed["description"]),
-			Icon:        convert.String(typed["icon"]),
-			Group:       convert.String(typed["group"]),
+			Value:       typed.GetString("value"),
+			Label:       typed.GetString("label"),
+			Description: typed.GetString("description"),
+			Icon:        typed.GetString("icon"),
+			Group:       typed.GetString("group"),
+			Href:        typed.GetString("href"),
 		}
+
+	case mapof.String:
+
+		return LookupCode{
+			Value:       typed.GetString("value"),
+			Label:       typed.GetString("label"),
+			Description: typed.GetString("description"),
+			Icon:        typed.GetString("icon"),
+			Group:       typed.GetString("group"),
+			Href:        typed.GetString("href"),
+		}
+
+	case map[string]any:
+		return ParseLookupCode(mapof.Any(typed))
+
+	case map[string]string:
+		return ParseLookupCode(mapof.String(typed))
 	}
 
 	return LookupCode{}
