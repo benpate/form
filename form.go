@@ -143,7 +143,7 @@ func (form *Form) replaceNewLookups(value mapof.Any, lookupProvider LookupProvid
 			formValue, err := writableGroup.Add(formValue)
 
 			if err != nil {
-				return derp.Wrap(err, "form.Form.SetAll", "Error adding new lookup value", element.Path, formValue)
+				return derp.Wrap(err, "form.Form.replaceNewLookups", "Error adding new lookup value", element.Path, formValue)
 			}
 
 			value.SetString(element.Path, formValue)
