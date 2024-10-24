@@ -56,7 +56,7 @@ func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider
 	options, _ := form.GetLookupCodes(element, schemaElement, provider)
 
 	b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
-	b.Div().Class("options").Style("maxHeight:" + maxHeight + "px")
+	b.Div().Class("options").Style("max-height:" + maxHeight + "px")
 
 	elementID := element.ID
 
