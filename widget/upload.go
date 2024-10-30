@@ -38,6 +38,7 @@ func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 	widget.preview(element, s, value, b.SubTree())
 
 	multiple := iif(element.Options.GetBool("multiple"), "multiple", "")
+	b.Input("hidden", element.Path).Value(element.GetString(value, s)).Close()
 	b.Input("file", element.Path).ID(elementID).
 		Attr("accept", element.Options.GetString("accept")).
 		Attr("multiple", multiple).
@@ -67,7 +68,7 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 	// Image preview (128px square)
 	case "image":
 		b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
-		b.Img(valueString).Style("max-width:128px", "max-height:128px").Close()
+		b.Img(valueString).Style("display:block", "width:128px", "height:128px", "object-fit:cover").Close()
 
 		if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
 			b.Button().
