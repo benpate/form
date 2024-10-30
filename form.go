@@ -79,11 +79,10 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	// Try to apply all values from the form to the object
 	for _, element := range form.Element.AllElements() {
 
-		if elementValue, ok := value[element.Path]; ok {
-			if element.isInputVisible(&form.Schema, value) {
-				if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
-					return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
-				}
+		if element.isInputVisible(&form.Schema, value) {
+			elementValue := value[element.Path]
+			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
+				return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
 			}
 		}
 	}
