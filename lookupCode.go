@@ -80,30 +80,6 @@ func (lookupCode LookupCode) ID() string {
 	return lookupCode.Value
 }
 
-func (lookupCode *LookupCode) GetPointer(name string) (any, bool) {
-
-	switch name {
-
-	case "value":
-		return &lookupCode.Value, true
-
-	case "label":
-		return &lookupCode.Label, true
-
-	case "description":
-		return &lookupCode.Description, true
-
-	case "icon":
-		return &lookupCode.Icon, true
-
-	case "group":
-		return &lookupCode.Group, true
-
-	}
-
-	return nil, false
-}
-
 // GetLookupCodes returns a list of LookupCodes derived from:
 // 1) an "enum" (string or slice-of-lookupCode) in the form element,
 // 2) a "datasource" value that is looked up in the lookupProvider

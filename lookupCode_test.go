@@ -4,8 +4,32 @@ import (
 	"testing"
 
 	"github.com/benpate/rosetta/mapof"
+	"github.com/benpate/rosetta/schema"
 	"github.com/stretchr/testify/require"
 )
+
+func TestLookupCodeSchema(t *testing.T) {
+
+	test := func(name string, value string) {
+		lookupCode := LookupCode{}
+		s := schema.New(LookupCodeSchema())
+
+		err := s.Set(&lookupCode, name, value)
+		require.Nil(t, err)
+
+		result, err := s.Get(&lookupCode, name)
+		require.Nil(t, err)
+
+		require.Equal(t, value, result)
+	}
+
+	test("value", "A VALUE")
+	test("label", "A LABEL")
+	test("description", "A DESCRIPTION")
+	test("icon", "A ICON")
+	test("group", "A GROUP")
+	test("href", "http://href.com")
+}
 
 func TestGetLookupCode_String(t *testing.T) {
 
