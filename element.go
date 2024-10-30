@@ -106,7 +106,6 @@ func (element *Element) getValue(value any, s *schema.Schema) any {
 	// If there is a schema, use it to get the value
 	if s != nil {
 		result, _ := s.Get(value, element.Path)
-
 		return result
 	}
 
