@@ -38,7 +38,6 @@ func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 	widget.preview(element, s, value, b.SubTree())
 
 	multiple := iif(element.Options.GetBool("multiple"), "multiple", "")
-	b.Input("hidden", element.Path).Value(element.GetString(value, s)).Close()
 	b.Input("file", element.Path).ID(elementID).
 		Attr("accept", element.Options.GetString("accept")).
 		Attr("multiple", multiple).
@@ -63,25 +62,13 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 	accept := element.Options.GetString("accept")
 	acceptType, _, _ := strings.Cut(accept, "/")
 
+	b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
+
 	switch acceptType {
 
 	// Image preview (128px square)
 	case "image":
-		b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
 		b.Img(valueString).Style("display:block", "width:128px", "height:128px", "object-fit:cover").Close()
-
-		if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
-			b.Button().
-				Style("position:absolute", "top:4px", "right:4px").
-				Class("text-xs").
-				Attr("hx-post", deleteLink).
-				Attr("hx-confirm", "Delete this file?").
-				Attr("script", "on htmx:afterRequest log me then log my parentNode then remove my parentNode").
-				Aria("label", "Delete").
-				InnerText("X").
-				Close()
-		}
-		b.Close()
 
 	// Audio previoew (with controls)
 	case "audio":
@@ -93,6 +80,20 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 	default:
 		b.A(valueString).InnerText(valueString).Close()
 	}
+
+	b.Input("hidden", element.Path).Value(element.GetString(value, s)).Close()
+	if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
+		b.Button().
+			Style("position:absolute", "top:4px", "right:4px").
+			Class("text-xs").
+			Attr("hx-post", deleteLink).
+			Attr("hx-confirm", "Delete this file?").
+			Attr("script", "on htmx:afterRequest remove my parentNode").
+			Aria("label", "Delete").
+			InnerText("X").
+			Close()
+	}
+	b.Close()
 }
 
 /***********************************
