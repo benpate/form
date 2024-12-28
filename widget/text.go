@@ -53,6 +53,11 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		tag.Attr("list", "datalist-"+element.Path)
 	}
 
+	// Custom CSS style
+	if style := element.Options.GetString("style"); style != "" {
+		tag.Attr("style", style)
+	}
+
 	// Add attributes that depend on what KIND of input we have.
 	switch s := schemaElement.(type) {
 
