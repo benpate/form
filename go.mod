@@ -2,13 +2,11 @@ module github.com/benpate/form
 
 go 1.23
 
-toolchain go1.23.1
-
 require (
 	github.com/benpate/derp v0.31.1
 	github.com/benpate/exp v0.8.4
 	github.com/benpate/html v0.16.11
-	github.com/benpate/rosetta v0.24.2
+	github.com/benpate/rosetta v0.24.3
 	github.com/stretchr/testify v1.10.0
 )
 
