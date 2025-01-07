@@ -1,7 +1,7 @@
 package form
 
 import (
-	"strings"
+	"net/url"
 
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
@@ -67,23 +67,32 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
  ********************************/
 
 // Do applies all of the data from the value map into the target object
-func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvider) error {
+func (form *Form) SetURLValues(object any, value url.Values, lookupProvider LookupProvider) error {
 
-	const location = "form.Form.SetAll"
-
-	// Replace "NEW" values in LookupCodes
-	if err := form.replaceNewLookups(value, lookupProvider); err != nil {
-		return derp.Wrap(err, location, "Error replacing new lookups")
-	}
+	const location = "form.Form.SetFromURLValues"
 
 	// Try to apply all values from the form to the object
 	for _, element := range form.Element.AllElements() {
 
-		if element.isInputVisible(&form.Schema, value) {
-			elementValue := value[element.Path]
-			if err := form.Schema.Set(object, element.Path, elementValue); err != nil {
-				return derp.Wrap(err, location, "Error setting value", element.Path, elementValue)
-			}
+		// RULE: do not update fields that are not visible
+		if !element.isInputVisible(&form.Schema, value) {
+			continue
+		}
+
+		// Try to replace new lookup codes (if neede)
+		newValue, updated, err := element.replaceNewLookup(lookupProvider, value.Get(element.Path))
+
+		if err != nil {
+			return derp.Wrap(err, location, "Error writing new lookup value")
+		}
+
+		if updated {
+			value[element.Path] = []string{newValue}
+		}
+
+		// Update the original object with the new value
+		if err := form.Schema.Set(object, element.Path, value[element.Path]); err != nil {
+			return derp.Wrap(err, location, "Error setting value", element.Path)
 		}
 	}
 
@@ -95,61 +104,41 @@ func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvi
 	return nil
 }
 
-func (form *Form) replaceNewLookups(value mapof.Any, lookupProvider LookupProvider) error {
+// Do applies all of the data from the value map into the target object
+func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvider) error {
 
-	const newItemIdentifier = "::NEWVALUE::"
+	const location = "form.Form.SetAll"
 
-	if lookupProvider == nil {
-		return nil
-	}
-
+	// Try to apply all values from the form to the object
 	for _, element := range form.Element.AllElements() {
 
-		// Get the original form value
-		formValue, ok := value.GetStringOK(element.Path)
-
-		if !ok {
+		// RULE: Do not update invisible fields
+		if !element.isInputVisible(&form.Schema, value) {
 			continue
 		}
 
-		// Value MUST match the "new item" identifier
-		if !strings.HasPrefix(formValue, newItemIdentifier) {
-			continue
+		// Try to replace new lookup codes (if needed)
+		newValue, updated, err := element.replaceNewLookup(lookupProvider, value.GetString(element.Path))
+
+		if err != nil {
+			return derp.Wrap(err, location, "Error writing new lookup value")
 		}
 
-		// Get the lookup provider name
-		providerName, ok := element.Options.GetStringOK("provider")
-
-		if !ok {
-			continue
+		if updated {
+			value.SetString(element.Path, newValue)
 		}
 
-		if providerName == "" {
-			continue
-		}
-
-		// User the LookupProvider to get the ProviderGroup
-		group := lookupProvider.Group(providerName)
-
-		if group == nil {
-			continue
-		}
-
-		// If the group is writable, then try to add a new value
-		if writableGroup, ok := group.(WritableLookupGroup); ok {
-
-			formValue = strings.TrimPrefix(formValue, newItemIdentifier)
-			formValue, err := writableGroup.Add(formValue)
-
-			if err != nil {
-				return derp.Wrap(err, "form.Form.replaceNewLookups", "Error adding new lookup value", element.Path, formValue)
-			}
-
-			value.SetString(element.Path, formValue)
+		// Update the original object with the new value
+		if err := form.Schema.Set(object, element.Path, value[element.Path]); err != nil {
+			return derp.Wrap(err, location, "Error setting value", element.Path)
 		}
 	}
 
-	// Woot.
+	// Validate that all of the data in the object are valid.
+	if err := form.Schema.Validate(object); err != nil {
+		return derp.Wrap(err, location, "Error validating object")
+	}
+
 	return nil
 }
 

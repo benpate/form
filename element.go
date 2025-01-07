@@ -1,6 +1,8 @@
 package form
 
 import (
+	"strings"
+
 	"github.com/benpate/derp"
 	"github.com/benpate/exp"
 	"github.com/benpate/html"
@@ -125,6 +127,52 @@ func (element *Element) isInputVisible(s *schema.Schema, values any) bool {
 	}
 
 	return true
+}
+
+// replaceLookupValue
+func (element Element) replaceNewLookup(lookupProvider LookupProvider, value string) (string, bool, error) {
+
+	const location = "form.element.replaceNewLookup"
+
+	// RULE: lookupProvider must not be nil
+	if lookupProvider == nil {
+		return value, false, nil
+	}
+
+	// RULE: value MUST match the ::NEWVALUE:: new item identifier
+	if !strings.HasPrefix(value, NewItemIdentifier) {
+		return value, false, nil
+	}
+
+	// Get the lookup provider name
+	groupName := element.Options.GetString("provider")
+
+	if groupName == "" {
+		return value, false, nil
+	}
+
+	// Use the LookupProvider to get the LookupGroup
+	lookupGroup := lookupProvider.Group(groupName)
+
+	if lookupGroup == nil {
+		return value, false, nil
+	}
+
+	// If the LookupGroup is writable, then try to add a new value
+	if writableGroup, ok := lookupGroup.(WritableLookupGroup); ok {
+
+		value = strings.TrimPrefix(value, NewItemIdentifier)
+		value, err := writableGroup.Add(value)
+
+		if err != nil {
+			return value, false, derp.Wrap(err, location, "Error adding new lookup value", groupName, element.Path, value)
+		}
+
+		return value, true, nil
+	}
+
+	// Otherwise, the value cannot be written, so keep the original value
+	return value, false, nil
 }
 
 // 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
