@@ -7,6 +7,7 @@ import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
+	"github.com/rs/zerolog/log"
 )
 
 type Form struct {
@@ -91,8 +92,11 @@ func (form *Form) SetURLValues(object any, value url.Values, lookupProvider Look
 		}
 
 		// Update the original object with the new value
+		// Errors are intentionally ignored here.
+		// Unallowed data does not make it through the schema filter
+		// nolint: errcheck
 		if err := form.Schema.Set(object, element.Path, value[element.Path]); err != nil {
-			return derp.Wrap(err, location, "Error setting value", element.Path)
+			log.Debug().Err(err).Str("path", element.Path).Msg("Error setting value")
 		}
 	}
 
