@@ -20,9 +20,6 @@ func (widget Password) Edit(element *form.Element, s *schema.Schema, provider fo
 		return Password{}.View(element, s, nil, value, b)
 	}
 
-	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-
 	if element.ID == "" {
 		element.ID = element.Path + "." + element.Type
 	}
@@ -47,26 +44,21 @@ func (widget Password) Edit(element *form.Element, s *schema.Schema, provider fo
 		tag.Attr("style", style)
 	}
 
-	// Add attributes that depend on what KIND of input we have.
-	switch s := schemaElement.(type) {
+	// Password rules may not have a schema attached, so use options instead.
+	if minlength := element.Options.GetInt("minlength"); minlength > 0 {
+		tag.Attr("minlength", convert.String(minlength))
+	}
 
-	case schema.String:
+	if maxlength := element.Options.GetInt("maxlength"); maxlength > 0 {
+		tag.Attr("maxlength", convert.String(maxlength))
+	}
 
-		if s.MinLength > 0 {
-			tag.Attr("minlength", convert.String(s.MinLength))
-		}
+	if pattern := element.Options.GetString("pattern"); pattern != "" {
+		tag.Attr("pattern", pattern)
+	}
 
-		if s.MaxLength > 0 {
-			tag.Attr("maxlength", convert.String(s.MaxLength))
-		}
-
-		if s.Pattern != "" {
-			tag.Attr("pattern", s.Pattern)
-		}
-
-		if s.Required {
-			tag.Attr("required", "true")
-		}
+	if required := element.Options.GetBool("required"); required {
+		tag.Attr("required", "true")
 	}
 
 	if autocomplete := element.Options.GetString("autocomplete"); autocomplete != "" {
