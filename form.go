@@ -70,7 +70,7 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
 // Do applies all of the data from the value map into the target object
 func (form *Form) SetURLValues(object any, value url.Values, lookupProvider LookupProvider) error {
 
-	const location = "form.Form.SetFromURLValues"
+	const location = "form.Form.SetURLValues"
 
 	// Try to apply all values from the form to the object
 	for _, element := range form.Element.AllElements() {
