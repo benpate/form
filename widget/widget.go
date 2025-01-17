@@ -16,6 +16,7 @@ func UseAll() {
 	form.Use("layout-tabs", LayoutTabs{})
 	form.Use("layout-vertical", LayoutVertical{})
 	form.Use("multiselect", Multiselect{})
+	form.Use("password", Password{})
 	form.Use("radio", Radio{})
 	form.Use("select", Select{})
 	form.Use("text", Text{})
