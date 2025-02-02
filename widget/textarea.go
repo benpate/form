@@ -65,6 +65,12 @@ func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.Look
 		if schemaString.Required {
 			tag.Attr("required", "true")
 		}
+
+		if schemaString.MaxLength > 0 {
+			if element.Options.GetBool("showLimit") {
+				tag.Attr("script", "install showLimit")
+			}
+		}
 	}
 
 	tag.InnerText(valueString).Close()
