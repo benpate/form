@@ -7,7 +7,8 @@ import (
 func UseAll() {
 	form.Use("checkbox", Checkbox{})
 	form.Use("colorpicker", Colorpicker{})
-	form.Use("datepicker", DatePicker{})
+	form.Use("date", DatePicker{})
+	form.Use("datetime", DateTimePicker{})
 	form.Use("heading", Heading{})
 	form.Use("hidden", Hidden{})
 	form.Use("label", Label{})
@@ -21,6 +22,7 @@ func UseAll() {
 	form.Use("select", Select{})
 	form.Use("text", Text{})
 	form.Use("textarea", TextArea{})
+	form.Use("time", TimePicker{})
 	form.Use("toggle", Toggle{})
 	form.Use("upload", Upload{})
 	form.Use("wysiwyg", WYSIWYG{})
