@@ -83,9 +83,8 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 
 	b.Input("hidden", element.Path).Value(element.GetString(value, s)).Close()
 	if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
-		b.Button().
-			Style("position:absolute", "top:4px", "right:4px").
-			Class("text-xs").
+		b.Span().
+			Class("pos-absolute-top-right text-xs button").
 			Attr("hx-post", deleteLink).
 			Attr("hx-confirm", "Delete this file?").
 			Attr("script", "on htmx:afterRequest remove my parentNode").
