@@ -61,6 +61,10 @@ func (widget Select) Edit(element *form.Element, s *schema.Schema, provider form
 		Aria("describedby", element.ID+".description").
 		TabIndex("0")
 
+	if isRequired(element, schemaElement) {
+		selectBox.Attr("required", "true")
+	}
+
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
