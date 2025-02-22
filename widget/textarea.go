@@ -43,8 +43,14 @@ func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.Look
 		Aria("describedby", element.ID+".description").
 		TabIndex("0")
 
+	// Autofocus
 	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
+	}
+
+	// Custom CSS style
+	if style := element.Options.GetString("style"); style != "" {
+		tag.Attr("style", style)
 	}
 
 	// Add attributes that depend on what KIND of input we have.
