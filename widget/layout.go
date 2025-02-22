@@ -69,7 +69,7 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 
 		// If there's a description on this element, draw it here
 		if widget.ShowLabels() && (child.Description != "") {
-			b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerText(child.Description).Close()
+			b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerHTML(child.Description).Close()
 		}
 
 		// Close the DIV wrapper from above (if applicable)
