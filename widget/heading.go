@@ -10,13 +10,13 @@ type Heading struct{}
 
 func (widget Heading) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	b.H2().InnerText(element.Label).Close()
-	b.Div().InnerText(element.Description).Close()
+	b.Div().InnerHTML(element.Description).Close()
 	return nil
 }
 
 func (widget Heading) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
 	b.H2().InnerText(element.Label).Close()
-	b.Div().InnerText(element.Description).Close()
+	b.Div().InnerHTML(element.Description).Close()
 	return nil
 }
 

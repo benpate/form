@@ -10,6 +10,7 @@ func UseAll() {
 	form.Use("date", DatePicker{})
 	form.Use("datetime", DateTimePicker{})
 	form.Use("heading", Heading{})
+	form.Use("html", HTML{})
 	form.Use("hidden", Hidden{})
 	form.Use("label", Label{})
 	form.Use("layout-group", LayoutGroup{})
