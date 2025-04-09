@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
@@ -30,6 +32,13 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 	if element.ID == "" {
 		element.ID = element.Path + "." + element.Type
+	}
+
+	scripts := make([]string, 0)
+
+	if validator := element.Options.GetString("validator"); validator != "" {
+		b.Div().Class("badge-container").EndBracket()
+		scripts = append(scripts, `install validator(url:'`+validator+`')`)
 	}
 
 	// Start building a new tag
@@ -80,7 +89,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		}
 
 		if s.RequiredIf != "" {
-			tag.Script("install requiredIf(condition:'" + s.RequiredIf + "')")
+			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
 		}
 
 	case schema.Number:
@@ -153,6 +162,10 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		if autocomplete == "off" {
 			tag.Attr("data-1p-ignore", "true")
 		}
+	}
+
+	if len(scripts) > 0 {
+		tag.Script(strings.Join(scripts, " "))
 	}
 
 	tag.Value(valueString)
