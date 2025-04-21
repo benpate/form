@@ -1,6 +1,7 @@
 package form
 
 import (
+	"net/url"
 	"testing"
 
 	"github.com/benpate/rosetta/mapof"
@@ -8,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFormSetAll(t *testing.T) {
+func TestFormSetURLValues(t *testing.T) {
 
 	useTestWidget()
 
@@ -36,16 +37,16 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// First Test Email IS SET because showEmail is true
-		data := mapof.Any{
-			"name":       "John Connor",
-			"email":      "john@connor.mil",
-			"age":        42,
-			"requireAge": "false",
-			"showEmail":  "true",
+		data := url.Values{
+			"name":       []string{"John Connor"},
+			"email":      []string{"john@connor.mil"},
+			"age":        []string{"42"},
+			"requireAge": []string{"false"},
+			"showEmail":  []string{"true"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Nil(t, err)
 		require.Equal(t, "John Connor", target["name"])
 		require.Equal(t, "john@connor.mil", target["email"])
@@ -53,14 +54,14 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// Second Test: Email IS NOT SET because showEmail is false
-		data := mapof.Any{
-			"name":      "John Connor",
-			"email":     "john@connor.mil",
-			"showEmail": "false",
+		data := url.Values{
+			"name":      []string{"John Connor"},
+			"email":     []string{"john@connor.mil"},
+			"showEmail": []string{"false"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Equal(t, "John Connor", target["name"])
 		require.Nil(t, target["email"])
 		require.Nil(t, err)
@@ -68,13 +69,13 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// Third: Email IS NOT SET because showEmail is missing
-		data := mapof.Any{
-			"name":  "John Connor",
-			"email": "john@connor.mil",
+		data := url.Values{
+			"name":  []string{"John Connor"},
+			"email": []string{"john@connor.mil"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Equal(t, "John Connor", target["name"])
 		require.Nil(t, target["email"])
 		require.Nil(t, err)
@@ -82,13 +83,13 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// Fourth Test: Age IS NOT required, because requireAge is false
-		data := mapof.Any{
-			"name":       "John Connor",
-			"requireAge": "false",
+		data := url.Values{
+			"name":       []string{"John Connor"},
+			"requireAge": []string{"false"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Equal(t, "John Connor", target["name"])
 		require.Equal(t, false, target["requireAge"])
 		require.Nil(t, err)
@@ -96,14 +97,14 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// Fifth Test: Age IS SET becasue it is present
-		data := mapof.Any{
-			"name":       "John Connor",
-			"age":        42,
-			"requireAge": "false",
+		data := url.Values{
+			"name":       []string{"John Connor"},
+			"age":        []string{"42"},
+			"requireAge": []string{"false"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Equal(t, "John Connor", target["name"])
 		require.Equal(t, 42, target["age"])
 		require.Equal(t, false, target["requireAge"])
@@ -112,13 +113,13 @@ func TestFormSetAll(t *testing.T) {
 
 	{
 		// Fifth Test: Form doesn't validate because age is conditionally required.
-		data := mapof.Any{
-			"name":       "John Connor",
-			"requireAge": "true",
+		data := url.Values{
+			"name":       []string{"John Connor"},
+			"requireAge": []string{"true"},
 		}
 
 		target := mapof.Any{}
-		err := form.SetAll(&target, data, nil)
+		err := form.SetURLValues(&target, data, nil)
 		require.Error(t, err)
 	}
 

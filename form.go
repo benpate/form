@@ -5,7 +5,6 @@ import (
 
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
 	"github.com/rs/zerolog/log"
 )
@@ -68,73 +67,49 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
  ********************************/
 
 // Do applies all of the data from the value map into the target object
-func (form *Form) SetURLValues(object any, value url.Values, lookupProvider LookupProvider) error {
+func (form *Form) SetURLValues(object any, values url.Values, lookupProvider LookupProvider) error {
 
 	const location = "form.Form.SetURLValues"
 
-	// Try to apply all values from the form to the object
-	for _, element := range form.Element.AllElements() {
+	// First, scan elements WITHOUT a "show-if" attribute.
+	// Second, scan elements WITH a "show-if" attribute.
+	for _, showIf := range []bool{false, true} {
 
-		// RULE: do not update fields that are not visible
-		if !element.isInputVisible(&form.Schema, value) {
-			continue
-		}
+		for _, element := range form.Element.AllElements() {
 
-		// Try to replace new lookup codes (if neede)
-		newValue, updated, err := element.replaceNewLookup(lookupProvider, value.Get(element.Path))
+			// RULE: Never update read-only fields
+			if element.ReadOnly {
+				continue
+			}
 
-		if err != nil {
-			return derp.Wrap(err, location, "Error writing new lookup value")
-		}
+			// Does this element have a "show-if" attribute? And, does it match the current scan?
+			if hasShowIf := element.Options.GetString("show-if") != ""; hasShowIf != showIf {
+				continue
+			}
 
-		if updated {
-			value[element.Path] = []string{newValue}
-		}
+			// RULE: do not update fields that are not visible
+			if !element.isInputVisible(&form.Schema, object) {
+				continue
+			}
 
-		// Update the original object with the new value
-		// Errors are intentionally ignored here.
-		// Unallowed data does not make it through the schema filter
-		// nolint: errcheck
-		if err := form.Schema.Set(object, element.Path, value[element.Path]); err != nil {
-			log.Debug().Err(err).Str("path", element.Path).Msg("Error setting value")
-		}
-	}
+			// Try to replace new lookup codes (if neede)
+			newValue, updated, err := element.replaceNewLookup(lookupProvider, values.Get(element.Path))
 
-	// Validate that all of the data in the object are valid.
-	if err := form.Schema.Validate(object); err != nil {
-		return derp.Wrap(err, location, "Error validating object")
-	}
+			if err != nil {
+				return derp.Wrap(err, location, "Error writing new lookup value")
+			}
 
-	return nil
-}
+			if updated {
+				values[element.Path] = []string{newValue}
+			}
 
-// Do applies all of the data from the value map into the target object
-func (form *Form) SetAll(object any, value mapof.Any, lookupProvider LookupProvider) error {
-
-	const location = "form.Form.SetAll"
-
-	// Try to apply all values from the form to the object
-	for _, element := range form.Element.AllElements() {
-
-		// RULE: Do not update invisible fields
-		if !element.isInputVisible(&form.Schema, value) {
-			continue
-		}
-
-		// Try to replace new lookup codes (if needed)
-		newValue, updated, err := element.replaceNewLookup(lookupProvider, value.GetString(element.Path))
-
-		if err != nil {
-			return derp.Wrap(err, location, "Error writing new lookup value")
-		}
-
-		if updated {
-			value.SetString(element.Path, newValue)
-		}
-
-		// Update the original object with the new value
-		if err := form.Schema.Set(object, element.Path, value[element.Path]); err != nil {
-			return derp.Wrap(err, location, "Error setting value", element.Path)
+			// Update the original object with the new value
+			// Errors are intentionally ignored here.
+			// Unallowed data does not make it through the schema filter
+			// nolint: errcheck
+			if err := form.Schema.Set(object, element.Path, values[element.Path]); err != nil {
+				log.Debug().Err(err).Str("path", element.Path).Msg("Error setting value")
+			}
 		}
 	}
 

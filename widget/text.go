@@ -84,12 +84,14 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required {
+		if s.Required || element.Options.GetBool("required") {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
+		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
 	case schema.Number:
@@ -106,8 +108,14 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required {
+		if s.Required || element.Options.GetBool("required") {
 			tag.Attr("required", "true")
+		}
+
+		if s.RequiredIf != "" {
+			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
+		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
 	case schema.String:
@@ -146,10 +154,18 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 		if s.Pattern != "" {
 			tag.Attr("pattern", s.Pattern)
+		} else if pattern := element.Options.GetString("pattern"); pattern != "" {
+			tag.Attr("pattern", pattern)
 		}
 
-		if s.Required {
+		if s.Required || element.Options.GetBool("required") {
 			tag.Attr("required", "true")
+		}
+
+		if s.RequiredIf != "" {
+			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
+		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
 	default:

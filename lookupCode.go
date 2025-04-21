@@ -133,10 +133,13 @@ func getSchemaEnumeration(schemaElement schema.Element) []string {
 
 	case schema.Array:
 		return getSchemaEnumeration(s.Items)
+
 	case schema.Integer:
 		return convert.SliceOfString(s.Enum)
+
 	case schema.Number:
 		return convert.SliceOfString(s.Enum)
+
 	case schema.String:
 		return s.Enum
 	}

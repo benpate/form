@@ -114,19 +114,26 @@ func (element *Element) getValue(value any, s *schema.Schema) any {
 	return nil
 }
 
-func (element *Element) isInputVisible(s *schema.Schema, values any) bool {
+func (element *Element) isInputVisible(s *schema.Schema, value any) bool {
 
-	// RULE: if the element is read-only, then it should not be used as an input value
+	// RULE: ReadOnly elements are not "visible" in the form
 	if element.ReadOnly {
 		return false
 	}
 
-	// If a "show-if" option is present, then we need to evaluate it to see if the input value should be considered "present" or not.
-	if showIf := element.Options.GetString("show-if"); showIf != "" {
-		return s.Match(values, exp.Parse(showIf))
+	// Collect the "show-if" property of the form element
+	showIf := element.Options.GetString("show-if")
+
+	// RULE: if there is no "show-if" option, then the input is always visible
+	if showIf == "" {
+		return true
 	}
 
-	return true
+	// Parse the "show-if" text into a valid expression
+	expression := exp.Parse(showIf)
+
+	// If the data matches the expression then the input is visible
+	return s.Match(value, expression)
 }
 
 // replaceLookupValue
