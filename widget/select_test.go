@@ -53,8 +53,73 @@ func TestSelectOne_ReadOnly(t *testing.T) {
 
 	schema := getTestSchema()
 	builder := html.New()
+	err := element.Edit(&schema, nil, value, builder)
+	expected := `<div class="layout-value">Red</div>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
+}
+
+func TestSelectOne_View(t *testing.T) {
+
+	UseAll()
+
+	element := form.Element{
+		Type: "select",
+		Path: "color",
+		Options: mapof.Any{
+			"enum": []form.LookupCode{
+				{Value: "YELLOW", Label: "Yellow"},
+				{Value: "ORANGE", Label: "Orange"},
+				{Value: "RED", Label: "Red"},
+				{Value: "VIOLET", Label: "Violet"},
+			},
+		},
+	}
+
+	value := mapof.String{
+		"color": "RED",
+	}
+
+	schema := getTestSchema()
+	builder := html.New()
 	err := element.View(&schema, nil, value, builder)
 	expected := `<div class="layout-value">Red</div>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, builder.String())
+}
+
+func TestSelectOne_WithGroups(t *testing.T) {
+
+	UseAll()
+
+	element := form.Element{
+		Type: "select",
+		Path: "other",
+		Options: mapof.Any{
+			"enum": []form.LookupCode{
+				{Group: "Colour", Value: "YELLOW", Label: "Yellow"},
+				{Group: "Colour", Value: "ORANGE", Label: "Orange"},
+				{Group: "Colour", Value: "RED", Label: "Red"},
+				{Group: "Colour", Value: "VIOLET", Label: "Violet"},
+				{Group: "Flavour", Value: "BITTER", Label: "Bitter"},
+				{Group: "Flavour", Value: "SALTY", Label: "Salty"},
+				{Group: "Flavour", Value: "SOUR", Label: "Sour"},
+				{Group: "Flavour", Value: "SWEET", Label: "Sweet"},
+				{Group: "Flavour", Value: "UMAMI", Label: "Umami"},
+			},
+		},
+	}
+
+	value := mapof.String{
+		"other": "RED",
+	}
+
+	schema := getTestSchema()
+	builder := html.New()
+	err := element.Edit(&schema, nil, value, builder)
+	expected := `<select id="select-other" name="other" aria-labelledby=".label" aria-describedby=".description" tabIndex="0"><option></option><optgroup label="Colour"><option value="YELLOW">Yellow</option><option value="ORANGE">Orange</option><option value="RED" selected="true">Red</option><option value="VIOLET">Violet</option></optgroup><optgroup label="Flavour"><option value="BITTER">Bitter</option><option value="SALTY">Salty</option><option value="SOUR">Sour</option><option value="SWEET">Sweet</option><option value="UMAMI">Umami</option></optgroup></select>`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, builder.String())

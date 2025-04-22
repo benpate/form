@@ -56,6 +56,7 @@ func getTestSchema() schema.Schema {
 						"phlebotomy": schema.String{MaxLength: 1000, RequiredIf: "biology == I am a biological human"},
 					},
 				},
+				"other": schema.String{},
 			},
 		},
 	}

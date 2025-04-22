@@ -84,13 +84,27 @@ func (widget Select) Edit(element *form.Element, s *schema.Schema, provider form
 		b.Container("option").Value("").InnerText("").Close()
 	}
 
+	group := ""
 	// Display all lookup codes
-	for _, lookupCode := range lookupCodes {
+	for index, lookupCode := range lookupCodes {
+
+		// Begin <optgroup> tags (if needed)
+		if lookupCode.Group != group {
+			group = lookupCode.Group
+			b.Container("optgroup").Label(group).EndBracket()
+		}
+
+		// Render the <option> tag
 		opt := b.Container("option").Value(lookupCode.Value)
 		if slice.Contains(valueSlice, lookupCode.Value) {
 			opt.Attr("selected", "true")
 		}
 		opt.InnerText(lookupCode.Label).Close()
+
+		// Close the <optgroup> tag (if needed)
+		if group != widget.groupValue(lookupCodes, index+1) {
+			b.Close()
+		}
 	}
 
 	// Support for writable lookup providers
@@ -116,4 +130,12 @@ func (widget Select) ShowLabels() bool {
 
 func (widget Select) Encoding(_ *form.Element) string {
 	return ""
+}
+
+func (widget Select) groupValue(lookupCodes []form.LookupCode, index int) string {
+	if index >= len(lookupCodes) {
+		return ""
+	}
+
+	return lookupCodes[index].Group
 }
