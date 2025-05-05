@@ -73,6 +73,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 
 	// First, scan elements WITHOUT a "show-if" attribute.
 	// Second, scan elements WITH a "show-if" attribute.
+	// We do this so that dependent fields are calculated AFTER the parent fields are set.
 	for _, showIf := range []bool{false, true} {
 
 		for _, element := range form.Element.AllElements() {
@@ -88,7 +89,13 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			}
 
 			// RULE: do not update fields that are not visible
-			if !element.isInputVisible(&form.Schema, object) {
+			visible, err := element.isInputVisible(&form.Schema, object)
+
+			if err != nil {
+				return derp.Wrap(err, location, "Error evaluating show-if expression", element.Options.GetString("show-if"))
+			}
+
+			if !visible {
 				continue
 			}
 

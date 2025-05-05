@@ -114,11 +114,11 @@ func (element *Element) getValue(value any, s *schema.Schema) any {
 	return nil
 }
 
-func (element *Element) isInputVisible(s *schema.Schema, value any) bool {
+func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error) {
 
 	// RULE: ReadOnly elements are not "visible" in the form
 	if element.ReadOnly {
-		return false
+		return false, nil
 	}
 
 	// Collect the "show-if" property of the form element
@@ -126,14 +126,21 @@ func (element *Element) isInputVisible(s *schema.Schema, value any) bool {
 
 	// RULE: if there is no "show-if" option, then the input is always visible
 	if showIf == "" {
-		return true
+		return true, nil
 	}
 
 	// Parse the "show-if" text into a valid expression
 	expression := exp.Parse(showIf)
 
 	// If the data matches the expression then the input is visible
-	return s.Match(value, expression)
+	visible, err := s.Match(value, expression)
+
+	if err != nil {
+		return false, derp.Wrap(err, "form.element.isInputVisible", "Error evaluating show-if expression", showIf)
+	}
+
+	// Success
+	return visible, nil
 }
 
 // replaceLookupValue

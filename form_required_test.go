@@ -124,3 +124,45 @@ func TestFormSetURLValues(t *testing.T) {
 	}
 
 }
+
+func TestFormSetURLValues_Error(t *testing.T) {
+
+	useTestWidget()
+
+	form := New(
+		schema.New(schema.Object{
+			Properties: schema.ElementMap{
+				"name":       schema.String{},
+				"email":      schema.String{},
+				"age":        schema.Integer{RequiredIf: "requireAge is true"},
+				"requireAge": schema.Boolean{},
+				"showEmail":  schema.Boolean{},
+			},
+		}),
+		Element{
+			Type: "test",
+			Children: []Element{
+				{Type: "test", Path: "name"},
+				{Type: "test", Path: "age"},
+				{Type: "test", Path: "email", Options: mapof.Any{"show-if": "missing_field is true"}},
+				{Type: "test", Path: "requireAge"},
+				{Type: "test", Path: "showEmail"},
+			},
+		},
+	)
+
+	{
+		// First Test Email IS SET because showEmail is true
+		data := url.Values{
+			"name":       []string{"John Connor"},
+			"email":      []string{"john@connor.mil"},
+			"age":        []string{"42"},
+			"requireAge": []string{"false"},
+			"showEmail":  []string{"true"},
+		}
+
+		target := mapof.Any{}
+		err := form.SetURLValues(&target, data, nil)
+		require.Error(t, err)
+	}
+}
