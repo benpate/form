@@ -34,7 +34,7 @@ func Parse(data any) (Element, error) {
 		return result, err
 	}
 
-	return result, derp.NewInternalError("form.Parse", "Cannot Parse Value: Unknown Datatype", data)
+	return result, derp.InternalError("form.Parse", "Cannot Parse Value: Unknown Datatype", data)
 }
 
 // MustParse guarantees that a value has been parsed into a Form, or else it panics the application.
