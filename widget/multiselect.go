@@ -2,6 +2,7 @@ package widget
 
 import (
 	"github.com/benpate/form"
+	"github.com/benpate/form/groupie"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/compare"
 	"github.com/benpate/rosetta/convert"
@@ -19,8 +20,14 @@ func (widget Multiselect) View(element *form.Element, s *schema.Schema, provider
 	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
 	first := true
 
+	group := groupie.New()
+
 	b.Div().Class("layout-value")
 	for _, lookupCode := range lookupCodes {
+
+		if group.Header(lookupCode.Group) {
+			b.WriteString(lookupCode.Group + ": ")
+		}
 
 		if slice.Contains(valueSlice, lookupCode.Value) {
 
@@ -64,7 +71,13 @@ func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider
 		elementID = "multiselect-" + element.Path
 	}
 
+	group := groupie.New()
+
 	for _, option := range options {
+
+		if group.Header(option.Group) {
+			b.Div().Class("multiselect-header").InnerText(option.Group).Close()
+		}
 
 		optionID := elementID + "-" + option.Value
 
