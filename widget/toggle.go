@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
@@ -32,9 +34,11 @@ func (widget Toggle) Edit(element *form.Element, s *schema.Schema, _ form.Lookup
 
 	// find the path and schema to use
 	valueString := element.GetString(value, s)
+	id := "toggle-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + valueString
+	script := "install toggle " + element.Options.GetString("script")
 
 	// Start building a new tag
-	tag := b.Span().Script("install toggle").Name(element.Path)
+	tag := b.Span().ID(id).Script(script).Name(element.Path)
 
 	if convert.Bool(valueString) {
 		tag.Value("true")
