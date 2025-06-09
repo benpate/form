@@ -19,10 +19,10 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 	}
 
 	if len(element.Description) > 0 {
-		b.Div().Class("layout-description").InnerText(element.Description).Close()
+		b.Div().Class("layout-description", "alert-blue").InnerHTML(element.Description).Close()
 	}
 
-	b.Div().Class("layout-" + alignment + "-elements")
+	b.Div().Class("layout-elements")
 
 	for index := range element.Children {
 
@@ -39,8 +39,8 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 
 		var container *html.Element
 
-		// All elements (except hidden) get wrapped in a div
-		if child.Type != "hidden" {
+		// All elements (except hidden and toggle-group) get wrapped in a div
+		if (child.Type != "hidden") && (child.Type != "toggle-group") {
 			container = b.Div()
 
 			container.Class("layout-element", "layout-"+alignment+"-element")
