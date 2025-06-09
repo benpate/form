@@ -120,10 +120,14 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 		}
 	}
 
+	/* REMOVING because this should be handled when saving the object,
+	// not when setting the values.
+	//
 	// Validate that all of the data in the object are valid.
 	if err := form.Schema.Validate(object); err != nil {
-		return derp.Wrap(err, location, "Error validating object")
+		return derp.Wrap(err, location, "Error validating object", form.Schema, object, values)
 	}
+	*/
 
 	return nil
 }
