@@ -180,6 +180,14 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		}
 	}
 
+	if autocorrect := element.Options.GetString("autocorrect"); autocorrect != "" {
+		tag.Attr("autocorrect", autocorrect)
+	}
+
+	if spellcheck := element.Options.GetString("spellcheck"); spellcheck != "" {
+		tag.Attr("spellcheck", spellcheck)
+	}
+
 	if len(scripts) > 0 {
 		tag.Script(strings.Join(scripts, " "))
 	}
