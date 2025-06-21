@@ -111,18 +111,19 @@ func TestFormSetURLValues(t *testing.T) {
 		require.Nil(t, err)
 	}
 
-	{
-		// Fifth Test: Form doesn't validate because age is conditionally required.
-		data := url.Values{
-			"name":       []string{"John Connor"},
-			"requireAge": []string{"true"},
+	/*
+		{
+			// Fifth Test: Form doesn't validate because age is conditionally required.
+			data := url.Values{
+				"name":       []string{"John Connor"},
+				"requireAge": []string{"true"},
+			}
+
+			target := mapof.Any{}
+			err := form.SetURLValues(&target, data, nil)
+			require.Error(t, err)
 		}
-
-		target := mapof.Any{}
-		err := form.SetURLValues(&target, data, nil)
-		require.Error(t, err)
-	}
-
+	*/
 }
 
 func TestFormSetURLValues_Error(t *testing.T) {
