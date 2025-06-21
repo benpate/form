@@ -47,8 +47,8 @@ UI Schemas define the UI elements that users interact with.  In this case, the H
 ## Form Elements
 Each form is defined as a cascading tree of [form.Element](https://pkg.go.dev/github.com/benpate/form#Element) objects.  Each element defines standard properties along with an optional list of child elements
 
-| Property    | Description |
-| ----------- | ----------- |
+| Property    | Description                                                                                                          |
+| ----------- | -------------------------------------------------------------------------------------------------------------------- |
 | type        | String: Widget type to use when rendering this element.  Widgets are defined below                                   |
 | label       | String: Label to put on the field. Usually renders above input elements in standard text.                            |
 | description | String: Description for the field.  Usually renders below input elements  in small gray text                         |
@@ -112,8 +112,8 @@ This renders is a custom Hyperscript widget that looks like a scrollable multise
 ### type: "password"
 This renders a [HTML5 password](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/password) input, with the following additional options:
 
-| Property     | Description |
-| ------------ | ----------- |
+|              |                                                                                                                      |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- |
 | autocomplete | [HTML5 autocomplete attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/autocomplete)  |
 | autofocus    | [HTML5 autofocus attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus) |
 | maxlength    | [HTML5 maxlength attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/maxlength)        |
@@ -250,9 +250,67 @@ Documentation TBD
 Documentation TBD
 
 ## JSON Marshaling/Unmarshalling 
-This package is intended to be used primarily by app developers to define forms in JSON configuration files.  So, extra care is taken to make JSON marshaling/unmarshalling work well. 
+This package is intended to be used primarily by app developers to define forms in JSON configuration files.  So, extra care is taken to make JSON marshaling / unmarshalling work well. 
 
-Documentation TBD
+When building a form a JSON, all property names use [lower camel case](https://en.wikipedia.org/wiki/Camel_case), with the first letter of the property name as lower case.  If present, second and third words in the property name are capitalized
+
+### JSON Example
+Here is a sample form configuration in JSON.  This form is displayed in multiple tabs, adds/edits a number of values in the object (an "Album" in this case) and even has a place for file uploads.
+
+```json
+{
+	"label": "Album",
+	"type":"layout-tabs",
+	"children": [
+		{
+			"type":"layout-vertical",
+			"label": "General",
+			"children": [
+				{"type":"text", "path":"label", "label":"Album Name"},
+				{"type":"select", "path":"data.license", "label":"License", "options":{"required":true, "provider":"bandwagon-album.licenses"}},
+				{"type":"date", "path":"data.releaseDate", "label":"Release Date"},
+				{"type":"upload", "path":"iconUrl", "label":"Album Art", "options":{"accept":"image/*", "filename":"data.imageFilename", "delete":"/{{.StreamID}}/delete-icon"}},
+				{"type":"toggle", "path":"isFeatured", "options":{"true-text":"Featured (shows on home page)", "false-text":"Featured?"}}
+			]
+		},
+		{
+			"type":"layout-vertical",
+			"label": "Metadata",
+			"children": [
+				{"type":"textarea", "path":"summary", "label":"Sidebar Notes", "description":"Notes appear on the side of the album page. Markdown is allowed.", "options":{"rows":8, "showLimit":true}},
+				{"type":"textarea", "path":"data.tags", "label":"Tags", "description":"Enter #Hashtags separated by spaces."}
+			]
+		},
+		{
+			"type":"layout-vertical",
+			"label": "Links",
+			"children": [
+				{"type":"text", "path":"data.links.AMAZON", "options":{"placeholder":"Amazon Music"}},
+				{"type":"text", "path":"data.links.APPLE", "options":{"placeholder":"Apple Music"}},
+				{"type":"text", "path":"data.links.BANDCAMP", "options":{"placeholder":"Bandcamp"}},
+				{"type":"text", "path":"data.links.GOOGLE", "options":{"placeholder":"Google Play"}},
+				{"type":"text", "path":"data.links.SOUNDCLOUD", "options":{"placeholder":"Soundcloud"}},
+				{"type":"text", "path":"data.links.SPOTIFY", "options":{"placeholder":"Spotify"}},
+				{"type":"text", "path":"data.links.TIDAL", "options":{"placeholder":"Tidal"}},
+				{"type":"text", "path":"data.links.YOUTUBE", "options":{"placeholder":"YouTube Music"}},
+				{"type":"text", "path":"data.links.OTHER1", "options":{"placeholder":"Other"}},
+				{"type":"text", "path":"data.links.OTHER2", "options":{"placeholder":"Other"}},
+				{"type":"text", "path":"data.links.OTHER3", "options":{"placeholder":"Other"}}
+			]
+		},
+		{
+			"type":"layout-vertical",
+			"label": "Colors",
+			"children": [
+				{"type":"colorpicker", "path":"data.color.body", "label":"Window Background"},
+				{"type":"colorpicker", "path":"data.color.page", "label":"Page Background"},
+				{"type":"colorpicker", "path":"data.color.button", "label":"Links and Buttons"}
+			]
+		}
+	]
+}
+```
+
 
 # Project Status
 
