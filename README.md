@@ -23,8 +23,8 @@ UI Schemas define the UI elements that users interact with.  In this case, the H
 
 ### Example Code
 
-```form := New(
-````go
+```go
+form := New(
 	schema.New(schema.Object{
 		Properties: schema.ElementMap{
 			"name":       schema.String{Required:true},
