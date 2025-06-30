@@ -76,7 +76,9 @@ func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider
 	for _, option := range options {
 
 		if group.Header(option.Group) {
-			b.Div().Class("multiselect-header").InnerText(option.Group).Close()
+			if option.Group != "" {
+				b.Div().Class("multiselect-header").InnerText(option.Group).Close()
+			}
 		}
 
 		optionID := elementID + "-" + option.Value
