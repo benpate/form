@@ -7,6 +7,7 @@ import (
 	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
+	"github.com/benpate/rosetta/sliceof"
 )
 
 // LookupCode represents a single value/label pair
@@ -105,6 +106,9 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 
 		case string:
 			return slice.Map(strings.Split(typed, ","), NewLookupCode), false
+
+		case sliceof.Object[LookupCode]:
+			return typed, false
 
 		case []LookupCode:
 			return typed, false
