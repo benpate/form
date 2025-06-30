@@ -19,7 +19,7 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 	}
 
 	if len(element.Description) > 0 {
-		b.Div().Class("layout-description", "alert-blue").InnerHTML(element.Description).Close()
+		b.Div().Class("layout-description").InnerHTML(element.Description).Close()
 	}
 
 	b.Div().Class("layout-elements")
