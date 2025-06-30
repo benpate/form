@@ -24,7 +24,7 @@ func (widget CheckButton) Edit(element *form.Element, s *schema.Schema, _ form.L
 	}
 
 	// Collect values to use in the Widget
-	value, err := s.Get(value, element.Path)
+	selectedValues, err := s.Get(value, element.Path)
 
 	if err != nil {
 		derp.Report(derp.Wrap(err, "form.checkbutton.Edit", "Error getting value for CheckButton", element.Path, value))
@@ -53,7 +53,7 @@ func (widget CheckButton) Edit(element *form.Element, s *schema.Schema, _ form.L
 		Aria("description", element.Description).
 		TabIndex("0")
 
-	if compare.Contains(value, elementValue) {
+	if compare.Contains(selectedValues, elementValue) {
 		checkbox.Attr("checked", "true")
 	}
 
