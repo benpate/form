@@ -8,7 +8,6 @@ import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/rs/zerolog/log"
 )
 
@@ -45,9 +44,6 @@ func Editor(schema schema.Schema, element Element, value any, lookupProvider Loo
 
 // DrawString() generates this form as a string
 func (form *Form) Editor(value any, lookupProvider LookupProvider) (string, error) {
-
-	spew.Dump(form.OptionInt("selected-tab"))
-
 	builder := html.New()
 	err := form.BuildEditor(value, lookupProvider, builder)
 	return builder.String(), err
