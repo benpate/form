@@ -8,7 +8,6 @@ import (
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/first"
 	"github.com/benpate/rosetta/slice"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type Multiselect struct{}
@@ -56,7 +55,6 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
 
-	spew.Dump(valueSlice)
 	sortable, _ := e.Options.GetBoolOK("sort")
 	maxHeight := first.String(e.Options.GetString("maxHeight"), "300")
 
