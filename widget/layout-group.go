@@ -3,17 +3,16 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type LayoutGroup struct{}
 
-func (LayoutGroup) View(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
-	return drawLayout(element, schema, provider, value, b, "group", false)
+func (LayoutGroup) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(f, e, provider, value, b, "group", false)
 }
 
-func (LayoutGroup) Edit(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
-	return drawLayout(element, schema, provider, value, b, "group", true)
+func (LayoutGroup) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(f, e, provider, value, b, "group", true)
 }
 
 /***********************************

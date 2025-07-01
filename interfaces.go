@@ -2,7 +2,6 @@ package form
 
 import (
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 // LookupProvider is an external object that
@@ -25,8 +24,8 @@ type WritableLookupGroup interface {
 
 // Widget defines a data type that can be included in a form
 type Widget interface {
-	View(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, builder *html.Builder) error
-	Edit(element *Element, schema *schema.Schema, lookupProvider LookupProvider, value any, builder *html.Builder) error
+	View(form *Form, element *Element, lookupProvider LookupProvider, value any, builder *html.Builder) error
+	Edit(form *Form, element *Element, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	ShowLabels() bool
 	Encoding(element *Element) string
 }

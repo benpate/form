@@ -7,17 +7,17 @@ import (
 	"github.com/benpate/rosetta/compare"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/first"
-	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type Multiselect struct{}
 
-func (widget Multiselect) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Multiselect) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	schemaElement := element.GetSchema(s)
-	valueSlice := element.GetSliceOfString(value, s)
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 	first := true
 
 	group := groupie.New()
@@ -46,29 +46,30 @@ func (widget Multiselect) View(element *form.Element, s *schema.Schema, provider
 }
 
 // Multiselect registers a custom multi-select widget into the library
-func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Multiselect{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return Multiselect{}.View(f, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueSlice := element.GetSliceOfString(value, s)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
 
-	sortable, _ := element.Options.GetBoolOK("sort")
-	maxHeight := first.String(element.Options.GetString("maxHeight"), "300")
+	spew.Dump(valueSlice)
+	sortable, _ := e.Options.GetBoolOK("sort")
+	maxHeight := first.String(e.Options.GetString("maxHeight"), "300")
 
 	// Get all options for this element...
-	options, _ := form.GetLookupCodes(element, schemaElement, provider)
+	options, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	b.Div().Class("multiselect").Script("install multiselect(sort:" + convert.String(sortable) + ")")
 	b.Div().Class("options").Style("max-height:" + maxHeight + "px")
 
-	elementID := element.ID
+	elementID := e.ID
 
 	if elementID == "" {
-		elementID = "multiselect-" + element.Path
+		elementID = "multiselect-" + e.Path
 	}
 
 	group := groupie.New()
@@ -85,7 +86,7 @@ func (widget Multiselect) Edit(element *form.Element, s *schema.Schema, provider
 
 		b.Label(optionID)
 
-		input := b.Input("checkbox", element.Path).ID(optionID).Value(option.Value)
+		input := b.Input("checkbox", e.Path).ID(optionID).Value(option.Value)
 
 		if compare.Contains(valueSlice, option.Value) {
 			input.Attr("checked", "true")

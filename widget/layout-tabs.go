@@ -8,27 +8,26 @@ import (
 	"github.com/benpate/form"
 
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type LayoutTabs struct{}
 
-func (widget LayoutTabs) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return LayoutTabs{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return LayoutTabs{}.View(f, e, provider, value, b)
 	}
 
-	if element.ID == "" {
-		element.ID = "tabcontainer"
+	if e.ID == "" {
+		e.ID = "tabcontainer"
 	}
 
-	if len(element.Label) > 0 {
-		b.Div().Class("layout-title").InnerText(element.Label).Close()
+	if len(e.Label) > 0 {
+		b.Div().Class("layout-title").InnerText(e.Label).Close()
 	}
 
 	// Make a placeholder for labels
@@ -36,17 +35,19 @@ func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider 
 
 	// If we have a configuration option for labels,
 	// parse it into a slice
-	if labelString, ok := element.Options.GetStringOK("labels"); ok && (labelString != "") {
+	if labelString, ok := e.Options.GetStringOK("labels"); ok && (labelString != "") {
 		labels = strings.Split(labelString, ",")
 	}
 
 	b.Div().Class("tabs").Script("install TabContainer")
 	b.Div().Role("tablist")
 
-	for index, child := range element.Children {
+	selectedIndex := f.OptionInt("selected-tab")
+
+	for index, child := range e.Children {
 
 		indexString := strconv.Itoa(index)
-		child.ID = element.ID + "-" + indexString // Set ID for tab + panel
+		child.ID = e.ID + "-" + indexString // Set ID for tab + panel
 
 		var label string
 
@@ -72,7 +73,7 @@ func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider 
 			tab.Script(script)
 		}
 
-		if index == 0 {
+		if index == selectedIndex {
 			tab.Aria("selected", "true")
 		}
 
@@ -81,11 +82,11 @@ func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider 
 
 	b.Close() // role=tablist
 
-	for index, child := range element.Children {
+	for index, child := range e.Children {
 
 		// Data overrides (just for this loop)
-		child.ID = element.ID + "-" + strconv.Itoa(index) // Set ID for tab + panel
-		child.Label = ""                                  // Remove remaining labels labels
+		child.ID = e.ID + "-" + strconv.Itoa(index) // Set ID for tab + panel
+		child.Label = ""                            // Remove remaining labels labels
 
 		panel := b.Div().
 			Role("tabpanel").
@@ -98,7 +99,7 @@ func (widget LayoutTabs) Edit(element *form.Element, s *schema.Schema, provider 
 
 		panel.EndBracket()
 
-		if err := child.Edit(s, provider, value, b.SubTree()); err != nil {
+		if err := child.Edit(f, provider, value, b.SubTree()); err != nil {
 			return derp.Wrap(err, "form.HTMLLayoutTabs", "Error writing child", child)
 		}
 
@@ -118,6 +119,6 @@ func (widget LayoutTabs) ShowLabels() bool {
 	return false
 }
 
-func (widget LayoutTabs) Encoding(element *form.Element) string {
-	return collectEncoding(element.Children)
+func (widget LayoutTabs) Encoding(e *form.Element) string {
+	return collectEncoding(e.Children)
 }

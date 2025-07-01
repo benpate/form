@@ -3,20 +3,19 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type Heading struct{}
 
-func (widget Heading) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	b.H2().InnerText(element.Label).Close()
-	b.Div().InnerHTML(element.Description).Close()
+func (widget Heading) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	b.H2().InnerText(e.Label).Close()
+	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
 
-func (widget Heading) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	b.H2().InnerText(element.Label).Close()
-	b.Div().InnerHTML(element.Description).Close()
+func (widget Heading) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	b.H2().InnerText(e.Label).Close()
+	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
 

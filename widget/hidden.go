@@ -4,34 +4,33 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
-	"github.com/benpate/rosetta/schema"
 )
 
 type Hidden struct{}
 
-func (widget Hidden) View(_ *form.Element, _ *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
 // Hidden registers a text <input> widget into the library
-func (widget Hidden) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Hidden{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return Hidden{}.View(f, e, nil, value, b)
 	}
 
 	// find the path and schema to use
 	var elementValue string
 
-	if optionValue, ok := element.Options["value"]; ok {
+	if optionValue, ok := e.Options["value"]; ok {
 		elementValue = convert.String(optionValue)
 	} else {
-		elementValue = element.GetString(value, s)
+		elementValue = e.GetString(value, &f.Schema)
 	}
 
 	// Start building a new tag
-	b.Input("hidden", element.Path).
-		ID(element.Path).
+	b.Input("hidden", e.Path).
+		ID(e.Path).
 		Value(elementValue).
 		Close()
 

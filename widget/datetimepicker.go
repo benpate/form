@@ -12,31 +12,31 @@ import (
 
 type DateTimePicker struct{}
 
-func (widget DateTimePicker) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget DateTimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
-func (widget DateTimePicker) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget DateTimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return DateTimePicker{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return DateTimePicker{}.View(f, e, nil, value, b)
 	}
 
-	valueString := widget.getValue(element, s, value)
-	elementID := first.String(element.ID, "datetimepicker-"+element.Path)
+	valueString := widget.getValue(e, &f.Schema, value)
+	elementID := first.String(e.ID, "datetimepicker-"+e.Path)
 
 	// Start building a new tag
-	tag := b.Input("datetime-local", element.Path).
+	tag := b.Input("datetime-local", e.Path).
 		ID(elementID).
 		Value(valueString).
 		TabIndex("0")
 
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
@@ -44,9 +44,9 @@ func (widget DateTimePicker) Edit(element *form.Element, s *schema.Schema, _ for
 	return nil
 }
 
-func (widget DateTimePicker) getValue(element *form.Element, s *schema.Schema, value any) string {
+func (widget DateTimePicker) getValue(e *form.Element, s *schema.Schema, value any) string {
 
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, s)
 
 	if result, ok := convert.TimeOk(valueString, time.Time{}); ok {
 		return result.Format("2006-01-02T15:04")

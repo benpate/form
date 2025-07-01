@@ -23,8 +23,8 @@ func TestToggle_View(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := form.Edit(&schema, testLookupProvider{}, &value, builder)
+	// schema := getTestSchema()
+	err := form.Edit(nil, testLookupProvider{}, &value, builder)
 	expected := `<span data-script="install toggle" name="terms" value="true"></span>`
 
 	require.Nil(t, err)
@@ -45,8 +45,8 @@ func TestToggle_Edit(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := form.Edit(&schema, testLookupProvider{}, &value, builder)
+	// schema := getTestSchema()
+	err := form.Edit(nil, testLookupProvider{}, &value, builder)
 	expected := `<span data-script="install toggle" name="terms" value="true"></span>`
 
 	require.Nil(t, err)

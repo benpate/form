@@ -42,9 +42,9 @@ func TestLayoutVertical(t *testing.T) {
 		"age":   27,
 	}
 
-	schema := getTestSchema()
+	// schema := getTestSchema()
 	builder := html.New()
-	err := element.Edit(&schema, nil, &value, builder)
+	err := element.Edit(nil, nil, &value, builder)
 
 	require.Nil(t, err)
 	// expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" value="John Connor" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" value="john@resistance.mil" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" value="27" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`
@@ -76,8 +76,7 @@ func TestRules(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := form.Edit(&schema, nil, nil, builder)
+	err := form.Edit(nil, nil, nil, builder)
 	require.Nil(t, err)
 
 	// expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`

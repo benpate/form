@@ -10,56 +10,56 @@ import (
 
 type Upload struct{}
 
-func (widget Upload) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	if valueString == "" {
 		valueString = "N/A"
 	}
 
-	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
-func (widget Upload) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Upload{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return Upload{}.View(f, e, nil, value, b)
 	}
 
-	elementID := element.ID
+	elementID := e.ID
 
 	if elementID == "" {
-		elementID = element.Path + ".upload"
+		elementID = e.Path + ".upload"
 	}
 
-	widget.preview(element, s, value, b.SubTree())
+	widget.preview(e, &f.Schema, value, b.SubTree())
 
-	multiple := iif(element.Options.GetBool("multiple"), "multiple", "")
-	b.Input("file", element.Path).ID(elementID).
-		Attr("accept", element.Options.GetString("accept")).
+	multiple := iif(e.Options.GetBool("multiple"), "multiple", "")
+	b.Input("file", e.Path).ID(elementID).
+		Attr("accept", e.Options.GetString("accept")).
 		Attr("multiple", multiple).
-		Aria("label", element.Label).
-		Aria("description", element.Description).
+		Aria("label", e.Label).
+		Aria("description", e.Description).
 		TabIndex("0").
 		Close()
 
 	return nil
 }
 
-func (widget Upload) preview(element *form.Element, s *schema.Schema, value any, b *html.Builder) {
+func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *html.Builder) {
 
 	// Get the URL for the uploaded file
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, s)
 
 	if valueString == "" {
 		return
 	}
 
 	// Different file types are displayed differently
-	accept := element.Options.GetString("accept")
+	accept := e.Options.GetString("accept")
 	acceptType, _, _ := strings.Cut(accept, "/")
 
 	b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
@@ -81,8 +81,8 @@ func (widget Upload) preview(element *form.Element, s *schema.Schema, value any,
 		b.A(valueString).InnerText(valueString).Close()
 	}
 
-	b.Input("hidden", element.Path).Value(element.GetString(value, s)).Close()
-	if deleteLink := element.Options.GetString("delete"); deleteLink != "" {
+	b.Input("hidden", e.Path).Value(e.GetString(value, s)).Close()
+	if deleteLink := e.Options.GetString("delete"); deleteLink != "" {
 		b.Span().
 			Class("pos-absolute-top-right text-xs button").
 			Attr("hx-post", deleteLink).

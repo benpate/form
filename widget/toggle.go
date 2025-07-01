@@ -6,47 +6,46 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
-	"github.com/benpate/rosetta/schema"
 )
 
 // Toggle renders a custom toggle widget
 type Toggle struct{}
 
-func (widget Toggle) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 	valueBool := convert.Bool(valueString)
 
 	if valueBool {
-		b.Div().Class("layout-value").InnerText(element.Options.GetString("true-text")).Close()
+		b.Div().Class("layout-value").InnerText(e.Options.GetString("true-text")).Close()
 	} else {
-		b.Div().Class("layout-value").InnerText(element.Options.GetString("false-text")).Close()
+		b.Div().Class("layout-value").InnerText(e.Options.GetString("false-text")).Close()
 	}
 
 	return nil
 }
 
-func (widget Toggle) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Toggle{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return Toggle{}.View(f, e, nil, value, b)
 	}
 
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
-	id := "toggle-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + valueString
-	script := "install toggle " + element.Options.GetString("script")
+	valueString := e.GetString(value, &f.Schema)
+	id := "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString
+	script := "install toggle " + e.Options.GetString("script")
 
 	// Start building a new tag
-	tag := b.Span().ID(id).Script(script).Name(element.Path)
+	tag := b.Span().ID(id).Script(script).Name(e.Path)
 
 	if convert.Bool(valueString) {
 		tag.Value("true")
 	}
 
-	tag.Attr("text", element.Options.GetString("text"))
-	tag.Attr("true-text", element.Options.GetString("true-text"))
-	tag.Attr("false-text", element.Options.GetString("false-text"))
+	tag.Attr("text", e.Options.GetString("text"))
+	tag.Attr("true-text", e.Options.GetString("true-text"))
+	tag.Attr("false-text", e.Options.GetString("false-text"))
 
 	b.CloseAll()
 	return nil

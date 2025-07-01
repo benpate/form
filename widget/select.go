@@ -10,12 +10,12 @@ import (
 // Select renders a select box widget
 type Select struct{}
 
-func (widget Select) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Select) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueString := element.GetString(value, s)
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueString := e.GetString(value, &f.Schema)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	b.Div().Class("layout-value").EndBracket()
@@ -31,41 +31,41 @@ func (widget Select) View(element *form.Element, s *schema.Schema, provider form
 	return nil
 }
 
-func (widget Select) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Select{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return Select{}.View(f, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueSlice := element.GetSliceOfString(value, s)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
 
-	if element, ok := schemaElement.(schema.Array); ok {
-		schemaElement = element.Items
+	if e, ok := schemaElement.(schema.Array); ok {
+		schemaElement = e.Items
 	}
 
-	// Get all lookupCodes for this element...
-	lookupCodes, isWritable := form.GetLookupCodes(element, schemaElement, provider)
+	// Get all lookupCodes for this e...
+	lookupCodes, isWritable := form.GetLookupCodes(e, schemaElement, provider)
 
-	elementID := element.ID
+	elementID := e.ID
 
 	if elementID == "" {
-		elementID = "select-" + element.Path
+		elementID = "select-" + e.Path
 	}
 
 	selectBox := b.Container("select").
 		ID(elementID).
-		Name(element.Path).
-		Aria("labelledby", element.ID+".label").
-		Aria("describedby", element.ID+".description").
+		Name(e.Path).
+		Aria("labelledby", e.ID+".label").
+		Aria("describedby", e.ID+".description").
 		TabIndex("0")
 
-	if isRequired(element, schemaElement) {
+	if isRequired(e, schemaElement) {
 		selectBox.Attr("required", "true")
 	}
 
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
 

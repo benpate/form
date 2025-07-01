@@ -11,59 +11,59 @@ import (
 
 type Text struct{}
 
-func (widget Text) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Text) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
-func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Text{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return Text{}.View(f, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueString := element.GetString(value, s)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueString := e.GetString(value, &f.Schema)
 
-	if element.ID == "" {
-		element.ID = element.Path + "." + element.Type
+	if e.ID == "" {
+		e.ID = e.Path + "." + e.Type
 	}
 
 	scripts := make([]string, 0)
 
-	if validator := element.Options.GetString("validator"); validator != "" {
+	if validator := e.Options.GetString("validator"); validator != "" {
 		b.Div().Class("badge-container").EndBracket()
 		scripts = append(scripts, `install validator(url:'`+validator+`')`)
 	}
 
 	// Start building a new tag
-	tag := b.Input("", element.Path).
-		ID(element.ID).
-		Aria("label", element.Label).
-		Aria("description", element.Description).
+	tag := b.Input("", e.Path).
+		ID(e.ID).
+		Aria("label", e.Label).
+		Aria("description", e.Description).
 		TabIndex("0")
 
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
-	if placeholder := element.Options.GetString("placeholder"); placeholder != "" {
+	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
 		tag.Attr("placeholder", placeholder)
 	}
 
 	// Enumeration Options
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 	if len(lookupCodes) > 0 {
-		tag.Attr("list", "datalist-"+element.Path)
+		tag.Attr("list", "datalist-"+e.Path)
 	}
 
 	// Custom CSS style
-	if style := element.Options.GetString("style"); style != "" {
+	if style := e.Options.GetString("style"); style != "" {
 		tag.Attr("style", style)
 	}
 
@@ -74,7 +74,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 		tag.Type("number")
 
-		tag.Attr("step", convert.String(convert.IntDefault(element.Options["step"], 1)))
+		tag.Attr("step", convert.String(convert.IntDefault(e.Options["step"], 1)))
 
 		if s.Minimum.IsPresent() {
 			tag.Attr("min", s.Minimum.String())
@@ -84,13 +84,13 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required || element.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required") {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -98,7 +98,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 		tag.Type("number")
 
-		tag.Attr("step", convert.String(convert.FloatDefault(element.Options["step"], 0.01)))
+		tag.Attr("step", convert.String(convert.FloatDefault(e.Options["step"], 0.01)))
 
 		if s.Minimum.IsPresent() {
 			tag.Attr("min", s.Minimum.String())
@@ -108,13 +108,13 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required || element.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required") {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -154,17 +154,17 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 
 		if s.Pattern != "" {
 			tag.Attr("pattern", s.Pattern)
-		} else if pattern := element.Options.GetString("pattern"); pattern != "" {
+		} else if pattern := e.Options.GetString("pattern"); pattern != "" {
 			tag.Attr("pattern", pattern)
 		}
 
-		if s.Required || element.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required") {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := element.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -172,7 +172,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		tag.Type("text")
 	}
 
-	if autocomplete := element.Options.GetString("autocomplete"); autocomplete != "" {
+	if autocomplete := e.Options.GetString("autocomplete"); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
 
 		if autocomplete == "off" {
@@ -180,11 +180,11 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 		}
 	}
 
-	if autocorrect := element.Options.GetString("autocorrect"); autocorrect != "" {
+	if autocorrect := e.Options.GetString("autocorrect"); autocorrect != "" {
 		tag.Attr("autocorrect", autocorrect)
 	}
 
-	if spellcheck := element.Options.GetString("spellcheck"); spellcheck != "" {
+	if spellcheck := e.Options.GetString("spellcheck"); spellcheck != "" {
 		tag.Attr("spellcheck", spellcheck)
 	}
 
@@ -196,7 +196,7 @@ func (widget Text) Edit(element *form.Element, s *schema.Schema, provider form.L
 	tag.Close()
 
 	if len(lookupCodes) > 0 {
-		b.Container("datalist").ID("datalist-" + element.Path)
+		b.Container("datalist").ID("datalist-" + e.Path)
 		for _, lookupCode := range lookupCodes {
 			b.Empty("option").Value(lookupCode.Value).Close() // Datalist options do not have an innerHTML
 		}

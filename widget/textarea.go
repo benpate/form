@@ -10,46 +10,46 @@ import (
 // TextArea renders a long text <textarea> widget
 type TextArea struct{}
 
-func (widget TextArea) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: apply schema formats?
 	b.Div().Class("layout-value").InnerText(valueString).Close()
 	return nil
 }
 
-func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return TextArea{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return TextArea{}.View(f, e, nil, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueString := element.GetString(value, s)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueString := e.GetString(value, &f.Schema)
 
-	if element.ID == "" {
-		element.ID = element.Path + "." + element.Type
+	if e.ID == "" {
+		e.ID = e.Path + "." + e.Type
 	}
 
 	// Start building a new tag
 	tag := b.Container("textarea").
-		Name(element.Path).
-		ID(element.ID).
-		Attr("hint", element.Description).
-		Attr("rows", element.Options.GetString("rows")).
-		Aria("labelledby", element.ID+".label").
-		Aria("describedby", element.ID+".description").
+		Name(e.Path).
+		ID(e.ID).
+		Attr("hint", e.Description).
+		Attr("rows", e.Options.GetString("rows")).
+		Aria("labelledby", e.ID+".label").
+		Aria("describedby", e.ID+".description").
 		TabIndex("0")
 
 	// Autofocus
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
 	// Custom CSS style
-	if style := element.Options.GetString("style"); style != "" {
+	if style := e.Options.GetString("style"); style != "" {
 		tag.Attr("style", style)
 	}
 
@@ -73,7 +73,7 @@ func (widget TextArea) Edit(element *form.Element, s *schema.Schema, _ form.Look
 		}
 
 		if schemaString.MaxLength > 0 {
-			if element.Options.GetBool("showLimit") {
+			if e.Options.GetBool("showLimit") {
 				tag.Attr("script", "install showLimit")
 			}
 		}

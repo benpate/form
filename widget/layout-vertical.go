@@ -3,22 +3,21 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type LayoutVertical struct{}
 
-func (widget LayoutVertical) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
-	return drawLayout(element, s, provider, value, b, "vertical", false)
+func (widget LayoutVertical) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+	return drawLayout(f, e, provider, value, b, "vertical", false)
 }
 
-func (widget LayoutVertical) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutVertical) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return drawLayout(element, s, provider, value, b, "vertical", false)
+	if e.ReadOnly {
+		return drawLayout(f, e, provider, value, b, "vertical", false)
 	}
 
-	return drawLayout(element, s, provider, value, b, "vertical", true)
+	return drawLayout(f, e, provider, value, b, "vertical", true)
 }
 
 /***********************************

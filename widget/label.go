@@ -3,30 +3,29 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type Label struct{}
 
-func (widget Label) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	if element.Label != "" {
-		b.Div().InnerText(element.Label).Close()
+func (widget Label) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	if e.Label != "" {
+		b.Div().InnerText(e.Label).Close()
 	}
 
-	if element.Description != "" {
-		b.Div().InnerHTML(element.Description).Close()
+	if e.Description != "" {
+		b.Div().InnerHTML(e.Description).Close()
 	}
 
 	return nil
 }
 
-func (widget Label) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	if element.Label != "" {
-		b.Div().InnerText(element.Label).Close()
+func (widget Label) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	if e.Label != "" {
+		b.Div().InnerText(e.Label).Close()
 	}
 
-	if element.Description != "" {
-		b.Div().InnerHTML(element.Description).Close()
+	if e.Description != "" {
+		b.Div().InnerHTML(e.Description).Close()
 	}
 
 	return nil

@@ -41,7 +41,7 @@ func (element *Element) Widget() (Widget, error) {
 	return widget, nil
 }
 
-func (element *Element) View(schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (element *Element) View(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	widget, err := element.Widget()
 
@@ -49,11 +49,11 @@ func (element *Element) View(schema *schema.Schema, lookupProvider LookupProvide
 		return err
 	}
 
-	return widget.View(element, schema, lookupProvider, value, b)
+	return widget.View(form, element, lookupProvider, value, b)
 
 }
 
-func (element *Element) Edit(schema *schema.Schema, lookupProvider LookupProvider, value any, b *html.Builder) error {
+func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	widget, err := element.Widget()
 
@@ -61,7 +61,7 @@ func (element *Element) Edit(schema *schema.Schema, lookupProvider LookupProvide
 		return err
 	}
 
-	return widget.Edit(element, schema, lookupProvider, value, b)
+	return widget.Edit(form, element, lookupProvider, value, b)
 }
 
 func (element *Element) Encoding() string {

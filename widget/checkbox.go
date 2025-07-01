@@ -11,12 +11,12 @@ import (
 
 type Checkbox struct{}
 
-func (widget Checkbox) View(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Checkbox) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
-	schemaElement := element.GetSchema(schema)
-	valueSlice := element.GetSliceOfString(value, schema)
-	lookupCodes := widget.getLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
+	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
 
 	first := true
 
@@ -39,24 +39,24 @@ func (widget Checkbox) View(element *form.Element, schema *schema.Schema, provid
 	return nil
 }
 
-func (widget Checkbox) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Checkbox) Edit(form *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Checkbox{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return Checkbox{}.View(form, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueSlice := element.GetSliceOfString(value, s)
-	lookupCodes := widget.getLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&form.Schema)
+	valueSlice := e.GetSliceOfString(value, &form.Schema)
+	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
-		id := "checkbox-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + lookupCode.Value
+		id := "checkbox-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + lookupCode.Value
 
 		label := b.Label(id).ID("label-" + id)
 
-		checkbox := b.Input("checkbox", element.Path).
+		checkbox := b.Input("checkbox", e.Path).
 			ID(id).
 			Value(lookupCode.Value).
 			Aria("label", lookupCode.Label).

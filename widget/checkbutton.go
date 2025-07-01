@@ -7,50 +7,49 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/compare"
-	"github.com/benpate/rosetta/schema"
 )
 
 // CheckButton renders a fancy checkbox widget that looks like a button
 type CheckButton struct{}
 
-func (widget CheckButton) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget CheckButton) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-func (widget CheckButton) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return CheckButton{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return CheckButton{}.View(f, e, nil, value, b)
 	}
 
 	// Collect values to use in the Widget
-	selectedValues, err := s.Get(value, element.Path)
+	selectedValues, err := f.Schema.Get(value, e.Path)
 
 	if err != nil {
-		derp.Report(derp.Wrap(err, "form.checkbutton.Edit", "Error getting value for CheckButton", element.Path, value))
+		derp.Report(derp.Wrap(err, "form.checkbutton.Edit", "Error getting value for CheckButton", e.Path, value))
 	}
 
-	elementValue := element.Options.GetString("value")
-	id := "checkbutton-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + elementValue
+	elementValue := e.Options.GetString("value")
+	id := "checkbutton-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + elementValue
 
 	// Build the widget HTML
 	b.Label(id).ID("label-" + id).Class("checkbutton")
 
-	if icon := element.Options.GetString("icon"); icon != "" {
+	if icon := e.Options.GetString("icon"); icon != "" {
 		b.I().Class("margin-horizontal", "bi", "bi-"+icon).Style("font-size:32px;").Close()
 	}
 
 	b.Div().Class("flex-column")
-	b.Div().Class("bold").InnerText(element.Label).Close()
-	b.Div().Class("text-sm", "text-gray").InnerText(element.Description).Close()
+	b.Div().Class("bold").InnerText(e.Label).Close()
+	b.Div().Class("text-sm", "text-gray").InnerText(e.Description).Close()
 
-	checkbox := b.Input("checkbox", element.Path).
+	checkbox := b.Input("checkbox", e.Path).
 		ID(id).
 		Value(elementValue).
-		Class(element.Options.GetString("class")).
-		Script(element.Options.GetString("script")).
-		Aria("label", element.Label).
-		Aria("description", element.Description).
+		Class(e.Options.GetString("class")).
+		Script(e.Options.GetString("script")).
+		Aria("label", e.Label).
+		Aria("description", e.Description).
 		TabIndex("0")
 
 	if compare.Contains(selectedValues, elementValue) {

@@ -3,18 +3,17 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type HTML struct{}
 
-func (widget HTML) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	b.Div().InnerHTML(element.Description).Close()
+func (widget HTML) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
 
-func (widget HTML) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
-	b.Div().InnerHTML(element.Description).Close()
+func (widget HTML) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
 

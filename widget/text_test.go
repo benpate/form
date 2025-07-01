@@ -18,8 +18,8 @@ func TestInteger(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="age" id="age.text" tabIndex="0" type="number" step="1" min="10" max="100" required="true">`
 
 	require.Nil(t, err)
@@ -36,8 +36,8 @@ func TestFloat(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="distance" id="distance.text" tabIndex="0" type="number" step="0.01" min="10" max="100" required="true">`
 
 	require.Nil(t, err)
@@ -54,8 +54,8 @@ func TestText(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="username" id="username.text" tabIndex="0" type="text" minlength="10" maxlength="100" pattern="[a-z]+" required="true">`
 
 	require.Nil(t, err)
@@ -74,8 +74,8 @@ func TestDescription(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="name" id="name.text" aria-label="Widget Label Here... uwu" aria-description="Hint text no longer added to widgets" tabIndex="0" type="text" maxlength="50">`
 
 	require.Nil(t, err)
@@ -92,8 +92,8 @@ func TestTextTags(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="tags" id="tags.text" tabIndex="0" list="datalist-tags" type="text"><datalist id="datalist-tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`
 
 	require.Nil(t, err)
@@ -110,8 +110,8 @@ func TestTextTagsWithID(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="tags" id="tags.text" tabIndex="0" list="datalist-tags" type="text"><datalist id="datalist-tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`
 
 	require.Nil(t, err)
@@ -132,8 +132,8 @@ func TestTextOptions(t *testing.T) {
 	}
 
 	builder := html.New()
-	schema := getTestSchema()
-	err := element.Edit(&schema, testLookupProvider{}, nil, builder)
+	// schema := getTestSchema()
+	err := element.Edit(nil, testLookupProvider{}, nil, builder)
 	expected := `<input name="tag" id="tag" tabIndex="0" list="datalist-tag" type="text"><datalist id="datalist-tag"><option value="ONE"><option value="TWO"><option value="THREE"><option value="FOUR"><option value="FIVE"></datalist>`
 
 	require.Nil(t, err)

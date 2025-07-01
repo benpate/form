@@ -12,32 +12,32 @@ import (
 
 type TimePicker struct{}
 
-func (widget TimePicker) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget TimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
-func (widget TimePicker) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget TimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return TimePicker{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return TimePicker{}.View(f, e, nil, value, b)
 	}
 
-	valueString := widget.getValue(element, s, value)
-	elementID := first.String(element.ID, "timepicker-"+element.Path)
+	valueString := widget.getValue(e, &f.Schema, value)
+	elementID := first.String(e.ID, "timepicker-"+e.Path)
 
 	// Start building a new tag
-	tag := b.Input("time", element.Path).
+	tag := b.Input("time", e.Path).
 		ID(elementID).
 		Value(valueString).
 		TabIndex("0")
 
-	if focus, ok := element.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
@@ -45,9 +45,9 @@ func (widget TimePicker) Edit(element *form.Element, s *schema.Schema, _ form.Lo
 	return nil
 }
 
-func (widget TimePicker) getValue(element *form.Element, s *schema.Schema, value any) string {
+func (widget TimePicker) getValue(e *form.Element, s *schema.Schema, value any) string {
 
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, s)
 
 	if result, ok := convert.TimeOk(valueString, time.Time{}); ok {
 		return result.Format("15:04")

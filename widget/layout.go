@@ -4,29 +4,28 @@ import (
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
-func drawLayout(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder, alignment string, edit bool) error {
+func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder, alignment string, edit bool) error {
 
 	const location = "form.drawLayout"
 	var result error
 
 	b.Div().Class("layout", "layout-"+alignment)
 
-	if len(element.Label) > 0 {
-		b.Div().Class("layout-title").InnerText(element.Label).Close()
+	if len(e.Label) > 0 {
+		b.Div().Class("layout-title").InnerText(e.Label).Close()
 	}
 
-	if len(element.Description) > 0 {
-		b.Div().Class("layout-description").InnerHTML(element.Description).Close()
+	if len(e.Description) > 0 {
+		b.Div().Class("layout-description").InnerHTML(e.Description).Close()
 	}
 
 	b.Div().Class("layout-elements")
 
-	for index := range element.Children {
+	for index := range e.Children {
 
-		child := element.Children[index]
+		child := e.Children[index]
 
 		if child.ID == "" {
 			child.ID = child.Path + "." + child.Type
@@ -58,12 +57,12 @@ func drawLayout(element *form.Element, schema *schema.Schema, provider form.Look
 
 		// Draw the edit or view version of this element
 		if edit {
-			if err := widget.Edit(&child, schema, provider, value, b.SubTree()); err != nil {
-				return derp.Wrap(err, location, "Error rendering child (edit)", element, index, child)
+			if err := widget.Edit(f, &child, provider, value, b.SubTree()); err != nil {
+				return derp.Wrap(err, location, "Error rendering child (edit)", e, index, child)
 			}
 		} else {
-			if err := widget.View(&child, schema, provider, value, b.SubTree()); err != nil {
-				return derp.Wrap(err, location, "Error rendering child (view)", element, index, child)
+			if err := widget.View(f, &child, provider, value, b.SubTree()); err != nil {
+				return derp.Wrap(err, location, "Error rendering child (view)", e, index, child)
 			}
 		}
 

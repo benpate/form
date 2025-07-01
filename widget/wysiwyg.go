@@ -3,34 +3,33 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type WYSIWYG struct{}
 
-func (widget WYSIWYG) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 	b.WriteString(valueString) // TODO: LOW: apply schema formats?
 	return nil
 }
 
-func (widget WYSIWYG) Edit(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget WYSIWYG) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return WYSIWYG{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return WYSIWYG{}.View(f, e, nil, value, b)
 	}
 
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// Start building a new tag
-	b.Input("hidden", element.Path).
+	b.Input("hidden", e.Path).
 		Value(valueString).
 		Close()
 
 	b.Div().ID("content-editor")
-	b.Div().Class("wysiwyg").Script("install wysiwyg(name:'" + element.Path + "') install hotkey")
+	b.Div().Class("wysiwyg").Script("install wysiwyg(name:'" + e.Path + "') install hotkey")
 	b.Div().Class("wysiwyg-toolbar").Attr("hidden", "true")
 	{
 		b.Span().Class("wysiwyg-toolbar-group").EndBracket()

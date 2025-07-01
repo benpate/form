@@ -3,34 +3,33 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type Colorpicker struct{}
 
-func (widget Colorpicker) View(element *form.Element, s *schema.Schema, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Colorpicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", element.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
 	return nil
 }
 
-func (widget Colorpicker) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Colorpicker) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Colorpicker{}.View(element, s, nil, value, b)
+	if e.ReadOnly {
+		return Colorpicker{}.View(f, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	valueString := element.GetString(value, s)
+	valueString := e.GetString(value, &f.Schema)
 
 	// Start building a new tag
 	b.Div().
-		Data("label", element.Label).
-		Data("description", element.Description).
-		Data("path", element.Path).
+		Data("label", e.Label).
+		Data("description", e.Description).
+		Data("path", e.Path).
 		Data("value", valueString).
 		Script("install colorpicker").
 		Close()

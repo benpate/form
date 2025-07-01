@@ -3,17 +3,16 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 )
 
 type Radio struct{}
 
-func (widget Radio) View(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueString := element.GetString(value, s)
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueString := e.GetString(value, &f.Schema)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	b.Div().Class("layout-value")
@@ -28,23 +27,23 @@ func (widget Radio) View(element *form.Element, s *schema.Schema, provider form.
 	return nil
 }
 
-func (widget Radio) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Radio) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return Radio{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return Radio{}.View(f, e, provider, value, b)
 	}
 
 	// Calculate the element's ID
-	id := element.ID
+	id := e.ID
 
 	if id == "" {
-		id = element.Path + "." + element.Type
+		id = e.Path + "." + e.Type
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueString := element.GetString(value, s)
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueString := e.GetString(value, &f.Schema)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
@@ -53,7 +52,7 @@ func (widget Radio) Edit(element *form.Element, s *schema.Schema, provider form.
 		label := b.Label(radioID).
 			ID(id + ".label")
 
-		radio := b.Input("radio", element.Path).
+		radio := b.Input("radio", e.Path).
 			ID(radioID).
 			Value(lookupCode.Value).
 			Aria("label", lookupCode.Label).

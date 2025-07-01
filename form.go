@@ -2,23 +2,28 @@ package form
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/benpate/derp"
 	"github.com/benpate/html"
+	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/rs/zerolog/log"
 )
 
 type Form struct {
 	Schema  schema.Schema
 	Element Element
+	Options []string
 }
 
 // New returns a fully initialized Form object (with all required values)
-func New(schema schema.Schema, element Element) Form {
+func New(schema schema.Schema, element Element, options ...string) Form {
 	return Form{
 		Schema:  schema,
 		Element: element,
+		Options: options,
 	}
 }
 
@@ -29,8 +34,8 @@ func Viewer(schema schema.Schema, element Element, value any, lookupProvider Loo
 }
 
 // Viewer creates an in-place form and executes its "Editorr" method
-func Editor(schema schema.Schema, element Element, value any, lookupProvider LookupProvider) (string, error) {
-	form := New(schema, element)
+func Editor(schema schema.Schema, element Element, value any, lookupProvider LookupProvider, options ...string) (string, error) {
+	form := New(schema, element, options...)
 	return form.Editor(value, lookupProvider)
 }
 
@@ -40,6 +45,9 @@ func Editor(schema schema.Schema, element Element, value any, lookupProvider Loo
 
 // DrawString() generates this form as a string
 func (form *Form) Editor(value any, lookupProvider LookupProvider) (string, error) {
+
+	spew.Dump(form.OptionInt("selected-tab"))
+
 	builder := html.New()
 	err := form.BuildEditor(value, lookupProvider, builder)
 	return builder.String(), err
@@ -54,12 +62,12 @@ func (form *Form) Viewer(value any, lookupProvider LookupProvider) (string, erro
 
 // BuildEditor generates an editable view of this form
 func (form *Form) BuildEditor(value any, lookupProvider LookupProvider, builder *html.Builder) error {
-	return form.Element.Edit(&form.Schema, lookupProvider, value, builder)
+	return form.Element.Edit(form, lookupProvider, value, builder)
 }
 
 // BuildViewer generates a read-only view of this form
 func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder *html.Builder) error {
-	return form.Element.View(&form.Schema, lookupProvider, value, builder)
+	return form.Element.View(form, lookupProvider, value, builder)
 }
 
 /********************************
@@ -136,4 +144,27 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 // Default is ""
 func (form *Form) Encoding() string {
 	return form.Element.Encoding()
+}
+
+func (form *Form) OptionString(name string) string {
+
+	for _, option := range form.Options {
+		if strings.HasPrefix(option, name+":") {
+			return strings.TrimPrefix(option, name+":")
+		}
+	}
+	return ""
+}
+
+func (form *Form) OptionInt(name string) int {
+
+	for _, option := range form.Options {
+		if strings.HasPrefix(option, name+":") {
+			optionString := strings.TrimPrefix(option, name+":")
+			optionString = strings.TrimSpace(optionString)
+			return convert.Int(optionString)
+		}
+	}
+
+	return 0
 }

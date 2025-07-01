@@ -12,12 +12,12 @@ import (
 // CheckButtonGroup renders a group of fancy checkboxes that look like buttons
 type CheckButtonGroup struct{}
 
-func (widget CheckButtonGroup) View(element *form.Element, schema *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
-	schemaElement := element.GetSchema(schema)
-	valueSlice := element.GetSliceOfString(value, schema)
-	lookupCodes := widget.getLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
+	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
 
 	first := true
 
@@ -40,20 +40,20 @@ func (widget CheckButtonGroup) View(element *form.Element, schema *schema.Schema
 	return nil
 }
 
-func (widget CheckButtonGroup) Edit(element *form.Element, s *schema.Schema, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if element.ReadOnly {
-		return CheckButtonGroup{}.View(element, s, provider, value, b)
+	if e.ReadOnly {
+		return CheckButtonGroup{}.View(f, e, provider, value, b)
 	}
 
 	// find the path and schema to use
-	schemaElement := element.GetSchema(s)
-	valueSlice := element.GetSliceOfString(value, s)
-	lookupCodes := widget.getLookupCodes(element, schemaElement, provider)
+	schemaElement := e.GetSchema(&f.Schema)
+	valueSlice := e.GetSliceOfString(value, &f.Schema)
+	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
-		id := "checkbutton-" + strings.ReplaceAll(element.Path, ".", "-") + "-" + lookupCode.Value
+		id := "checkbutton-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + lookupCode.Value
 
 		b.Label(id).ID("label-" + id).Class("checkbutton")
 
@@ -65,13 +65,13 @@ func (widget CheckButtonGroup) Edit(element *form.Element, s *schema.Schema, pro
 		b.Div().Class("bold").InnerText(lookupCode.Label).Close()
 		b.Div().Class("text-sm", "text-gray").InnerText(lookupCode.Description).Close()
 
-		toggleButton := b.Input("checkbox", element.Path).
+		toggleButton := b.Input("checkbox", e.Path).
 			ID(id).
-			Class(element.Options.GetString("class")).
+			Class(e.Options.GetString("class")).
 			Value(lookupCode.Value).
 			Aria("label", lookupCode.Label).
 			Aria("description", lookupCode.Description).
-			Script(element.Options.GetString("script")).
+			Script(e.Options.GetString("script")).
 			TabIndex("0")
 
 		if slice.Contains(valueSlice, lookupCode.Value) {
@@ -87,13 +87,13 @@ func (widget CheckButtonGroup) Edit(element *form.Element, s *schema.Schema, pro
 }
 
 // getLookupCodes returns a list of LookupCodes for this element
-func (widget CheckButtonGroup) getLookupCodes(element *form.Element, schemaElement schema.Element, provider form.LookupProvider) []form.LookupCode {
+func (widget CheckButtonGroup) getLookupCodes(e *form.Element, schemaElement schema.Element, provider form.LookupProvider) []form.LookupCode {
 
-	lookupCodes, _ := form.GetLookupCodes(element, schemaElement, provider)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	if len(lookupCodes) == 0 {
 		lookupCodes = []form.LookupCode{
-			{Value: "true", Label: element.Label},
+			{Value: "true", Label: e.Label},
 		}
 	}
 
