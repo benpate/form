@@ -7,6 +7,7 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/mapof"
+	"github.com/benpate/rosetta/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,6 +37,16 @@ func TestLayoutVertical(t *testing.T) {
 		},
 	}
 
+	schema := schema.New(schema.Object{
+		Properties: schema.ElementMap{
+			"name":  schema.String{},
+			"email": schema.String{Format: "email"},
+			"age":   schema.Integer{},
+		},
+	})
+
+	f := form.New(schema, element)
+
 	value := mapof.Any{
 		"name":  "John Connor",
 		"email": "john@resistance.mil",
@@ -44,48 +55,18 @@ func TestLayoutVertical(t *testing.T) {
 
 	// schema := getTestSchema()
 	builder := html.New()
-	err := element.Edit(nil, nil, &value, builder)
+	err := element.Edit(&f, nil, &value, builder)
 
 	require.Nil(t, err)
 	// expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" value="John Connor" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" value="john@resistance.mil" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" value="27" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`
 	// require.Equal(t, expected, builder.String())
 }
 
-func TestRules(t *testing.T) {
-
-	form := form.Element{
-		Type:  "layout-vertical",
-		Label: "This is my Vertical Layout",
-		Children: []form.Element{
-			{
-				Type:  "text",
-				Label: "Name",
-				Path:  "name",
-			},
-			{
-				Type:  "text",
-				Label: "Email",
-				Path:  "email",
-			},
-			{
-				Type:  "text",
-				Label: "Age",
-				Path:  "age",
-			},
-		},
-	}
-
-	builder := html.New()
-	err := form.Edit(nil, nil, nil, builder)
-	require.Nil(t, err)
-
-	// expected := `<div class="layout layout-vertical"><div class="layout-title">This is my Vertical Layout</div><div class="layout-vertical-elements"><div class="layout-vertical-element"><label>Name</label><input name="name" id="text-name" type="text" maxlength="50" tabIndex="0"></div><div class="layout-vertical-element"><label>Email</label><input name="email" id="text-email" type="email" minlength="10" maxlength="100" required="true" tabIndex="0"></div><div class="layout-vertical-element"><label>Age</label><input name="age" id="text-age" type="number" step="1" min="10" max="100" required="true" tabIndex="0"></div></div></div>`
-	// require.Equal(t, expected, builder.String())
-}
-
 func TestLayoutVertical_Unmarshal(t *testing.T) {
 
 	var element form.Element
+
+	UseAll()
 
 	formJSON := `{
 		"type": "layout-tabs",

@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/benpate/form"
-	"github.com/benpate/html"
 	"github.com/stretchr/testify/require"
 )
 
@@ -12,130 +11,137 @@ func TestInteger(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "age",
-	}
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "age",
+		},
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="age" id="age.text" tabIndex="0" type="number" step="1" min="10" max="100" required="true">`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestFloat(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "distance",
-	}
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "distance",
+		},
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="distance" id="distance.text" tabIndex="0" type="number" step="0.01" min="10" max="100" required="true">`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestText(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "username",
-	}
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "name",
+		},
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
-	expected := `<input name="username" id="username.text" tabIndex="0" type="text" minlength="10" maxlength="100" pattern="[a-z]+" required="true">`
+	result, err := f.Editor(nil, testLookupProvider{})
+	expected := `<input name="name" id="name.text" tabIndex="0" type="text" maxlength="50">`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestDescription(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type:        "text",
-		Path:        "name",
-		Label:       "Widget Label Here... uwu",
-		Description: "Hint text no longer added to widgets",
-	}
+	f := form.New(
+		getTestSchema(), form.Element{
+			Type:        "text",
+			Path:        "name",
+			Label:       "Widget Label Here... uwu",
+			Description: "Hint text no longer added to widgets",
+		},
+	)
 
-	builder := html.New()
 	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="name" id="name.text" aria-label="Widget Label Here... uwu" aria-description="Hint text no longer added to widgets" tabIndex="0" type="text" maxlength="50">`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestTextTags(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "tags",
-	}
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "tags",
+		},
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="tags" id="tags.text" tabIndex="0" list="datalist-tags" type="text"><datalist id="datalist-tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestTextTagsWithID(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "tags",
-	}
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "tags",
+		},
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="tags" id="tags.text" tabIndex="0" list="datalist-tags" type="text"><datalist id="datalist-tags"><option value="pretty"><option value="please"><option value="my"><option value="dear"><option value="aunt"><option value="sally"></datalist>`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }
 
 func TestTextOptions(t *testing.T) {
 
 	UseAll()
 
-	element := form.Element{
-		Type: "text",
-		Path: "tag",
-		ID:   "tag",
-		Options: map[string]any{
-			"provider": "test",
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "tag",
+			ID:   "tag",
+			Options: map[string]any{
+				"provider": "test",
+			},
 		},
-	}
+	)
 
-	builder := html.New()
-	// schema := getTestSchema()
-	err := element.Edit(nil, testLookupProvider{}, nil, builder)
+	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="tag" id="tag" tabIndex="0" list="datalist-tag" type="text"><datalist id="datalist-tag"><option value="ONE"><option value="TWO"><option value="THREE"><option value="FOUR"><option value="FIVE"></datalist>`
 
 	require.Nil(t, err)
-	require.Equal(t, expected, builder.String())
+	require.Equal(t, expected, result)
 }

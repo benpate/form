@@ -1,8 +1,9 @@
-package form
+package widget
 
 import (
 	"testing"
 
+	"github.com/benpate/form"
 	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
 )
@@ -21,9 +22,9 @@ func TestFormEditor(t *testing.T) {
 		},
 	}
 
-	form := getTestForm()
+	f := getTestForm()
 
-	_, err := form.Viewer(data, nil)
+	_, err := f.Viewer(data, nil)
 	// expected := `<div class="layout layout-vertical"><div class="layout-vertical-elements"><div class="layout-vertical-element"><label for="idName">Name</label><div class="layout-value"></div></div><div class="layout-vertical-element"><label for="idEmail">Email</label><div class="layout-value"></div></div><div class="layout-vertical-element"><label for="idAge">Age</label><div class="layout-value"></div></div><div class="layout-vertical-element"><label for="idHuman">Human</label><div class="layout-value"></div></div><div class="layout-vertical-element"><div class="layout layout-horizontal"><div class="layout-horizontal-elements"><div class="layout-horizontal-element"><label for="idBiology">Biology</label><div class="layout-value"></div></div><div class="layout-horizontal-element"><label for="idPsychology">Psychology</label><div class="layout-value"></div></div><div class="layout-horizontal-element"><label for="idOntology">Ontology</label><div class="layout-value"></div></div></div></div></div></div></div>`
 	require.Nil(t, err)
 	// require.Equal(t, expected, result)
@@ -67,15 +68,17 @@ func TestAllPaths(t *testing.T) {
 	require.Equal(t, "ology.ontology", paths[6].Path)
 }
 
-func getTestForm() Form {
-	return New(getTestSchema(), getTestElement())
+func getTestForm() form.Form {
+	return form.New(getTestSchema(), getTestElement())
 }
 
-func getTestElement() Element {
+func getTestElement() form.Element {
 
-	return Element{
+	UseAll()
+
+	return form.Element{
 		Type: "layout-vertical",
-		Children: []Element{
+		Children: []form.Element{
 			{
 				Type:  "text",
 				ID:    "idName",
@@ -98,7 +101,7 @@ func getTestElement() Element {
 				Path:  "human",
 			}, {
 				Type: "layout-horizontal",
-				Children: []Element{
+				Children: []form.Element{
 					{
 						Type:  "textarea",
 						ID:    "idBiology",
