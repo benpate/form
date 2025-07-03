@@ -8,7 +8,7 @@ require (
 	github.com/benpate/derp v0.32.3
 	github.com/benpate/exp v0.8.5
 	github.com/benpate/html v0.16.12
-	github.com/benpate/rosetta v0.25.11
+	github.com/benpate/rosetta v0.25.12
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.10.0
 )
