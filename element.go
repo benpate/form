@@ -216,9 +216,9 @@ func (element *Element) AllElements() []*Element {
 	return result
 }
 
-/******************************
- * SERIALIZATION METHODS
- ******************************/
+/***********************************
+ * Serialization Methods
+ ***********************************/
 
 // UnmarshalMap parses data from a generic structure (mapof.Any) into a Form record.
 func (element *Element) UnmarshalMap(data map[string]any) error {

@@ -19,9 +19,9 @@ func (widget Heading) Edit(f *form.Form, e *form.Element, _ form.LookupProvider,
 	return nil
 }
 
-/***********************************
+/*******************************************
  * Wiget Metadata
- ***********************************/
+ *******************************************/
 
 func (widget Heading) ShowLabels() bool {
 	return false

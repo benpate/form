@@ -38,9 +38,9 @@ func Editor(schema schema.Schema, element Element, value any, lookupProvider Loo
 	return form.Editor(value, lookupProvider)
 }
 
-/********************************
+/***********************************
  * Drawing Methods
- ********************************/
+ ***********************************/
 
 // DrawString() generates this form as a string
 func (form *Form) Editor(value any, lookupProvider LookupProvider) (string, error) {
@@ -124,15 +124,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 		}
 	}
 
-	/* REMOVING because this should be handled when saving the object,
-	// not when setting the values.
-	//
-	// Validate that all of the data in the object are valid.
-	if err := form.Schema.Validate(object); err != nil {
-		return derp.Wrap(err, location, "Error validating object", form.Schema, object, values)
-	}
-	*/
-
+	// Success
 	return nil
 }
 
