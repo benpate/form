@@ -13,6 +13,7 @@ func UseAll() {
 	form.Use("datetime", DateTimePicker{})
 	form.Use("heading", Heading{})
 	form.Use("html", HTML{})
+	form.Use("html-remote", HTMLRemote{})
 	form.Use("hidden", Hidden{})
 	form.Use("label", Label{})
 	form.Use("layout-group", LayoutGroup{})
