@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
@@ -28,7 +30,7 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 		child := e.Children[index]
 
 		if child.ID == "" {
-			child.ID = child.Path + "." + child.Type
+			child.ID = strings.ReplaceAll(child.Path, ".", "_") + "_" + child.Type
 		}
 
 		widget, err := child.Widget()
