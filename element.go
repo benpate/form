@@ -55,6 +55,11 @@ func (element *Element) View(form *Form, lookupProvider LookupProvider, value an
 
 func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
+	// If this value is read only, then `View` its contents.
+	if element.ReadOnly {
+		return element.View(form, lookupProvider, value, b)
+	}
+
 	widget, err := element.Widget()
 
 	if err != nil {
@@ -223,6 +228,7 @@ func (element *Element) AllElements() []*Element {
 // UnmarshalMap parses data from a generic structure (mapof.Any) into a Form record.
 func (element *Element) UnmarshalMap(data map[string]any) error {
 
+	element.ID = convert.String(data["id"])
 	element.Type = convert.String(data["type"])
 	element.Path = convert.String(data["path"])
 	element.Label = convert.String(data["label"])
