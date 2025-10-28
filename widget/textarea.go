@@ -53,6 +53,11 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		tag.Attr("style", style)
 	}
 
+	// Add placeholder
+	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
+		tag.Attr("placeholder", placeholder)
+	}
+
 	// Add attributes that depend on what KIND of input we have.
 	if schemaString, ok := schemaElement.(schema.String); ok {
 
