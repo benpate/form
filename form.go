@@ -96,7 +96,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			visible, err := element.isInputVisible(&form.Schema, object)
 
 			if err != nil {
-				return derp.Wrap(err, location, "Error evaluating show-if expression", element.Options.GetString("show-if"))
+				return derp.Wrap(err, location, "Unable to evaluate show-if expression", element.Options.GetString("show-if"))
 			}
 
 			if !visible {
@@ -107,7 +107,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			newValue, updated, err := element.replaceNewLookup(lookupProvider, values.Get(element.Path))
 
 			if err != nil {
-				return derp.Wrap(err, location, "Error writing new lookup value")
+				return derp.Wrap(err, location, "Unable to write new lookup value")
 			}
 
 			if updated {
@@ -137,7 +137,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			// Unallowed data does not make it through the schema filter
 			// nolint: errcheck
 			if err := form.Schema.Set(object, element.Path, values[element.Path]); err != nil {
-				log.Debug().Err(err).Str("path", element.Path).Msg("Error setting value")
+				log.Debug().Err(err).Str("path", element.Path).Msg("Unable to set value")
 			}
 		}
 	}
