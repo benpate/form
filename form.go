@@ -114,6 +114,24 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 				values[element.Path] = []string{newValue}
 			}
 
+			// Get the Widget associated with this Element
+			widget, err := element.Widget()
+
+			if err != nil {
+				return derp.Wrap(err, location, "Unable to locate widget for element", element)
+			}
+
+			// If this element has a custom `SetURLValues` function, then
+			// use that instead of the default value
+			if setter, isSetter := widget.(URLValueSetter); isSetter {
+
+				if err := setter.SetURLValue(form, element, object, values); err != nil {
+					log.Debug().Err(err).Str("path", element.Path).Msg("Unable to set form value")
+				}
+
+				continue
+			}
+
 			// Update the original object with the new value
 			// Errors are intentionally ignored here.
 			// Unallowed data does not make it through the schema filter

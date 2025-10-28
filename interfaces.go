@@ -1,6 +1,8 @@
 package form
 
 import (
+	"net/url"
+
 	"github.com/benpate/html"
 )
 
@@ -28,6 +30,10 @@ type Widget interface {
 	Edit(form *Form, element *Element, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	ShowLabels() bool
 	Encoding(element *Element) string
+}
+
+type URLValueSetter interface {
+	SetURLValue(form *Form, element *Element, object any, values url.Values) error
 }
 
 // UnmarshalMaper wraps the UnmarshalMap interface
