@@ -9,7 +9,6 @@ import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
-	"github.com/davecgh/go-spew/spew"
 )
 
 // Place is a form widget that presents an address lookup box. It returns
@@ -171,8 +170,6 @@ func (widget Place) SetURLValue(form *form.Form, element *form.Element, object a
 
 	const location = "form.widget.Place.SetURLValue"
 
-	spew.Dump(location, values, object)
-
 	// Set Full Name
 	fullAddressPath := element.Path + ".fullAddress"
 	fullAddress := values.Get(fullAddressPath)
@@ -196,8 +193,6 @@ func (widget Place) SetURLValue(form *form.Form, element *form.Element, object a
 	if err := form.Schema.Set(object, latitudePath, latitude); err != nil {
 		return derp.Wrap(err, location, "Unable to set latitude", latitudePath, latitude)
 	}
-
-	spew.Dump(object)
 
 	// Success!
 	return nil
