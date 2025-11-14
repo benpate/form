@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/form"
 	"github.com/benpate/rosetta/schema"
 )
@@ -27,4 +29,14 @@ func isRequired(element *form.Element, schemaElement schema.Element) bool {
 	}
 
 	return false
+}
+
+func getElementID(element *form.Element) string {
+
+	result := element.ID
+	if result == "" {
+		result = element.Type + "-" + element.Path
+	}
+
+	return strings.ReplaceAll(result, ".", "-")
 }

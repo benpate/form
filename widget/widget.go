@@ -25,6 +25,7 @@ func UseAll() {
 	form.Use("place", Place{})
 	form.Use("radio", Radio{})
 	form.Use("select", Select{})
+	form.Use("select-group", SelectGroup{})
 	form.Use("text", Text{})
 	form.Use("textarea", TextArea{})
 	form.Use("time", TimePicker{})
