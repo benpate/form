@@ -34,7 +34,7 @@ func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 	e.ID = strings.ReplaceAll(e.ID, ".", "_")
 
 	searchID := e.ID + "_search"
-	fullAddressID := e.ID + "_fullAddress"
+	formattedID := e.ID + "_formatted"
 	latitudeID := e.ID + "_latitude"
 	longitudeID := e.ID + "_longitude"
 	menuID := e.ID + "_menu"
@@ -44,7 +44,7 @@ func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 	// Widget Wrapper + Positioning
 	b.Div().
 		ID(e.ID).
-		Script("install PlaceSelect", "install Menu(input:#"+fullAddressID+")").
+		Script("install PlaceSelect", "install Menu(input:#"+formattedID+")").
 		Data("hx-indicator", "#"+e.ID)
 
 	b.Div().Style("position:relative")
@@ -88,18 +88,18 @@ func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 		Value(widget.getString(e, &f.Schema, "longitude", value)).
 		Close()
 
-	// FullAddress (hidden)
-	b.Input("hidden", e.Path+".fullAddress").
-		ID(fullAddressID).
-		Class("PlaceSelectFullAddress").
-		Value(widget.getString(e, &f.Schema, "fullAddress", value)).
+	// Formatted (hidden)
+	b.Input("hidden", e.Path+".formatted").
+		ID(formattedID).
+		Class("PlaceSelectFormatted").
+		Value(widget.getString(e, &f.Schema, "formatted", value)).
 		Close()
 
 	// Search Box
 	tag := b.Input("text", "q").
 		ID(searchID).
 		Class("PlaceSelectSearch").
-		Value(widget.getString(e, &f.Schema, "fullAddress", value)).
+		Value(widget.getString(e, &f.Schema, "formatted", value)).
 		Aria("label", e.Label).
 		Aria("description", e.Description).
 		TabIndex("0").
@@ -171,11 +171,11 @@ func (widget Place) SetURLValue(form *form.Form, element *form.Element, object a
 	const location = "form.widget.Place.SetURLValue"
 
 	// Set Full Name
-	fullAddressPath := element.Path + ".fullAddress"
-	fullAddress := values.Get(fullAddressPath)
+	formattedPath := element.Path + ".formatted"
+	formatted := values.Get(formattedPath)
 
-	if err := form.Schema.Set(object, fullAddressPath, fullAddress); err != nil {
-		return derp.Wrap(err, location, "Unable to set fullAddress", fullAddressPath, fullAddress)
+	if err := form.Schema.Set(object, formattedPath, formatted); err != nil {
+		return derp.Wrap(err, location, "Unable to set formatted", formattedPath, formatted)
 	}
 
 	// Set Longitude
