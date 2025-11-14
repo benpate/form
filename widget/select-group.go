@@ -10,7 +10,6 @@ import (
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
-	"github.com/davecgh/go-spew/spew"
 )
 
 // SelectGroup renders two linked select boxes
@@ -131,16 +130,12 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 		return derp.Internal(location, "Unable to link child widget because 'children' value is empty", e)
 	}
 
-	spew.Dump(children)
-
 	// Get the value of the child selectbox
 	childValue, err := f.Schema.Get(value, children)
 
 	if err != nil {
 		return derp.Internal(location, "Unable to retrieve child value from", e)
 	}
-
-	spew.Dump(childValue, lookupCodes)
 
 	// Marshal the LookupCodes into JSON
 	lookupJSON, err := json.Marshal(lookupCodes)
