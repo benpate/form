@@ -16,7 +16,7 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 	b.Div().Class("layout", "layout-"+alignment)
 
 	if len(e.Label) > 0 {
-		b.Div().Class("layout-title").InnerText(e.Label).Close()
+		b.Div().Class("layout-title").InnerHTML(e.Label).Close()
 	}
 
 	if len(e.Description) > 0 {
