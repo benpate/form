@@ -2,6 +2,7 @@ package widget
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
@@ -138,16 +139,21 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 	}
 
 	// Marshal the LookupCodes into JSON
-	lookupJSON, err := json.Marshal(lookupCodes)
+	lookupJSONbytes, err := json.Marshal(lookupCodes)
 
 	if err != nil {
 		return derp.Internal(location, "Unable to marshal lookupCodes into JSON", e)
 	}
 
+	// Escape single quotes in the JSON string
+	lookupJSON := string(lookupJSONbytes)
+	lookupJSON = strings.ReplaceAll(lookupJSON, `\`, `\\`)
+	lookupJSON = strings.ReplaceAll(lookupJSON, "'", "\\'")
+
 	// Construct parameters for the hyperscript behavior
 	hyperscript := "install SelectGroup(" +
 		"children: '" + children + "', " +
-		"options:'" + string(lookupJSON) + "', " +
+		"options:'" + lookupJSON + "', " +
 		"value:'" + convert.String(childValue) + "'" +
 		")"
 
