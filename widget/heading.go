@@ -14,7 +14,7 @@ func (widget Heading) View(f *form.Form, e *form.Element, _ form.LookupProvider,
 }
 
 func (widget Heading) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
-	b.H2().InnerText(e.Label).Close()
+	b.H2().InnerHTML(e.Label).Close()
 	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
