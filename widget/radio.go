@@ -29,10 +29,6 @@ func (widget Radio) View(f *form.Form, e *form.Element, provider form.LookupProv
 
 func (widget Radio) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Radio{}.View(f, e, provider, value, b)
-	}
-
 	// Calculate the element's ID
 	id := e.ID
 

@@ -24,10 +24,6 @@ func (widget TimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvid
 
 func (widget TimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return TimePicker{}.View(f, e, nil, value, b)
-	}
-
 	valueString := widget.getValue(e, &f.Schema, value)
 	elementID := first.String(e.ID, "timepicker-"+e.Path)
 

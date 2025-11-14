@@ -15,10 +15,6 @@ func (widget Password) View(f *form.Form, e *form.Element, _ form.LookupProvider
 
 func (widget Password) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Password{}.View(f, e, provider, value, b)
-	}
-
 	if e.ID == "" {
 		e.ID = e.Path + "." + e.Type
 	}

@@ -22,10 +22,6 @@ func (widget Text) View(f *form.Form, e *form.Element, _ form.LookupProvider, va
 
 func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Text{}.View(f, e, provider, value, b)
-	}
-
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueString := e.GetString(value, &f.Schema)

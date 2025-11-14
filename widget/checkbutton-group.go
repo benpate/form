@@ -42,10 +42,6 @@ func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form
 
 func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return CheckButtonGroup{}.View(f, e, provider, value, b)
-	}
-
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)

@@ -18,10 +18,6 @@ func (widget LayoutTabs) View(f *form.Form, e *form.Element, provider form.Looku
 
 func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return LayoutTabs{}.View(f, e, provider, value, b)
-	}
-
 	if e.ID == "" {
 		e.ID = "tabcontainer"
 	}

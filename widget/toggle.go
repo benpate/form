@@ -27,10 +27,6 @@ func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 
 func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Toggle{}.View(f, e, nil, value, b)
-	}
-
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
 	id := "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString

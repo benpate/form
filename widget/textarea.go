@@ -21,10 +21,6 @@ func (widget TextArea) View(f *form.Form, e *form.Element, _ form.LookupProvider
 
 func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return TextArea{}.View(f, e, nil, value, b)
-	}
-
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueString := e.GetString(value, &f.Schema)

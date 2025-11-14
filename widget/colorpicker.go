@@ -18,10 +18,6 @@ func (widget Colorpicker) View(f *form.Form, e *form.Element, _ form.LookupProvi
 
 func (widget Colorpicker) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Colorpicker{}.View(f, e, provider, value, b)
-	}
-
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
 

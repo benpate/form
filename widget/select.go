@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
@@ -33,10 +35,6 @@ func (widget Select) View(f *form.Form, e *form.Element, provider form.LookupPro
 
 func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Select{}.View(f, e, provider, value, b)
-	}
-
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
@@ -51,14 +49,14 @@ func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupPro
 	elementID := e.ID
 
 	if elementID == "" {
-		elementID = "select-" + e.Path
+		elementID = "select-" + strings.ReplaceAll(e.Path, ".", "-")
 	}
 
 	selectBox := b.Container("select").
 		ID(elementID).
 		Name(e.Path).
-		Aria("labelledby", e.ID+".label").
-		Aria("describedby", e.ID+".description").
+		Aria("label", e.Label).
+		Aria("description", e.Description).
 		TabIndex("0")
 
 	if isRequired(e, schemaElement) {

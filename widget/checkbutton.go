@@ -18,10 +18,6 @@ func (widget CheckButton) View(f *form.Form, e *form.Element, _ form.LookupProvi
 
 func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return CheckButton{}.View(f, e, nil, value, b)
-	}
-
 	// Collect values to use in the Widget
 	selectedValues, err := f.Schema.Get(value, e.Path)
 

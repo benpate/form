@@ -15,10 +15,6 @@ func (widget Hidden) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, 
 // Hidden registers a text <input> widget into the library
 func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Hidden{}.View(f, e, nil, value, b)
-	}
-
 	// find the path and schema to use
 	var elementValue string
 

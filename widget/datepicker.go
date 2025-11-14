@@ -23,10 +23,6 @@ func (widget DatePicker) View(f *form.Form, e *form.Element, _ form.LookupProvid
 
 func (widget DatePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return DatePicker{}.View(f, e, nil, value, b)
-	}
-
 	valueString := widget.getValue(e, &f.Schema, value)
 	eID := first.String(e.ID, "datepicker-"+e.Path)
 

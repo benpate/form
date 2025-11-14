@@ -25,10 +25,6 @@ func (widget Upload) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 
 func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	if e.ReadOnly {
-		return Upload{}.View(f, e, nil, value, b)
-	}
-
 	elementID := e.ID
 
 	if elementID == "" {

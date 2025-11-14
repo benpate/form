@@ -12,11 +12,6 @@ func (widget LayoutHorizontal) View(f *form.Form, e *form.Element, provider form
 }
 
 func (widget LayoutHorizontal) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
-
-	if e.ReadOnly {
-		return LayoutHorizontal{}.View(f, e, provider, value, b)
-	}
-
 	return drawLayout(f, e, provider, value, b, "horizontal", true)
 }
 
