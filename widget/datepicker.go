@@ -36,6 +36,13 @@ func (widget DatePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvid
 		tag.Attr("autofocus", "true")
 	}
 
+	if defaultValue := e.Options.GetString("default"); defaultValue != "" {
+
+		if defaultValue == "now" {
+			tag.Script(`on load if my value is "" then make a Date set my valueAsDate to it`)
+		}
+	}
+
 	b.CloseAll()
 	return nil
 }

@@ -137,6 +137,7 @@ func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 	if endpoint != "" {
 		tag.Attr("list", menuID)
 		tag.Data("hx-get", endpoint)
+		tag.Data("hx-vals", `js:{longitude:localStorage.getItem('longitude'), latitude:localStorage.getItem('latitude')}`)
 		tag.Data("hx-trigger", "keyup changed throttle:200ms")
 		tag.Data("hx-target", "#"+menuID)
 		tag.Data("hx-swap", "innerHTML")
