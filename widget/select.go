@@ -79,7 +79,7 @@ func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupPro
 
 	// Allow null options if not required
 	if (schemaElement != nil) && (!schemaElement.IsRequired()) {
-		b.Container("option").Value("").InnerText("").Close()
+		b.Container("option").Value("").InnerText("")
 	}
 
 	group := ""
