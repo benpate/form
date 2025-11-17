@@ -11,6 +11,7 @@ import (
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
+	"github.com/benpate/rosetta/sliceof"
 )
 
 // SelectGroup renders two linked select boxes
@@ -120,7 +121,7 @@ func (widget SelectGroup) Encoding(_ *form.Element) string {
  * Internal Helpers
  ***********************************/
 
-func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCodes []form.LookupCode, value any, selectBox *html.Element) error {
+func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCodes sliceof.Object[form.LookupCode], value any, selectBox *html.Element) error {
 
 	const location = "form.widget.SelectGroup.setChildWidget"
 
@@ -135,7 +136,7 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 	childValue, err := f.Schema.Get(value, children)
 
 	if err != nil {
-		return derp.Wrap(err, location, "Unable to retrieve child value from element", "element:", e, "children:", children, "value:", value)
+		childValue = lookupCodes.First().Value
 	}
 
 	// Marshal the LookupCodes into JSON
