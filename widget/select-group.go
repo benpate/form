@@ -135,14 +135,14 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 	childValue, err := f.Schema.Get(value, children)
 
 	if err != nil {
-		return derp.Internal(location, "Unable to retrieve child value from", e)
+		return derp.Wrap(err, location, "Unable to retrieve child value from element", "element:", e, "children:", children, "value:", value)
 	}
 
 	// Marshal the LookupCodes into JSON
 	lookupJSONbytes, err := json.Marshal(lookupCodes)
 
 	if err != nil {
-		return derp.Internal(location, "Unable to marshal lookupCodes into JSON", e)
+		return derp.Wrap(err, location, "Unable to marshal lookupCodes into JSON", e)
 	}
 
 	// Escape single quotes in the JSON string
