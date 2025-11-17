@@ -23,6 +23,7 @@ type Element struct {
 	ReadOnly    bool      `json:"readOnly,omitempty"`    // If true, then this element is read-only
 }
 
+// NewElement returns a fully populated Element object.
 func NewElement() Element {
 	return Element{
 		Options:  make(mapof.Any),
@@ -30,6 +31,7 @@ func NewElement() Element {
 	}
 }
 
+// Widget retrieves the specific widget object for this Element
 func (element *Element) Widget() (Widget, error) {
 
 	widget, ok := registry[element.Type]
@@ -41,6 +43,7 @@ func (element *Element) Widget() (Widget, error) {
 	return widget, nil
 }
 
+// View returns static HTML that displays the value of this element.
 func (element *Element) View(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	widget, err := element.Widget()
@@ -53,6 +56,7 @@ func (element *Element) View(form *Form, lookupProvider LookupProvider, value an
 
 }
 
+// Edit returns an HTML form that can edit this element.
 func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
 	// If this value is read only, then `View` its contents.
@@ -69,6 +73,7 @@ func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value an
 	return widget.Edit(form, element, lookupProvider, value, b)
 }
 
+// Encoding returns the form encoding required by this widget.
 func (element *Element) Encoding() string {
 
 	if widget, err := element.Widget(); err == nil {
@@ -78,7 +83,7 @@ func (element *Element) Encoding() string {
 	return ""
 }
 
-// GetValue returns the value of the element at the provided path.  If the schema is present,
+// GetString returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
 func (element *Element) GetString(value any, s *schema.Schema) string {
 	return convert.String(element.getValue(value, s))
@@ -119,6 +124,9 @@ func (element *Element) getValue(value any, s *schema.Schema) any {
 	return nil
 }
 
+// isInputVisible returns TRUE if this element is visible on the form.
+// This is also used to determine which elements should be updated when calling
+// SetURLValues
 func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error) {
 
 	// RULE: ReadOnly elements are not "visible" in the form
@@ -148,7 +156,6 @@ func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error
 	return visible, nil
 }
 
-// replaceLookupValue
 func (element Element) replaceNewLookup(lookupProvider LookupProvider, value string) (string, bool, error) {
 
 	const location = "form.element.replaceNewLookup"
