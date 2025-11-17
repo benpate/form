@@ -1,3 +1,5 @@
+// Package form is a simplified implementation of JSON-Forms, which renders HTML forms
+// from a JSON configuration.
 package form
 
 import (
@@ -11,6 +13,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// Form defines all of the data for this JSON form.  This can be marshalled/unmarshalled
+// as JSON, or entered directly into Go source code.
 type Form struct {
 	Schema  schema.Schema
 	Element Element
@@ -32,7 +36,7 @@ func Viewer(schema schema.Schema, element Element, value any, lookupProvider Loo
 	return form.Viewer(value, lookupProvider)
 }
 
-// Viewer creates an in-place form and executes its "Editorr" method
+// Editor creates an in-place form and executes its "Editor" method
 func Editor(schema schema.Schema, element Element, value any, lookupProvider LookupProvider, options ...string) (string, error) {
 	form := New(schema, element, options...)
 	return form.Editor(value, lookupProvider)
@@ -42,14 +46,14 @@ func Editor(schema schema.Schema, element Element, value any, lookupProvider Loo
  * Drawing Methods
  ***********************************/
 
-// DrawString() generates this form as a string
+// Editor returns a fully populated HTML form for this Form
 func (form *Form) Editor(value any, lookupProvider LookupProvider) (string, error) {
 	builder := html.New()
 	err := form.BuildEditor(value, lookupProvider, builder)
 	return builder.String(), err
 }
 
-// DrawString() generates this form as a string
+// Viewer returns a read-only HTML representation of this Form
 func (form *Form) Viewer(value any, lookupProvider LookupProvider) (string, error) {
 	builder := html.New()
 	err := form.BuildViewer(value, lookupProvider, builder)
@@ -70,7 +74,7 @@ func (form *Form) BuildViewer(value any, lookupProvider LookupProvider, builder 
  * Data Update Methods
  ********************************/
 
-// Do applies all of the data from the value map into the target object
+// SetURLValues applies all of the data from the value map into the target object
 func (form *Form) SetURLValues(object any, values url.Values, lookupProvider LookupProvider) error {
 
 	const location = "form.Form.SetURLValues"
@@ -152,6 +156,7 @@ func (form *Form) Encoding() string {
 	return form.Element.Encoding()
 }
 
+// OptionString returns the string value of a Form option.
 func (form *Form) OptionString(name string) string {
 
 	for _, option := range form.Options {
@@ -162,6 +167,7 @@ func (form *Form) OptionString(name string) string {
 	return ""
 }
 
+// OptionInt returns the integer value of a Form option.
 func (form *Form) OptionInt(name string) int {
 
 	for _, option := range form.Options {

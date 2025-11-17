@@ -29,6 +29,10 @@ func NewLookupCode(value string) LookupCode {
 	}
 }
 
+// ParseLookupCode converts a number of values into a LookupCode, including:
+// LookupCode, , mapof.Any, mapof.String, map[string]any, map[string]string, and
+// string. For strings, the string value is used for both the .Value and .Label
+// If no compatible type is found, then an empty LookupCode is returned.
 func ParseLookupCode(value any) LookupCode {
 
 	switch typed := value.(type) {

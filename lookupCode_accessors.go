@@ -2,6 +2,7 @@ package form
 
 import "github.com/benpate/rosetta/schema"
 
+// LookupCodeSchema defines the validation schema for LookupCodes
 func LookupCodeSchema() schema.Element {
 	return schema.Object{
 		Properties: schema.ElementMap{
@@ -15,6 +16,7 @@ func LookupCodeSchema() schema.Element {
 	}
 }
 
+// GetPointer returns pointers to the named property of this LookupCode
 func (lookupCode *LookupCode) GetPointer(name string) (any, bool) {
 
 	switch name {
@@ -42,6 +44,7 @@ func (lookupCode *LookupCode) GetPointer(name string) (any, bool) {
 	return nil, false
 }
 
+// GetStringOK returns the string value of each property of this LookupCode
 func (lookupCode LookupCode) GetStringOK(name string) (string, bool) {
 
 	switch name {
@@ -69,6 +72,7 @@ func (lookupCode LookupCode) GetStringOK(name string) (string, bool) {
 	return "", false
 }
 
+// SetString sets a string value in this LookupCode
 func (lookupCode *LookupCode) SetString(name string, value string) bool {
 
 	switch name {

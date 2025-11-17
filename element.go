@@ -201,9 +201,7 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 	return value, false, nil
 }
 
-// 	Autocomplete string `json:"autocomplete"` // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
-
-// AllPaths returns pointers to all of the valid paths in this form
+// AllElements returns pointers to all of the valid paths in this form
 func (element *Element) AllElements() []*Element {
 
 	var result []*Element

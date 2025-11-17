@@ -6,12 +6,12 @@ import (
 
 type testWidget struct{}
 
-func (w testWidget) View(form *Form, element *Element, provider LookupProvider, value any, b *html.Builder) error {
+func (w testWidget) View(_ *Form, element *Element, _ LookupProvider, _ any, b *html.Builder) error {
 	b.Empty("widget-view").Attr("name", element.Path)
 	return nil
 }
 
-func (w testWidget) Edit(form *Form, element *Element, provider LookupProvider, value any, b *html.Builder) error {
+func (w testWidget) Edit(_ *Form, element *Element, _ LookupProvider, _ any, b *html.Builder) error {
 	b.Empty("widget-edit").Attr("name", element.Path)
 	return nil
 }
@@ -20,7 +20,7 @@ func (w testWidget) ShowLabels() bool {
 	return false
 }
 
-func (w testWidget) Encoding(element *Element) string {
+func (w testWidget) Encoding(_ *Element) string {
 	return ""
 }
 

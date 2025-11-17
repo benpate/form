@@ -17,7 +17,7 @@ type LookupGroup interface {
 	Get() []LookupCode
 }
 
-// WriteableLookupGroup is a read-write interface that returns
+// WritableLookupGroup is a read-write interface that returns
 // a list of LookupCodes, and can add new codes to the list.
 type WritableLookupGroup interface {
 	LookupGroup
@@ -32,7 +32,11 @@ type Widget interface {
 	Encoding(element *Element) string
 }
 
+// URLValueSetter interface wraps the SetURLValue method, which
+// applies the values from a url.Values slice into an arbitrary object.
 type URLValueSetter interface {
+
+	// SetURLValue applies applies all values from a url.Values slice to the provided object.
 	SetURLValue(form *Form, element *Element, object any, values url.Values) error
 }
 
