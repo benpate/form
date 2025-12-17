@@ -9,6 +9,7 @@ func UseAll() {
 	form.Use("check-button", CheckButton{})
 	form.Use("check-button-group", CheckButtonGroup{})
 	form.Use("colorpicker", Colorpicker{})
+	form.Use("container", Container{})
 	form.Use("date", DatePicker{})
 	form.Use("datetime", DateTimePicker{})
 	form.Use("heading", Heading{})
