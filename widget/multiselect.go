@@ -53,7 +53,6 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
-	valueSlice := e.GetSliceOfString(value, &f.Schema)
 
 	sortable, _ := e.Options.GetBoolOK("sort")
 	maxHeight := first.String(e.Options.GetString("maxHeight"), "300")
@@ -84,9 +83,9 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 
 		b.Label(optionID)
 
-		input := b.Input("checkbox", e.Path).ID(optionID).Value(option.Value)
+		input := b.Input("checkbox", e.Path).ID(optionID).Value(option.Value) // nolint:scopeguard b.Input has a side effect
 
-		if compare.Contains(valueSlice, option.Value) {
+		if valueSlice := e.GetSliceOfString(value, &f.Schema); compare.Contains(valueSlice, option.Value) {
 			input.Attr("checked", "true")
 		}
 

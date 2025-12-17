@@ -39,7 +39,8 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 	b.Div().Class("bold").InnerText(e.Label).Close()
 	b.Div().Class("text-sm", "text-gray").InnerText(e.Description).Close()
 
-	checkbox := b.Input("checkbox", e.Path).
+	checkbox := b.Input("checkbox", e.Path)
+	checkbox.
 		ID(id).
 		Value(elementValue).
 		Class(e.Options.GetString("class")).

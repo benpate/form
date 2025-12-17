@@ -56,11 +56,10 @@ func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *ht
 
 	// Different file types are displayed differently
 	accept := e.Options.GetString("accept")
-	acceptType, _, _ := strings.Cut(accept, "/")
 
 	b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
 
-	switch acceptType {
+	switch acceptType, _, _ := strings.Cut(accept, "/"); acceptType {
 
 	// Image preview (128px square)
 	case "image":

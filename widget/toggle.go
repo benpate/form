@@ -14,9 +14,8 @@ type Toggle struct{}
 func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	valueString := e.GetString(value, &f.Schema)
-	valueBool := convert.Bool(valueString)
 
-	if valueBool {
+	if valueBool := convert.Bool(valueString); valueBool {
 		b.Div().Class("layout-value").InnerText(e.Options.GetString("true-text")).Close()
 	} else {
 		b.Div().Class("layout-value").InnerText(e.Options.GetString("false-text")).Close()

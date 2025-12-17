@@ -28,9 +28,6 @@ func (widget Place) View(f *form.Form, e *form.Element, _ form.LookupProvider, v
 
 func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
-	// find the path and schema to use
-	schemaElement := e.GetSchema(&f.Schema)
-
 	e.ID = strings.ReplaceAll(e.ID, ".", "_")
 
 	searchID := e.ID + "_search"
@@ -115,7 +112,7 @@ func (widget Place) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 	}
 
 	// Add attributes that depend on what KIND of input we have.
-	switch s := schemaElement.(type) {
+	switch schemaElement := e.GetSchema(&f.Schema); s := schemaElement.(type) {
 
 	case schema.String:
 		if s.Required || e.Options.GetBool("required") {

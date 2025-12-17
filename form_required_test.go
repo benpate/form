@@ -138,18 +138,16 @@ func TestFormSetURLValues_Error(t *testing.T) {
 		},
 	)
 
-	{
-		// First Test Email IS SET because showEmail is true
-		data := url.Values{
-			"name":       []string{"John Connor"},
-			"email":      []string{"john@connor.mil"},
-			"age":        []string{"42"},
-			"requireAge": []string{"false"},
-			"showEmail":  []string{"true"},
-		}
-
-		target := mapof.Any{}
-		err := form.SetURLValues(&target, data, nil)
-		require.Error(t, err)
+	// First Test Email IS SET because showEmail is true
+	data := url.Values{
+		"name":       []string{"John Connor"},
+		"email":      []string{"john@connor.mil"},
+		"age":        []string{"42"},
+		"requireAge": []string{"false"},
+		"showEmail":  []string{"true"},
 	}
+
+	target := mapof.Any{}
+	err := form.SetURLValues(&target, data, nil)
+	require.Error(t, err)
 }

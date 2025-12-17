@@ -61,7 +61,9 @@ func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form
 		b.Div().Class("bold").InnerText(lookupCode.Label).Close()
 		b.Div().Class("text-sm", "text-gray").InnerText(lookupCode.Description).Close()
 
-		toggleButton := b.Input("checkbox", e.Path).
+		toggleButton := b.Input("checkbox", e.Path)
+
+		toggleButton.
 			ID(id).
 			Class(e.Options.GetString("class")).
 			Value(lookupCode.Value).
