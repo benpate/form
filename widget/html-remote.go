@@ -48,10 +48,16 @@ func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvid
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface
+// It indicates whether or not this widget wants labels to be shown
+// For HTMLRemote widgets, this always returns FALSE
 func (widget HTMLRemote) ShowLabels() bool {
 	return false
 }
 
+// Encoding is a part of the Widget interface
+// It returns the encoding type for this widget
+// For HTMLRemote widgets, it always returns empty string
 func (widget HTMLRemote) Encoding(_ *form.Element) string {
 	return ""
 }

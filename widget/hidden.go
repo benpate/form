@@ -10,7 +10,7 @@ import (
 type Hidden struct{}
 
 // View generates the HTML for viewing a hidden input field (which is nothing).
-func (widget Hidden) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Hidden) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, _ any, _ *html.Builder) error {
 	return nil
 }
 

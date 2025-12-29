@@ -111,10 +111,16 @@ func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.Looku
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface
+// It indicates whether or not this widget wants labels to be shown
+// For LayoutTabs widgets, this always returns FALSE
 func (widget LayoutTabs) ShowLabels() bool {
 	return false
 }
 
+// Encoding is a part of the Widget interface
+// It returns the encoding type for this widget
+// For LayoutTabs widgets, it collects the encodings of all children
 func (widget LayoutTabs) Encoding(e *form.Element) string {
 	return collectEncoding(e.Children)
 }
