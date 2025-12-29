@@ -15,7 +15,7 @@ func (widget HTMLRemote) View(f *form.Form, e *form.Element, _ form.LookupProvid
 	return widget.Edit(f, e, nil, value, b)
 }
 
-func (widget HTMLRemote) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	const location = "widget.HTMLRemote.Edit"
 

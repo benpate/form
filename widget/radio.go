@@ -5,8 +5,11 @@ import (
 	"github.com/benpate/html"
 )
 
+// Radio is a widget that displays a list of radio buttons for selecting a single value from a list.
 type Radio struct{}
 
+// View is a part of the Widget interface.
+// It builds the HTML for viewing this element.
 func (widget Radio) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -27,6 +30,8 @@ func (widget Radio) View(f *form.Form, e *form.Element, provider form.LookupProv
 	return nil
 }
 
+// Edit is a part of the Widget interface.
+// It builds the HTML for editing this element.
 func (widget Radio) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// Calculate the element's ID

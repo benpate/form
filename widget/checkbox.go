@@ -9,8 +9,11 @@ import (
 	"github.com/benpate/rosetta/slice"
 )
 
+// Checkbox is a widget that creates a set of checkbox input fields.
 type Checkbox struct{}
 
+// View is a part of the Widget interface.
+// It builds the HTML for viewing this element.
 func (widget Checkbox) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
@@ -39,6 +42,8 @@ func (widget Checkbox) View(f *form.Form, e *form.Element, provider form.LookupP
 	return nil
 }
 
+// Edit is a part of the Widget interface.
+// It builds the HTML for editing this element.
 func (widget Checkbox) Edit(form *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -89,10 +94,17 @@ func (widget Checkbox) getLookupCodes(element *form.Element, schemaElement schem
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Checkbox widgets, labels are not shown, so this always returns FALSE.
 func (widget Checkbox) ShowLabels() bool {
 	return false
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Checkbox widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Checkbox) Encoding(_ *form.Element) string {
 	return ""
 }

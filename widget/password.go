@@ -8,12 +8,12 @@ import (
 
 type Password struct{}
 
-func (widget Password) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Password) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText("********").Close()
 	return nil
 }
 
-func (widget Password) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget Password) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 
 	if e.ID == "" {
 		e.ID = e.Path + "." + e.Type
@@ -72,10 +72,17 @@ func (widget Password) Edit(f *form.Form, e *form.Element, provider form.LookupP
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It indicates whether labels should be shown for this widget.
+// For Password widgets, labels are shown, so this always returns TRUE.
 func (widget Password) ShowLabels() bool {
 	return true
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Password widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Password) Encoding(_ *form.Element) string {
 	return ""
 }

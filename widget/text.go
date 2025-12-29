@@ -9,8 +9,10 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
+// Text is a widget that creates a text input field.
 type Text struct{}
 
+// View generates the HTML for viewing a text input field.
 func (widget Text) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
@@ -20,6 +22,7 @@ func (widget Text) View(f *form.Form, e *form.Element, _ form.LookupProvider, va
 	return nil
 }
 
+// Edit generates the HTML for editing a text input field.
 func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -207,10 +210,17 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Text widgets, labels are shown, so this always returns TRUE.
 func (widget Text) ShowLabels() bool {
 	return true
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Text widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Text) Encoding(_ *form.Element) string {
 	return ""
 }

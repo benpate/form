@@ -12,7 +12,7 @@ import (
 
 type LayoutTabs struct{}
 
-func (widget LayoutTabs) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+func (widget LayoutTabs) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, _ any, _ *html.Builder) error {
 	return nil
 }
 

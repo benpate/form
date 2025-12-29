@@ -6,13 +6,15 @@ import (
 	"github.com/benpate/rosetta/convert"
 )
 
+// Hidden is a widget that creates a hidden input field.
 type Hidden struct{}
 
+// View generates the HTML for viewing a hidden input field (which is nothing).
 func (widget Hidden) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	return nil
 }
 
-// Hidden registers a text <input> widget into the library
+// Edit generates the HTML for editing a hidden input field.
 func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use

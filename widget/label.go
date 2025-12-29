@@ -7,7 +7,7 @@ import (
 
 type Label struct{}
 
-func (widget Label) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Label) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	if e.Label != "" {
 		b.Div().InnerText(e.Label).Close()
 	}
@@ -19,7 +19,7 @@ func (widget Label) View(f *form.Form, e *form.Element, _ form.LookupProvider, v
 	return nil
 }
 
-func (widget Label) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget Label) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	if e.Label != "" {
 		b.Div().InnerText(e.Label).Close()
 	}

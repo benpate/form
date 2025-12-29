@@ -11,6 +11,7 @@ import (
 // Toggle renders a custom toggle widget
 type Toggle struct{}
 
+// View generates the HTML for viewing a toggle widget's value.
 func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	valueString := e.GetString(value, &f.Schema)
@@ -24,6 +25,7 @@ func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 	return nil
 }
 
+// Edit generates the HTML for editing a toggle widget.
 func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -50,10 +52,17 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Toggle widgets, labels are shown, so this always returns TRUE.
 func (widget Toggle) ShowLabels() bool {
 	return true
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Toggle widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Toggle) Encoding(_ *form.Element) string {
 	return ""
 }

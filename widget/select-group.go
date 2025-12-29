@@ -109,10 +109,17 @@ func (widget SelectGroup) Edit(f *form.Form, e *form.Element, provider form.Look
  * Wiget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For SelectGroup widgets, labels are shown, so this always returns TRUE.
 func (widget SelectGroup) ShowLabels() bool {
 	return true
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For SelectGroup widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget SelectGroup) Encoding(_ *form.Element) string {
 	return ""
 }

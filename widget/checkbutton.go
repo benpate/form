@@ -12,7 +12,7 @@ import (
 // CheckButton renders a fancy checkbox widget that looks like a button
 type CheckButton struct{}
 
-func (widget CheckButton) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+func (widget CheckButton) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, _ *html.Builder) error {
 	return nil
 }
 
