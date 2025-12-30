@@ -37,7 +37,7 @@ func (element *Element) Widget() (Widget, error) {
 	widget, ok := registry[element.Type]
 
 	if !ok {
-		return nil, derp.InternalError("form.Widget", "Unrecognized form widget", element)
+		return nil, derp.Internal("form.Widget", "Unrecognized form widget", element)
 	}
 
 	return widget, nil
@@ -255,7 +255,7 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 				}
 				element.Children[index] = child
 			} else {
-				return derp.InternalError("form.UnmarshalMap", "Error parsing child form information.", childInterface)
+				return derp.Internal("form.UnmarshalMap", "Error parsing child form information.", childInterface)
 			}
 		}
 	}
