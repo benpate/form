@@ -25,6 +25,8 @@ func UseAll() {
 	form.Use("password", Password{})
 	form.Use("place", Place{})
 	form.Use("radio", Radio{})
+	form.Use("radio-button-group", RadioButtonGroup{})
+	form.Use("radio-colors", RadioColors{})
 	form.Use("select", Select{})
 	form.Use("select-group", SelectGroup{})
 	form.Use("text", Text{})
