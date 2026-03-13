@@ -60,11 +60,18 @@ func (widget TimePicker) getValue(e *form.Element, s *schema.Schema, value any) 
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget TimePicker) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget TimePicker) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 func (widget TimePicker) Encoding(_ *form.Element) string {

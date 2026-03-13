@@ -18,7 +18,7 @@ func (widget HTML) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ 
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -26,6 +26,13 @@ func (widget HTML) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ 
 // For HTML widgets, labels are not shown, so this always returns FALSE.
 func (widget HTML) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget HTML) ShowDescriptions() string {
+	return "NONE"
 }
 
 // Encoding is a part of the Widget interface.

@@ -59,7 +59,7 @@ func (widget DateTimePicker) getValue(e *form.Element, s *schema.Schema, value a
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -67,6 +67,13 @@ func (widget DateTimePicker) getValue(e *form.Element, s *schema.Schema, value a
 // For DateTimePicker widgets, labels are shown, so this always returns TRUE.
 func (widget DateTimePicker) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget DateTimePicker) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 // Encoding is a part of the Widget interface.

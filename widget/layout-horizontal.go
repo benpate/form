@@ -16,11 +16,18 @@ func (widget LayoutHorizontal) Edit(f *form.Form, e *form.Element, provider form
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget LayoutHorizontal) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget LayoutHorizontal) ShowDescriptions() string {
+	return "NONE"
 }
 
 func (widget LayoutHorizontal) Encoding(element *form.Element) string {

@@ -207,7 +207,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -215,6 +215,13 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 // For Text widgets, labels are shown, so this always returns TRUE.
 func (widget Text) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Text) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 // Encoding is a part of the Widget interface.

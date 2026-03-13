@@ -58,11 +58,18 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget CheckButton) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget CheckButton) ShowDescriptions() string {
+	return "NONE"
 }
 
 func (widget CheckButton) Encoding(_ *form.Element) string {

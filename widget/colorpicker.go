@@ -37,7 +37,7 @@ func (widget Colorpicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -45,6 +45,13 @@ func (widget Colorpicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 // For Colorpicker widgets, labels are shown, so this always returns TRUE.
 func (widget Colorpicker) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Colorpicker) ShowDescriptions() string {
+	return "TOP"
 }
 
 // Encoding is a part of the Widget interface.

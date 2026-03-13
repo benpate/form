@@ -49,7 +49,7 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -57,6 +57,13 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 // For Toggle widgets, labels are shown, so this always returns TRUE.
 func (widget Toggle) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Toggle) ShowDescriptions() string {
+	return "TOP"
 }
 
 // Encoding is a part of the Widget interface.

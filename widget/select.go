@@ -119,11 +119,18 @@ func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupPro
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget Select) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Select) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 func (widget Select) Encoding(_ *form.Element) string {

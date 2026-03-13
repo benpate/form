@@ -45,7 +45,7 @@ func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvid
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface
@@ -53,6 +53,13 @@ func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvid
 // For HTMLRemote widgets, this always returns FALSE
 func (widget HTMLRemote) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget HTMLRemote) ShowDescriptions() string {
+	return "NONE"
 }
 
 // Encoding is a part of the Widget interface

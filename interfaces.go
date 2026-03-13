@@ -29,6 +29,7 @@ type Widget interface {
 	View(form *Form, element *Element, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	Edit(form *Form, element *Element, lookupProvider LookupProvider, value any, builder *html.Builder) error
 	ShowLabels() bool
+	ShowDescriptions() string
 	Encoding(element *Element) string
 }
 

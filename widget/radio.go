@@ -74,11 +74,18 @@ func (widget Radio) Edit(f *form.Form, e *form.Element, provider form.LookupProv
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget Radio) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Radio) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 func (widget Radio) Encoding(_ *form.Element) string {

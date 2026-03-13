@@ -118,7 +118,7 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -126,6 +126,13 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 // For Multiselect widgets, labels are shown, so this always returns TRUE.
 func (widget Multiselect) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Multiselect) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 // Encoding is a part of the Widget interface.

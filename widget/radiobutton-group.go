@@ -99,11 +99,18 @@ func (widget RadioButtonGroup) getLookupCodes(e *form.Element, schemaElement sch
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget RadioButtonGroup) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget RadioButtonGroup) ShowDescriptions() string {
+	return "TOP"
 }
 
 func (widget RadioButtonGroup) Encoding(_ *form.Element) string {

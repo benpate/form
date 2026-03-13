@@ -81,11 +81,18 @@ func (widget RadioColors) Edit(f *form.Form, e *form.Element, provider form.Look
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget RadioColors) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget RadioColors) ShowDescriptions() string {
+	return "TOP"
 }
 
 func (widget RadioColors) Encoding(_ *form.Element) string {

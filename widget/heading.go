@@ -20,11 +20,18 @@ func (widget Heading) Edit(f *form.Form, e *form.Element, _ form.LookupProvider,
 }
 
 /*******************************************
- * Wiget Metadata
+ * Widget Metadata
  *******************************************/
 
 func (widget Heading) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Heading) ShowDescriptions() string {
+	return "NONE"
 }
 
 func (widget Heading) Encoding(_ *form.Element) string {

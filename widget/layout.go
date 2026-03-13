@@ -55,6 +55,12 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 			if widget.ShowLabels() {
 				b.Label(child.ID).Aria("hidden", "true").InnerText(child.Label).Close()
 			}
+
+			if child.Description != "" {
+				if widget.ShowDescriptions() == "TOP" {
+					b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerHTML(child.Description).Close()
+				}
+			}
 		}
 
 		// Draw the edit or view version of this element
@@ -69,8 +75,10 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 		}
 
 		// If there's a description on this element, draw it here
-		if widget.ShowLabels() && (child.Description != "") {
-			b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerHTML(child.Description).Close()
+		if child.Description != "" {
+			if widget.ShowDescriptions() == "BOTTOM" {
+				b.Div().Aria("hidden", "true").Class("text-sm gray40").InnerHTML(child.Description).Close()
+			}
 		}
 
 		// Close the DIV wrapper from above (if applicable)

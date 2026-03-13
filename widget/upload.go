@@ -91,11 +91,18 @@ func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *ht
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget Upload) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Upload) ShowDescriptions() string {
+	return "TOP"
 }
 
 func (widget Upload) Encoding(_ *form.Element) string {

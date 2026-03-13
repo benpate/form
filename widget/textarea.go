@@ -85,11 +85,18 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget TextArea) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget TextArea) ShowDescriptions() string {
+	return "BOTTOM"
 }
 
 func (widget TextArea) Encoding(_ *form.Element) string {

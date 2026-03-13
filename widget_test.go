@@ -20,6 +20,10 @@ func (w testWidget) ShowLabels() bool {
 	return false
 }
 
+func (w testWidget) ShowDescriptions() string {
+	return "NONE"
+}
+
 func (w testWidget) Encoding(_ *Element) string {
 	return ""
 }

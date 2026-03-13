@@ -108,7 +108,7 @@ func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.Looku
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface
@@ -116,6 +116,13 @@ func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.Looku
 // For LayoutTabs widgets, this always returns FALSE
 func (widget LayoutTabs) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget LayoutTabs) ShowDescriptions() string {
+	return "NONE"
 }
 
 // Encoding is a part of the Widget interface

@@ -91,7 +91,7 @@ func (widget Checkbox) getLookupCodes(element *form.Element, schemaElement schem
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
@@ -99,6 +99,13 @@ func (widget Checkbox) getLookupCodes(element *form.Element, schemaElement schem
 // For Checkbox widgets, labels are not shown, so this always returns FALSE.
 func (widget Checkbox) ShowLabels() bool {
 	return false
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget Checkbox) ShowDescriptions() string {
+	return "NONE"
 }
 
 // Encoding is a part of the Widget interface.

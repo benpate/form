@@ -99,11 +99,18 @@ func (widget CheckButtonGroup) getLookupCodes(e *form.Element, schemaElement sch
 }
 
 /***********************************
- * Wiget Metadata
+ * Widget Metadata
  ***********************************/
 
 func (widget CheckButtonGroup) ShowLabels() bool {
 	return true
+}
+
+// ShowDescriptions is a part of the Widget interface.
+// It returns the position of the description for this widget,
+// which is either "TOP", "BOTTOM", or "NONE".
+func (widget CheckButtonGroup) ShowDescriptions() string {
+	return "TOP"
 }
 
 func (widget CheckButtonGroup) Encoding(_ *form.Element) string {
