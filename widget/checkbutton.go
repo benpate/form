@@ -53,6 +53,10 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 		checkbox.Attr("checked", "true")
 	}
 
+	if disabled := e.Options.GetBool("disabled"); disabled {
+		checkbox.Attr("disabled", "true")
+	}
+
 	b.CloseAll()
 	return nil
 }
