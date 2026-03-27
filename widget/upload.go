@@ -102,7 +102,7 @@ func (widget Upload) ShowLabels() bool {
 // It returns the position of the description for this widget,
 // which is either "TOP", "BOTTOM", or "NONE".
 func (widget Upload) ShowDescriptions() string {
-	return "TOP"
+	return "BOTTOM"
 }
 
 func (widget Upload) Encoding(_ *form.Element) string {
