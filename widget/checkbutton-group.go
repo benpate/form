@@ -5,7 +5,6 @@ import (
 
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 )
 
@@ -17,7 +16,7 @@ func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form
 	// find the schema and value to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
-	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	first := true
 
@@ -45,7 +44,7 @@ func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
-	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
+	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
 	// Start building a new tag
 	for _, lookupCode := range lookupCodes {
@@ -84,25 +83,12 @@ func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form
 	return nil
 }
 
-// getLookupCodes returns a list of LookupCodes for this element
-func (widget CheckButtonGroup) getLookupCodes(e *form.Element, schemaElement schema.Element, provider form.LookupProvider) []form.LookupCode {
-
-	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
-
-	if len(lookupCodes) == 0 {
-		lookupCodes = []form.LookupCode{
-			{Value: "true", Label: e.Label},
-		}
-	}
-
-	return lookupCodes
-}
-
 /***********************************
  * Widget Metadata
  ***********************************/
 
 func (widget CheckButtonGroup) ShowLabels() bool {
+
 	return true
 }
 
