@@ -65,11 +65,11 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 
 		// Draw the edit or view version of this element
 		if edit {
-			if err := widget.Edit(f, &child, provider, value, b.SubTree()); err != nil {
+			if err := child.Edit(f, provider, value, b.SubTree()); err != nil {
 				return derp.Wrap(err, location, "Error rendering child (edit)", e, index, child)
 			}
 		} else {
-			if err := widget.View(f, &child, provider, value, b.SubTree()); err != nil {
+			if err := child.View(f, provider, value, b.SubTree()); err != nil {
 				return derp.Wrap(err, location, "Error rendering child (view)", e, index, child)
 			}
 		}
