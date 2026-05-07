@@ -29,13 +29,29 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 
 		child := e.Children[index]
 
+		// If there is a "show-if-option" then look in the form.Options for a true/false
+		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+			if showValue := f.OptionBool(showIfToken); !showValue {
+				continue
+			}
+		}
+
+		// If there is a "hide-if-option" then look in the form.Options for a true/false
+		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+			if hideValue := f.OptionBool(hideIfToken); hideValue {
+				continue
+			}
+		}
+
+		// Set default ID if not present
 		if child.ID == "" {
 			child.ID = strings.ReplaceAll(child.Path, ".", "_") + "_" + child.Type
 		}
 
+		// Locate the widget that will draw this child
 		widget, err := child.Widget()
 		if err != nil {
-			return derp.Wrap(err, location, "Error rendering child", index, child)
+			return derp.Wrap(err, location, "Unable to find selected widget", index, child)
 		}
 
 		var container *html.Element
@@ -66,11 +82,11 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 		// Draw the edit or view version of this element
 		if edit {
 			if err := child.Edit(f, provider, value, b.SubTree()); err != nil {
-				return derp.Wrap(err, location, "Error rendering child (edit)", e, index, child)
+				return derp.Wrap(err, location, "Unable to draw child (edit)", e, index, child)
 			}
 		} else {
 			if err := child.View(f, provider, value, b.SubTree()); err != nil {
-				return derp.Wrap(err, location, "Error rendering child (view)", e, index, child)
+				return derp.Wrap(err, location, "Unable to draw child (view)", e, index, child)
 			}
 		}
 

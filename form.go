@@ -180,3 +180,17 @@ func (form *Form) OptionInt(name string) int {
 
 	return 0
 }
+
+// OptionBool returns the boolean value of a Form option.
+func (form *Form) OptionBool(name string) bool {
+
+	for _, option := range form.Options {
+		if strings.HasPrefix(option, name+":") {
+			optionString := strings.TrimPrefix(option, name+":")
+			optionString = strings.TrimSpace(optionString)
+			return convert.Bool(optionString)
+		}
+	}
+
+	return false
+}

@@ -19,16 +19,30 @@ func (Container) View(f *form.Form, e *form.Element, provider form.LookupProvide
 
 	for index, child := range e.Children {
 
+		// If there is a "show-if-option" then look in the form.Options for a true/false
+		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+			if showValue := f.OptionBool(showIfToken); !showValue {
+				continue
+			}
+		}
+
+		// If there is a "hide-if-option" then look in the form.Options for a true/false
+		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+			if hideValue := f.OptionBool(hideIfToken); hideValue {
+				continue
+			}
+		}
+
 		// Get the widget for this child
 		widget, err := child.Widget()
 
 		if err != nil {
-			return derp.Wrap(err, location, "Error rendering child", index, child)
+			return derp.Wrap(err, location, "Unable to draw child", index, child)
 		}
 
 		// Draw the 'view' version of this element
 		if err := widget.View(f, &child, provider, value, b.SubTree()); err != nil {
-			return derp.Wrap(err, location, "Error rendering child", e, index, child)
+			return derp.Wrap(err, location, "Unable to draw child", e, index, child)
 		}
 	}
 
@@ -49,16 +63,30 @@ func (Container) Edit(f *form.Form, e *form.Element, provider form.LookupProvide
 
 	for index, child := range e.Children {
 
+		// If there is a "show-if-option" then look in the form.Options for a true/false
+		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+			if showValue := f.OptionBool(showIfToken); !showValue {
+				continue
+			}
+		}
+
+		// If there is a "hide-if-option" then look in the form.Options for a true/false
+		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+			if hideValue := f.OptionBool(hideIfToken); hideValue {
+				continue
+			}
+		}
+
 		// Get the widget for this child
 		widget, err := child.Widget()
 
 		if err != nil {
-			return derp.Wrap(err, location, "Error rendering child", index, child)
+			return derp.Wrap(err, location, "Unable to draw child", index, child)
 		}
 
 		// Draw the 'edit' version of this element
 		if err := widget.Edit(f, &child, provider, value, b.SubTree()); err != nil {
-			return derp.Wrap(err, location, "Error rendering child", e, index, child)
+			return derp.Wrap(err, location, "Unable to draw child", e, index, child)
 		}
 	}
 
