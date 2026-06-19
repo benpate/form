@@ -1,10 +1,12 @@
 package widget
 
 import (
+	"net/url"
 	"testing"
 
 	"github.com/benpate/form"
 	"github.com/benpate/rosetta/mapof"
+	"github.com/benpate/rosetta/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -95,6 +97,7 @@ func TestWidget_DisplayWidgets(t *testing.T) {
 		{Type: "heading", Label: "My Heading", Description: "A description"},
 		{Type: "label", Label: "My Label", Description: "Help text"},
 		{Type: "html", Description: "<b>raw html</b>"},
+		{Type: "html-remote", Options: mapof.Any{"url": "/remote/{{.name}}"}},
 	}
 
 	for _, element := range displays {
@@ -120,6 +123,89 @@ func TestWidget_LayoutWidgets(t *testing.T) {
 		editor, _ := drawWidget(t, element)
 		require.NotEmpty(t, editor, "Layout %q should produce output", element.Type)
 	}
+
+	// layout-tabs renders only in Edit mode (View is an intentional no-op),
+	// so it is driven separately without the non-empty Viewer assertion.
+	drawWidget(t, form.Element{Type: "layout-tabs", Children: children})
+}
+
+func TestWidget_HTMLRemote_InvalidTemplate(t *testing.T) {
+
+	UseAll()
+	f := form.New(getTestSchema(), form.Element{
+		Type:    "html-remote",
+		Options: mapof.Any{"url": "{{.unterminated"},
+	})
+
+	// A malformed URL template produces an error
+	_, err := f.Editor(widgetData(), nil)
+	require.Error(t, err)
+}
+
+func TestWidget_Place(t *testing.T) {
+
+	UseAll()
+
+	s := placeSchema()
+	provider := testLookupProvider{}
+
+	element := form.Element{Type: "place", Path: "location", ID: "loc"}
+	f := form.New(s, element)
+
+	value := mapof.Any{
+		"location": mapof.Any{
+			"name":      "Eiffel Tower",
+			"formatted": "Paris, France",
+			"latitude":  "48.8584",
+			"longitude": "2.2945",
+		},
+	}
+
+	editor, err := f.Editor(value, provider)
+	require.NoError(t, err)
+	require.NotEmpty(t, editor)
+
+	viewer, err := f.Viewer(value, provider)
+	require.NoError(t, err)
+	require.NotEmpty(t, viewer)
+}
+
+func TestWidget_Place_SetURLValue(t *testing.T) {
+
+	UseAll()
+
+	s := placeSchema()
+	f := form.New(s, form.Element{Type: "place", Path: "location", ID: "loc"})
+
+	object := mapof.Any{}
+	values := url.Values{
+		"location.formatted": []string{"Paris, France"},
+		"location.latitude":  []string{"48.8584"},
+		"location.longitude": []string{"2.2945"},
+	}
+
+	require.NoError(t, f.SetURLValues(&object, values, nil))
+
+	location := object.GetMapOfAny("location")
+	require.Equal(t, "Paris, France", location.GetString("formatted"))
+	require.Equal(t, "48.8584", location.GetString("latitude"))
+	require.Equal(t, "2.2945", location.GetString("longitude"))
+}
+
+// placeSchema returns a schema with a "location" object suitable for the Place widget.
+func placeSchema() schema.Schema {
+	return schema.New(schema.Object{
+		Properties: schema.ElementMap{
+			"location": schema.Object{
+				Properties: schema.ElementMap{
+					"name":      schema.String{},
+					"formatted": schema.String{},
+					"latitude":  schema.String{},
+					"longitude": schema.String{},
+				},
+			},
+		},
+	})
 }
 
 func TestWidget_Metadata(t *testing.T) {
