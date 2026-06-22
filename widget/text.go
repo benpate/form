@@ -151,9 +151,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 			tag.Attr("maxlength", convert.String(s.MaxLength))
 		}
 
-		if s.Pattern != "" {
-			tag.Attr("pattern", s.Pattern)
-		} else if pattern := e.Options.GetString("pattern"); pattern != "" {
+		if pattern := e.Options.GetString("pattern"); pattern != "" {
 			tag.Attr("pattern", pattern)
 		}
 

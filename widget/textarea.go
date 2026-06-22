@@ -54,6 +54,11 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		tag.Attr("placeholder", placeholder)
 	}
 
+	// Add option-defined pattern (schema-defined patterns are no longer supported)
+	if pattern := e.Options.GetString("pattern"); pattern != "" {
+		tag.Attr("pattern", pattern)
+	}
+
 	// Add attributes that depend on what KIND of input we have.
 	if schemaString, ok := schemaElement.(schema.String); ok {
 
@@ -63,10 +68,6 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 
 		if schemaString.MaxLength > 0 {
 			tag.Attr("maxlength", convert.String(schemaString.MaxLength))
-		}
-
-		if schemaString.Pattern != "" {
-			tag.Attr("pattern", schemaString.Pattern)
 		}
 
 		if schemaString.Required {

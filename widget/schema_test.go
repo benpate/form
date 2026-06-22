@@ -15,7 +15,6 @@ func getTestSchema() schema.Schema {
 				"username": schema.String{
 					MinLength: 10,
 					MaxLength: 100,
-					Pattern:   "[a-z]+",
 					Required:  true,
 				},
 				"name": schema.String{
