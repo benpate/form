@@ -106,6 +106,56 @@ func TestGetLookupCode_SliceOfString(t *testing.T) {
 	require.False(t, writable)
 }
 
+// nilGroupProvider is a LookupProvider that always reports an unrecognized group.
+type nilGroupProvider struct{}
+
+func (nilGroupProvider) Group(string) LookupGroup { return nil }
+
+func TestGetLookupCode_NilGroup(t *testing.T) {
+
+	// A provider that returns a nil group must not panic; it falls through to the enum
+	element := Element{
+		Type: "select",
+		Options: mapof.Any{
+			"provider": "missing",
+			"enum":     "one,two",
+		},
+	}
+
+	lookupCodes, writable := GetLookupCodes(&element, nil, nilGroupProvider{})
+
+	require.Len(t, lookupCodes, 2)
+	require.Equal(t, "one", lookupCodes[0].Value)
+	require.Equal(t, "two", lookupCodes[1].Value)
+	require.False(t, writable)
+}
+
+func TestGetLookupCode_Provider(t *testing.T) {
+
+	// A provider that returns a real group is used in preference to the enum
+	element := Element{
+		Type: "select",
+		Options: mapof.Any{
+			"provider": "colors",
+			"enum":     "ignored",
+		},
+	}
+
+	lookupCodes, writable := GetLookupCodes(&element, nil, staticProvider{
+		"colors": NewReadOnlyLookupGroup(NewLookupCode("red"), NewLookupCode("green")),
+	})
+
+	require.Len(t, lookupCodes, 2)
+	require.Equal(t, "red", lookupCodes[0].Value)
+	require.Equal(t, "green", lookupCodes[1].Value)
+	require.False(t, writable)
+}
+
+// staticProvider is a LookupProvider backed by a map of named groups.
+type staticProvider map[string]LookupGroup
+
+func (p staticProvider) Group(name string) LookupGroup { return p[name] }
+
 func TestGetLookupCode_SliceOfLookupCodes(t *testing.T) {
 
 	element := Element{

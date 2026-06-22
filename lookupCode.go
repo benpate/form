@@ -96,10 +96,12 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 	// If we have a valid LookupProvider, then try to use it to generate lookup codes first
 	if lookupProvider != nil {
 		if provider, ok := element.Options["provider"].(string); ok {
-			group := lookupProvider.Group(provider)
 
-			_, isWritable := group.(WritableLookupGroup)
-			return group.Get(), isWritable
+			// Group may be nil when the provider does not recognize this name; fall through if so
+			if group := lookupProvider.Group(provider); group != nil {
+				_, isWritable := group.(WritableLookupGroup)
+				return group.Get(), isWritable
+			}
 		}
 	}
 
