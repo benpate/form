@@ -112,7 +112,7 @@ func TestFormSetURLValues(t *testing.T) {
 	}
 }
 
-func TestFormSetURLValues_Error(t *testing.T) {
+func TestFormSetURLValues_MissingShowIfField(t *testing.T) {
 
 	useTestWidget()
 
@@ -138,7 +138,9 @@ func TestFormSetURLValues_Error(t *testing.T) {
 		},
 	)
 
-	// First Test Email IS SET because showEmail is true
+	// RULE: A "show-if" expression that references a field which cannot be evaluated
+	// (here, "missing_field" is not in the schema) is treated as not-visible. The
+	// email input is therefore never set, and no error is returned.
 	data := url.Values{
 		"name":       []string{"John Connor"},
 		"email":      []string{"john@connor.mil"},
@@ -149,5 +151,7 @@ func TestFormSetURLValues_Error(t *testing.T) {
 
 	target := mapof.Any{}
 	err := form.SetURLValues(&target, data, nil)
-	require.Error(t, err)
+	require.Nil(t, err)
+	require.Equal(t, "John Connor", target["name"])
+	require.Nil(t, target["email"])
 }

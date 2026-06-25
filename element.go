@@ -148,8 +148,11 @@ func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error
 	// If the data matches the expression then the input is visible
 	visible, err := s.Match(value, expression)
 
+	// RULE: If the expression cannot be evaluated (for instance, a missing data value
+	// from an unchecked checkbox, or a field that is not in the schema) then the input
+	// is simply not visible. A failed match is never an error worth surfacing here.
 	if err != nil {
-		return false, derp.Wrap(err, "form.element.isInputVisible", "Error evaluating show-if expression", showIf)
+		return false, nil
 	}
 
 	// Success
