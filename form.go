@@ -16,9 +16,9 @@ import (
 // Form defines all of the data for this JSON form.  This can be marshalled/unmarshalled
 // as JSON, or entered directly into Go source code.
 type Form struct {
-	Schema  schema.Schema
-	Element Element
-	Options []string
+	Schema  schema.Schema `json:"schema"`
+	Element Element       `json:"form"`
+	Options []string      `json:"options,omitempty"`
 }
 
 // New returns a fully initialized Form object (with all required values)
