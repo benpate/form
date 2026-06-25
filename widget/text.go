@@ -151,7 +151,10 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 			tag.Attr("maxlength", convert.String(s.MaxLength))
 		}
 
-		if pattern := e.Options.GetString("pattern"); pattern != "" {
+		// A schema-defined pattern takes precedence; otherwise fall back to the option.
+		if s.Pattern != "" {
+			tag.Attr("pattern", s.Pattern)
+		} else if pattern := e.Options.GetString("pattern"); pattern != "" {
 			tag.Attr("pattern", pattern)
 		}
 

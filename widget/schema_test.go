@@ -56,6 +56,10 @@ func getTestSchema() schema.Schema {
 					},
 				},
 				"other": schema.String{},
+				"code": schema.String{
+					Pattern:   "[A-Z]{3}",
+					MaxLength: 3,
+				},
 			},
 		},
 	}

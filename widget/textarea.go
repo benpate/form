@@ -54,8 +54,10 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		tag.Attr("placeholder", placeholder)
 	}
 
-	// Add option-defined pattern (schema-defined patterns are no longer supported)
-	if pattern := e.Options.GetString("pattern"); pattern != "" {
+	// A schema-defined pattern takes precedence; otherwise fall back to the option.
+	if schemaString, ok := schemaElement.(schema.String); ok && schemaString.Pattern != "" {
+		tag.Attr("pattern", schemaString.Pattern)
+	} else if pattern := e.Options.GetString("pattern"); pattern != "" {
 		tag.Attr("pattern", pattern)
 	}
 
