@@ -1,9 +1,13 @@
+// Package widget provides the built-in form widgets (text inputs, selects,
+// layouts, and more) that render and edit individual form Elements. Call
+// UseAll to register every widget with the form package before drawing a form.
 package widget
 
 import (
 	"github.com/benpate/form"
 )
 
+// UseAll registers every built-in widget into the form package's widget registry.
 func UseAll() {
 	form.Use("checkbox", Checkbox{})
 	form.Use("check-button", CheckButton{})

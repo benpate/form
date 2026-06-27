@@ -11,6 +11,7 @@ import (
 // CheckButtonGroup renders a group of fancy checkboxes that look like buttons
 type CheckButtonGroup struct{}
 
+// View generates the read-only HTML for this check-button group, showing the selected labels.
 func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
@@ -39,6 +40,7 @@ func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form
 	return nil
 }
 
+// Edit generates the editable HTML for this check-button group.
 func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -87,6 +89,9 @@ func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For CheckButtonGroup widgets, labels are shown, so this always returns TRUE.
 func (widget CheckButtonGroup) ShowLabels() bool {
 
 	return true
@@ -99,6 +104,10 @@ func (widget CheckButtonGroup) ShowDescriptions() string {
 	return "TOP"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For CheckButtonGroup widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget CheckButtonGroup) Encoding(_ *form.Element) string {
 	return ""
 }

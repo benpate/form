@@ -12,10 +12,12 @@ import (
 // CheckButton renders a fancy checkbox widget that looks like a button
 type CheckButton struct{}
 
+// View generates the read-only HTML for this check-button (which is nothing).
 func (widget CheckButton) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, _ any, _ *html.Builder) error {
 	return nil
 }
 
+// Edit generates the editable HTML for this check-button.
 func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// Collect values to use in the Widget
@@ -65,6 +67,9 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For CheckButton widgets, the label is drawn inside the button, so this always returns FALSE.
 func (widget CheckButton) ShowLabels() bool {
 	return false
 }
@@ -76,6 +81,10 @@ func (widget CheckButton) ShowDescriptions() string {
 	return "NONE"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For CheckButton widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget CheckButton) Encoding(_ *form.Element) string {
 	return ""
 }

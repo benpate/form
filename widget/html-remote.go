@@ -9,12 +9,17 @@ import (
 	"github.com/benpate/html"
 )
 
+// HTMLRemote is a widget that lazily loads its content from a remote URL
+// (templated against the form's value) once it scrolls into view.
 type HTMLRemote struct{}
 
+// View generates the read-only HTML for this remote-loading element,
+// which is identical to its editable form.
 func (widget HTMLRemote) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	return widget.Edit(f, e, nil, value, b)
 }
 
+// Edit generates the editable HTML for this remote-loading element.
 func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	const location = "widget.HTMLRemote.Edit"

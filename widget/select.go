@@ -12,6 +12,7 @@ import (
 // Select renders a select box widget
 type Select struct{}
 
+// View generates the read-only HTML for this select box, showing the selected label.
 func (widget Select) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -33,6 +34,7 @@ func (widget Select) View(f *form.Form, e *form.Element, provider form.LookupPro
 	return nil
 }
 
+// Edit generates the editable HTML for this select box.
 func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -122,6 +124,9 @@ func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupPro
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Select widgets, labels are shown, so this always returns TRUE.
 func (widget Select) ShowLabels() bool {
 	return true
 }
@@ -133,10 +138,16 @@ func (widget Select) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Select widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Select) Encoding(_ *form.Element) string {
 	return ""
 }
 
+// groupValue returns the Group of the LookupCode at the given index,
+// or an empty string when the index is out of range.
 func (widget Select) groupValue(lookupCodes []form.LookupCode, index int) string {
 	if index >= len(lookupCodes) {
 		return ""

@@ -39,6 +39,9 @@ func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Hidden widgets, nothing is visible, so this always returns FALSE.
 func (widget Hidden) ShowLabels() bool {
 	return false
 }
@@ -50,6 +53,10 @@ func (widget Hidden) ShowDescriptions() string {
 	return "NONE"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Hidden widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Hidden) Encoding(_ *form.Element) string {
 	return ""
 }

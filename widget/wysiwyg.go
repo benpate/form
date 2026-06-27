@@ -5,8 +5,10 @@ import (
 	"github.com/benpate/html"
 )
 
+// WYSIWYG is a widget that creates a rich-text editor backed by a hidden input.
 type WYSIWYG struct{}
 
+// View generates the read-only HTML for this rich-text value, emitting it as raw HTML.
 func (widget WYSIWYG) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
@@ -14,6 +16,7 @@ func (widget WYSIWYG) View(f *form.Form, e *form.Element, _ form.LookupProvider,
 	return nil
 }
 
+// Edit generates the editable HTML for this rich-text editor.
 func (widget WYSIWYG) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use

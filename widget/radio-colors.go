@@ -84,6 +84,9 @@ func (widget RadioColors) Edit(f *form.Form, e *form.Element, provider form.Look
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For RadioColors widgets, labels are shown, so this always returns TRUE.
 func (widget RadioColors) ShowLabels() bool {
 	return true
 }
@@ -95,6 +98,10 @@ func (widget RadioColors) ShowDescriptions() string {
 	return "TOP"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For RadioColors widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget RadioColors) Encoding(_ *form.Element) string {
 	return ""
 }

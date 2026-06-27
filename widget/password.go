@@ -6,13 +6,16 @@ import (
 	"github.com/benpate/rosetta/convert"
 )
 
+// Password is a widget that creates a masked password input field.
 type Password struct{}
 
+// View generates the read-only HTML for this password field, masking the value.
 func (widget Password) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText("********").Close()
 	return nil
 }
 
+// Edit generates the editable HTML for this password input field.
 func (widget Password) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 
 	if e.ID == "" {

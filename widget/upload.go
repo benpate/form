@@ -8,8 +8,10 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
+// Upload is a widget that creates a file-upload input with a preview of the current file.
 type Upload struct{}
 
+// View generates the read-only HTML for this uploaded file's value.
 func (widget Upload) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -23,6 +25,7 @@ func (widget Upload) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 	return nil
 }
 
+// Edit generates the editable HTML for this file-upload input.
 func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	elementID := e.ID
@@ -94,6 +97,9 @@ func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *ht
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Upload widgets, labels are shown, so this always returns TRUE.
 func (widget Upload) ShowLabels() bool {
 	return true
 }
@@ -105,6 +111,9 @@ func (widget Upload) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// Upload widgets submit files, so this always returns "multipart/form-data".
 func (widget Upload) Encoding(_ *form.Element) string {
 	return "multipart/form-data"
 }

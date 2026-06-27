@@ -17,6 +17,7 @@ import (
 // SelectGroup renders two linked select boxes
 type SelectGroup struct{}
 
+// View generates the read-only HTML for this select-group, showing the selected group.
 func (widget SelectGroup) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -38,6 +39,7 @@ func (widget SelectGroup) View(f *form.Form, e *form.Element, provider form.Look
 	return nil
 }
 
+// Edit generates the editable HTML for this select-group's parent select box.
 func (widget SelectGroup) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	const location = "form.widgets.SelectGroup.Edit"

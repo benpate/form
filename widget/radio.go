@@ -77,6 +77,9 @@ func (widget Radio) Edit(f *form.Form, e *form.Element, provider form.LookupProv
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Radio widgets, labels are shown, so this always returns TRUE.
 func (widget Radio) ShowLabels() bool {
 	return true
 }
@@ -88,6 +91,10 @@ func (widget Radio) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For Radio widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget Radio) Encoding(_ *form.Element) string {
 	return ""
 }

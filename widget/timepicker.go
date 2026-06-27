@@ -10,8 +10,10 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
+// TimePicker is a widget that creates a time input field.
 type TimePicker struct{}
 
+// View generates the read-only HTML for this time value.
 func (widget TimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -22,6 +24,7 @@ func (widget TimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvid
 	return nil
 }
 
+// Edit generates the editable HTML for this time input field.
 func (widget TimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	valueString := widget.getValue(e, &f.Schema, value)
@@ -63,6 +66,9 @@ func (widget TimePicker) getValue(e *form.Element, s *schema.Schema, value any) 
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For TimePicker widgets, labels are shown, so this always returns TRUE.
 func (widget TimePicker) ShowLabels() bool {
 	return true
 }
@@ -74,6 +80,10 @@ func (widget TimePicker) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For TimePicker widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget TimePicker) Encoding(_ *form.Element) string {
 	return ""
 }

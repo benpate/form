@@ -10,12 +10,16 @@ import (
 	"github.com/benpate/html"
 )
 
+// LayoutTabs is a widget that arranges its child elements into a set of tabbed panels.
 type LayoutTabs struct{}
 
+// View generates the read-only HTML for this tab layout.
+// Tabs are an editing affordance, so the read-only view produces nothing.
 func (widget LayoutTabs) View(_ *form.Form, _ *form.Element, _ form.LookupProvider, _ any, _ *html.Builder) error {
 	return nil
 }
 
+// Edit generates the editable HTML for this tab layout.
 func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if e.ID == "" {

@@ -10,8 +10,10 @@ import (
 	"github.com/benpate/rosetta/slice"
 )
 
+// Multiselect is a widget that lets the User choose several values from a list of options.
 type Multiselect struct{}
 
+// View generates the read-only HTML for this multiselect, listing the selected labels.
 func (widget Multiselect) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	schemaElement := e.GetSchema(&f.Schema)
@@ -44,7 +46,7 @@ func (widget Multiselect) View(f *form.Form, e *form.Element, provider form.Look
 	return nil
 }
 
-// Multiselect registers a custom multi-select widget into the library
+// Edit generates the editable HTML for this multiselect.
 func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	if e.ReadOnly {

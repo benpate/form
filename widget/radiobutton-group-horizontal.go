@@ -13,6 +13,7 @@ import (
 // RadioButtonGroupHorizontal renders a group of fancy radio buttons that look like buttons
 type RadioButtonGroupHorizontal struct{}
 
+// View generates the read-only HTML for this horizontal radio-button group, showing the selected label.
 func (widget RadioButtonGroupHorizontal) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the schema and value to use
@@ -41,6 +42,7 @@ func (widget RadioButtonGroupHorizontal) View(f *form.Form, e *form.Element, pro
 	return nil
 }
 
+// Edit generates the editable HTML for this horizontal radio-button group.
 func (widget RadioButtonGroupHorizontal) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -112,6 +114,9 @@ func (widget RadioButtonGroupHorizontal) getLookupCodes(e *form.Element, schemaE
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For RadioButtonGroupHorizontal widgets, labels are shown, so this always returns TRUE.
 func (widget RadioButtonGroupHorizontal) ShowLabels() bool {
 	return true
 }
@@ -123,6 +128,10 @@ func (widget RadioButtonGroupHorizontal) ShowDescriptions() string {
 	return "TOP"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For RadioButtonGroupHorizontal widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget RadioButtonGroupHorizontal) Encoding(_ *form.Element) string {
 	return ""
 }

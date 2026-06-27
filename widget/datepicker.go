@@ -10,8 +10,10 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
+// DatePicker is a widget that creates a date input field.
 type DatePicker struct{}
 
+// View generates the read-only HTML for this date value.
 func (widget DatePicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
@@ -21,6 +23,7 @@ func (widget DatePicker) View(f *form.Form, e *form.Element, _ form.LookupProvid
 	return nil
 }
 
+// Edit generates the editable HTML for this date input field.
 func (widget DatePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	valueString := widget.getValue(e, &f.Schema, value)
@@ -62,6 +65,9 @@ func (widget DatePicker) getValue(e *form.Element, s *schema.Schema, value any) 
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For DatePicker widgets, labels are shown, so this always returns TRUE.
 func (widget DatePicker) ShowLabels() bool {
 	return true
 }
@@ -73,6 +79,10 @@ func (widget DatePicker) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For DatePicker widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget DatePicker) Encoding(_ *form.Element) string {
 	return ""
 }

@@ -6,8 +6,11 @@ import (
 	"github.com/benpate/html"
 )
 
+// Container is a widget that wraps its child elements in a styled <div>,
+// optionally hiding children based on form options.
 type Container struct{}
 
+// View generates the read-only HTML for this container and its children.
 func (Container) View(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 	const location = "form.Container.View"
 	var result error
@@ -51,6 +54,7 @@ func (Container) View(f *form.Form, e *form.Element, provider form.LookupProvide
 	return result
 }
 
+// Edit generates the editable HTML for this container and its children.
 func (Container) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	const location = "form.Container.Edit"
@@ -99,6 +103,9 @@ func (Container) Edit(f *form.Form, e *form.Element, provider form.LookupProvide
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For Container widgets, labels are not shown, so this always returns FALSE.
 func (Container) ShowLabels() bool {
 	return false
 }
@@ -110,6 +117,9 @@ func (widget Container) ShowDescriptions() string {
 	return "TOP"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget,
+// which is the combined encoding of all child elements.
 func (widget Container) Encoding(element *form.Element) string {
 	return collectEncoding(element.Children)
 }

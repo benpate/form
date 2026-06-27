@@ -5,13 +5,16 @@ import (
 	"github.com/benpate/html"
 )
 
+// HTML is a widget that emits the element's Description as raw, unescaped HTML.
 type HTML struct{}
 
+// View generates the read-only HTML for this element from its Description.
 func (widget HTML) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }
 
+// Edit generates the HTML for this element, which is identical to its read-only view.
 func (widget HTML) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
 	b.Div().InnerHTML(e.Description).Close()
 	return nil

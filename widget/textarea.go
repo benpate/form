@@ -10,6 +10,7 @@ import (
 // TextArea renders a long text <textarea> widget
 type TextArea struct{}
 
+// View generates the read-only HTML for this text-area value.
 func (widget TextArea) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
@@ -19,6 +20,7 @@ func (widget TextArea) View(f *form.Form, e *form.Element, _ form.LookupProvider
 	return nil
 }
 
+// Edit generates the editable HTML for this text-area input field.
 func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
@@ -91,6 +93,9 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
  * Widget Metadata
  ***********************************/
 
+// ShowLabels is a part of the Widget interface.
+// It returns TRUE if this widget requires labels to be displayed around it.
+// For TextArea widgets, labels are shown, so this always returns TRUE.
 func (widget TextArea) ShowLabels() bool {
 	return true
 }
@@ -102,6 +107,10 @@ func (widget TextArea) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
+// Encoding is a part of the Widget interface.
+// It returns the encoding type for this widget.
+// For TextArea widgets, there is no special encoding,
+// so this always returns an empty string.
 func (widget TextArea) Encoding(_ *form.Element) string {
 	return ""
 }

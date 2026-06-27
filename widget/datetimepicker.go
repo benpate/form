@@ -10,8 +10,10 @@ import (
 	"github.com/benpate/rosetta/schema"
 )
 
+// DateTimePicker is a widget that creates a combined date-and-time input field.
 type DateTimePicker struct{}
 
+// View generates the read-only HTML for this date-time value.
 func (widget DateTimePicker) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
@@ -21,6 +23,7 @@ func (widget DateTimePicker) View(f *form.Form, e *form.Element, _ form.LookupPr
 	return nil
 }
 
+// Edit generates the editable HTML for this date-time input field.
 func (widget DateTimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	valueString := widget.getValue(e, &f.Schema, value)
