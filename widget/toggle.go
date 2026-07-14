@@ -30,7 +30,11 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
-	id := "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString
+	id := e.ID
+	if id == "" {
+		id = "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString
+	}
+
 	script := "install toggle " + e.Options.GetString("script")
 
 	// Start building a new tag
