@@ -10,6 +10,7 @@ import (
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
+	"github.com/benpate/rosetta/sliceof"
 	"github.com/rs/zerolog/log"
 )
 
@@ -140,7 +141,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			// Errors are intentionally ignored here.
 			// Unallowed data does not make it through the schema filter
 			// nolint: errcheck
-			if err := form.Schema.Set(object, element.Path, values[element.Path]); err != nil {
+			if err := form.Schema.Set(object, element.Path, form.schemaSafeValue(element.Path, values)); err != nil {
 				log.Debug().Err(err).Str("path", element.Path).Msg("Unable to set value")
 			}
 		}
@@ -148,6 +149,24 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 
 	// Success
 	return nil
+}
+
+// schemaSafeValue shapes a posted url.Values entry for schema.Set.  url.Values holds a
+// plain []string, but rosetta validates Array schemas through its ArrayGetterSetter
+// interface, which the builtin slice does not implement (multi-value widgets like
+// multiselect and check-button-group post these).  Wrapping Array-typed paths in a
+// *sliceof.String bridges the two; all other paths pass through unchanged.  A path with
+// no posted values wraps an empty slice, so un-checking every option clears the array.
+func (form *Form) schemaSafeValue(path string, values url.Values) any {
+
+	if element, ok := form.Schema.GetElement(path); ok {
+		if _, isArray := element.(schema.Array); isArray {
+			result := sliceof.String(values[path])
+			return &result
+		}
+	}
+
+	return values[path]
 }
 
 // Encoding returns the "enctype" attribute for the form.

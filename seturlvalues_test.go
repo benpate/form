@@ -6,6 +6,7 @@ import (
 
 	"github.com/benpate/rosetta/mapof"
 	"github.com/benpate/rosetta/schema"
+	"github.com/benpate/rosetta/sliceof"
 	"github.com/stretchr/testify/require"
 )
 
@@ -82,6 +83,71 @@ func TestSetURLValues_ShowIf(t *testing.T) {
 		require.NoError(t, form.SetURLValues(&object, values, nil))
 		require.Equal(t, "hello", object.GetString("comment"))
 	}
+}
+
+// --- Array-typed paths ---
+// Multi-value widgets (multiselect, check-button-group) post plain []string via url.Values,
+// but rosetta validates Array schemas through its ArrayGetterSetter interface, which the
+// builtin slice does not implement.  These tests pin the *sliceof.String bridge in
+// schemaSafeValue; without it, every array save fails schema validation silently.
+
+type arrayTestObject struct {
+	Channels sliceof.String
+}
+
+func (o *arrayTestObject) GetPointer(name string) (any, bool) {
+	if name == "channels" {
+		return &o.Channels, true
+	}
+	return nil, false
+}
+
+func arrayTestSchema() schema.Schema {
+	return schema.New(schema.Object{
+		Properties: schema.ElementMap{
+			"channels": schema.Array{Items: schema.String{Enum: []string{"ALPHA", "BETA", "GAMMA"}}},
+		},
+	})
+}
+
+func TestSetURLValues_ArrayPath(t *testing.T) {
+
+	useTestWidget()
+
+	form := New(arrayTestSchema(), Element{Type: "test", Path: "channels"})
+
+	object := arrayTestObject{}
+	values := url.Values{"channels": []string{"ALPHA", "GAMMA"}}
+
+	require.NoError(t, form.SetURLValues(&object, values, nil))
+	require.Equal(t, sliceof.String{"ALPHA", "GAMMA"}, object.Channels)
+}
+
+func TestSetURLValues_ArrayPath_ClearsWhenAbsent(t *testing.T) {
+
+	useTestWidget()
+
+	form := New(arrayTestSchema(), Element{Type: "test", Path: "channels"})
+
+	// No posted values for the path (nothing checked) clears the array.
+	object := arrayTestObject{Channels: sliceof.String{"ALPHA"}}
+	require.NoError(t, form.SetURLValues(&object, url.Values{}, nil))
+	require.Equal(t, sliceof.String{}, object.Channels)
+}
+
+func TestSetURLValues_ArrayPath_RejectsInvalidEnum(t *testing.T) {
+
+	useTestWidget()
+
+	form := New(arrayTestSchema(), Element{Type: "test", Path: "channels"})
+
+	// Values outside the Enum fail schema validation; SetURLValues logs and
+	// continues (schema-filtered data never reaches the object).
+	object := arrayTestObject{Channels: sliceof.String{"ALPHA"}}
+	values := url.Values{"channels": []string{"BOGUS"}}
+
+	require.NoError(t, form.SetURLValues(&object, values, nil))
+	require.Equal(t, sliceof.String{"ALPHA"}, object.Channels)
 }
 
 // --- replaceNewLookup with a writable provider ---
