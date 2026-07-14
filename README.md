@@ -1,6 +1,6 @@
 # Form 🤔
 
-[![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://pkg.go.dev/github.com/benpate/form)
+[![Go Reference](https://pkg.go.dev/badge/github.com/benpate/form.svg)](https://pkg.go.dev/github.com/benpate/form)
 [![Version](https://img.shields.io/github/v/release/benpate/form?include_prereleases&style=flat-square&color=brightgreen)](https://github.com/benpate/form/releases)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/benpate/form/go.yml?style=flat-square)](https://github.com/benpate/form/actions/workflows/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/benpate/form?style=flat-square)](https://goreportcard.com/report/github.com/benpate/form)
@@ -8,7 +8,7 @@
 
 ## JSON to HTML (Forms for Go)
 
-This [Go module](https://golang.org) generates HTML forms using JSON configurations.  It is inspired by [JSON-Forms](https://jsonforms.io) but is not 100% compatible with that standard.
+This [Go module](https://golang.org) generates HTML forms using JSON configurations. It is inspired by [JSON-Forms](https://jsonforms.io) but is not 100% compatible with that standard.
 
 Forms can be defined directly in Go source code, or can be marshaled / unmarshalled from JSON.  See the section below for details on JSON marshaling.
 
@@ -312,10 +312,10 @@ Here is a sample form configuration in JSON.  This form is displayed in multiple
 ```
 
 
-# Project Status
+## Project Status
 
-This project is a work-in-progress.  It is being used in production on large websites, but it is still under active development and is subject to change without notice.
+This project is a work-in-progress. It is being used in production on large websites, but it is still under active development and is subject to change without notice.
 
 If you're looking for a form library in Go, you should probably use something else that has a better stability guarantee.
 
-With that said, if you have an idea for making this library better, send in a pull request.  We're all in this together! 🤔
+With that said, if you have an idea for making this library better, send in a pull request. We're all in this together! 🤔
