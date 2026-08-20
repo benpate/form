@@ -82,11 +82,9 @@ func FuzzForm_UnmarshalJSON(f *testing.F) {
 
 		var form Form
 
-		// Unmarshalling arbitrary bytes must never panic.
-		err := json.Unmarshal(data, &form)
-
-		// A form that unmarshalled cleanly must re-marshal without panicking.
-		if err == nil {
+		// Unmarshalling arbitrary bytes must never panic. A form that unmarshalled
+		// cleanly must re-marshal without panicking.
+		if err := json.Unmarshal(data, &form); err == nil {
 			if _, marshalErr := json.Marshal(form); marshalErr != nil {
 				t.Fatalf("Unmarshalled form failed to re-marshal: %v", marshalErr)
 			}
@@ -109,7 +107,7 @@ func FuzzElement_UnmarshalMap(f *testing.F) {
 		f.Add(seed)
 	}
 
-	f.Fuzz(func(t *testing.T, data []byte) {
+	f.Fuzz(func(_ *testing.T, data []byte) {
 
 		// Decode the fuzz bytes into a generic map. Inputs that are not JSON
 		// objects are uninteresting for this target, so skip them.
@@ -134,11 +132,8 @@ func FuzzMustParse(f *testing.F) {
 
 	f.Fuzz(func(t *testing.T, data []byte) {
 
-		// Determine whether Parse accepts this input.
-		_, parseErr := Parse(data)
-
-		// If Parse succeeds, MustParse must not panic.
-		if parseErr == nil {
+		// If Parse accepts this input, MustParse must not panic on it.
+		if _, parseErr := Parse(data); parseErr == nil {
 			defer func() {
 				if r := recover(); r != nil {
 					t.Fatalf("MustParse panicked on input that Parse accepted: %v", r)

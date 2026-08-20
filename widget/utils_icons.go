@@ -2,6 +2,7 @@ package widget
 
 import "github.com/benpate/html"
 
+// loadingIcon draws an inline SVG spinner.
 func loadingIcon(b *html.Builder) {
 	b.Container("svg").
 		Class("spin").
@@ -22,6 +23,7 @@ func loadingIcon(b *html.Builder) {
 	b.Close()
 }
 
+// locateIcon draws an inline SVG crosshair, used by the Place widget.
 func locateIcon(b *html.Builder) {
 	b.Container("svg").
 		Style("height:1.5em", "width:1.5em").

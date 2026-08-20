@@ -17,16 +17,10 @@ func (widget RadioColors) View(f *form.Form, e *form.Element, provider form.Look
 	valueString := e.GetString(value, &f.Schema)
 	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
-	// Start building a new tag
-	b.Div().Class("layout-value")
-	for _, lookupCode := range lookupCodes {
-		if lookupCode.Value == valueString {
-			b.WriteString(lookupCode.Label)
-			break
-		}
-	}
-	b.Close()
+	// Show the Label of the selected option
+	drawValue(b, selectedCode(lookupCodes, valueString).Label)
 
+	// A whiter shade of pale
 	return nil
 }
 

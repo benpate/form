@@ -48,6 +48,8 @@ func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 	return nil
 }
 
+// preview draws the already-uploaded file -- as an image, an audio player, or a
+// link, depending on the "accept" option -- along with its delete affordance.
 func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *html.Builder) {
 
 	// Get the URL for the uploaded file

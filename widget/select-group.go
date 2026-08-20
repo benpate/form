@@ -25,17 +25,10 @@ func (widget SelectGroup) View(f *form.Form, e *form.Element, provider form.Look
 	valueString := e.GetString(value, &f.Schema)
 	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
-	// Start building a new tag
-	b.Div().Class("layout-value").EndBracket()
-	for _, lookupCode := range lookupCodes {
-		if lookupCode.Value == valueString {
-			b.WriteString(lookupCode.Group)
-			break
-		}
-	}
+	// Show the Group of the selected option
+	drawValue(b, selectedCode(lookupCodes, valueString).Group)
 
-	b.Close()
-
+	// Everybody needs a group to belong to
 	return nil
 }
 
@@ -137,6 +130,8 @@ func (widget SelectGroup) Encoding(_ *form.Element) string {
  * Internal Helpers
  ***********************************/
 
+// setChildWidget wires this select box to the child named by the "children" option,
+// embedding the LookupCodes as JSON so the browser can repopulate it on change.
 func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCodes sliceof.Object[form.LookupCode], value any, selectBox *html.Element) error {
 
 	const location = "form.widget.SelectGroup.setChildWidget"

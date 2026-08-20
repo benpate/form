@@ -8,10 +8,11 @@ import (
 	"github.com/benpate/html"
 )
 
+// drawLayout draws an element's children in the named alignment, wrapping each one
+// in its label and description. Set edit to draw the editable version.
 func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder, alignment string, edit bool) error {
 
 	const location = "form.drawLayout"
-	var result error
 
 	b.Div().Class("layout", "layout-"+alignment)
 
@@ -105,7 +106,8 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 
 	b.CloseAll()
 
-	return result
+	// Everything in its right place
+	return nil
 }
 
 // collectEncoding returns the first non-empty encoding found in a slice of child elements

@@ -17,7 +17,7 @@ type LookupCode struct {
 	Label       string `json:"label,omitempty"       form:"label"       bson:"label,omitempty"`       // Human-friendly label/name of the LookupCode
 	Description string `json:"description,omitempty" form:"description" bson:"description,omitempty"` // Optional long description of the LookupCode
 	Icon        string `json:"icon,omitempty"        form:"icon"        bson:"icon,omitempty"`        // Optional icon to use when displaying the LookupCode
-	Group       string `json:"group,omitempty"       form:"group"       bson:"group,omitempty"`       // Optiional grouping to use when displaying the LookupCode
+	Group       string `json:"group,omitempty"       form:"group"       bson:"group,omitempty"`       // Optional grouping to use when displaying the LookupCode
 	Href        string `json:"href,omitempty"        form:"href"        bson:"href,omitempty"`        // Optional URL to use when using this LookupCode
 }
 
@@ -137,6 +137,8 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 	return make([]LookupCode, 0), false
 }
 
+// getSchemaEnumeration returns the enumerated values declared by a schema element,
+// descending into an Array's Items, or an empty slice when it declares none.
 func getSchemaEnumeration(schemaElement schema.Element) []string {
 
 	switch s := schemaElement.(type) {

@@ -35,7 +35,7 @@ func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvid
 	// Replace values in the template
 	buffer := bytes.Buffer{}
 	if err := remoteTemplate.Execute(&buffer, value); err != nil {
-		return derp.Wrap(err, location, "Unable to ececute remote URL template", remoteURL)
+		return derp.Wrap(err, location, "Unable to execute remote URL template", remoteURL)
 	}
 
 	b.Div().

@@ -232,6 +232,8 @@ func (widget Place) Encoding(_ *form.Element) string {
  * Helper Methods
  ***********************************/
 
+// getString returns one sub-property of this element's value ("name", "latitude",
+// or "longitude") as a string, or an empty string when the path cannot be read.
 func (widget Place) getString(element *form.Element, schema *schema.Schema, subPath string, value any) string {
 
 	path := element.Path + "." + subPath

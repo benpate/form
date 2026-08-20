@@ -21,24 +21,10 @@ func (widget RadioButtonGroupHorizontal) View(f *form.Form, e *form.Element, pro
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
 	lookupCodes := widget.getLookupCodes(e, schemaElement, provider)
 
-	first := true
+	// List the Label of every selected option
+	drawValue(b, strings.Join(selectedLabels(lookupCodes, valueSlice), ", "))
 
-	b.Div().Class("layout-value")
-	for _, lookupCode := range lookupCodes {
-
-		if slice.Contains(valueSlice, lookupCode.Value) {
-
-			if first {
-				first = false
-			} else {
-				b.WriteString(", ")
-			}
-
-			b.WriteString(lookupCode.Label)
-		}
-	}
-	b.Close()
-
+	// Sideways, but still upright
 	return nil
 }
 

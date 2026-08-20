@@ -51,6 +51,8 @@ func (widget TimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupProvid
 	return nil
 }
 
+// getValue returns the element's value formatted as a time of day, or an empty
+// string when the value cannot be read as a time.
 func (widget TimePicker) getValue(e *form.Element, s *schema.Schema, value any) string {
 
 	valueString := e.GetString(value, s)

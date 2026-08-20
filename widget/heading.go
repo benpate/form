@@ -17,7 +17,7 @@ func (widget Heading) View(_ *form.Form, e *form.Element, _ form.LookupProvider,
 
 // Edit generates the HTML for this heading, which is identical to its read-only view.
 func (widget Heading) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
-	b.H2().InnerHTML(e.Label).Close()
+	b.H2().InnerText(e.Label).Close()
 	b.Div().InnerHTML(e.Description).Close()
 	return nil
 }

@@ -19,24 +19,10 @@ func (widget CheckButtonGroup) View(f *form.Form, e *form.Element, provider form
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
 	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
 
-	first := true
+	// List the Label of every selected option
+	drawValue(b, strings.Join(selectedLabels(lookupCodes, valueSlice), ", "))
 
-	b.Div().Class("layout-value")
-	for _, lookupCode := range lookupCodes {
-
-		if slice.Contains(valueSlice, lookupCode.Value) {
-
-			if first {
-				first = false
-			} else {
-				b.WriteString(", ")
-			}
-
-			b.WriteString(lookupCode.Label)
-		}
-	}
-	b.Close()
-
+	// Every box accounted for
 	return nil
 }
 

@@ -35,9 +35,15 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 	tag := b.Container("textarea").
 		Name(e.Path).
 		ID(e.ID).
-		Attr("hint", e.Description).
-		Attr("rows", convert.String(e.Options.GetInt("rows"))).
-		Aria("labelledby", e.ID+".label").
+		Attr("hint", e.Description)
+
+	// RULE: Only a positive "rows" option is written. GetInt returns zero for a
+	// missing option, and rows="0" is not a valid size.
+	if rows := e.Options.GetInt("rows"); rows > 0 {
+		tag.Attr("rows", convert.String(rows))
+	}
+
+	tag.Aria("labelledby", e.ID+".label").
 		Aria("describedby", e.ID+".description").
 		TabIndex("0")
 

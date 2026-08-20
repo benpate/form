@@ -50,6 +50,8 @@ func (widget DateTimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupPr
 	return nil
 }
 
+// getValue returns the element's value formatted for a datetime-local input, or
+// an empty string when the value cannot be read as a time.
 func (widget DateTimePicker) getValue(e *form.Element, s *schema.Schema, value any) string {
 
 	valueString := e.GetString(value, s)

@@ -12,7 +12,14 @@ type WYSIWYG struct{}
 func (widget WYSIWYG) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 	// find the path and schema to use
 	valueString := e.GetString(value, &f.Schema)
-	b.WriteString(valueString) // TODO: LOW: apply schema formats?
+
+	// The stored value IS markup -- that is what a rich-text editor produces -- so it
+	// is written verbatim. Sanitize it before it reaches this widget, not here.
+	// strings.Builder.Write never fails, so the returned error is discarded.
+	// TODO: LOW: apply schema formats?
+	_, _ = b.WriteString(valueString)
+
+	// What you see is what you get
 	return nil
 }
 

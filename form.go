@@ -1,5 +1,3 @@
-// Package form is a simplified implementation of JSON-Forms, which renders HTML forms
-// from a JSON configuration.
 package form
 
 import (
@@ -108,7 +106,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 				continue
 			}
 
-			// Try to replace new lookup codes (if neede)
+			// Try to replace new lookup codes (if needed)
 			newValue, updated, err := element.replaceNewLookup(lookupProvider, values.Get(element.Path))
 
 			if err != nil {
@@ -137,10 +135,9 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 				continue
 			}
 
-			// Update the original object with the new value
-			// Errors are intentionally ignored here.
-			// Unallowed data does not make it through the schema filter
-			// nolint: errcheck
+			// Update the original object with the new value. A rejected value is logged
+			// rather than returned, so that one bad field does not abandon the rest of
+			// the form; the schema has already filtered out anything it does not allow.
 			if err := form.Schema.Set(object, element.Path, form.schemaSafeValue(element.Path, values)); err != nil {
 				log.Debug().Err(err).Str("path", element.Path).Msg("Unable to set value")
 			}

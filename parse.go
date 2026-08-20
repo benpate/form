@@ -10,6 +10,8 @@ import (
 // Currently supports map[string]any, []byte, string, and UnmarshalMaper interface.
 func Parse(data any) (Element, error) {
 
+	const location = "form.Parse"
+
 	result := Element{}
 
 	switch typedData := data.(type) {
@@ -26,15 +28,19 @@ func Parse(data any) (Element, error) {
 		return result, err
 
 	case []byte:
-		err := json.Unmarshal(typedData, &result)
-		return result, err
+		if err := json.Unmarshal(typedData, &result); err != nil {
+			return result, derp.Wrap(err, location, "Invalid JSON", string(typedData))
+		}
+		return result, nil
 
 	case string:
-		err := json.Unmarshal([]byte(typedData), &result)
-		return result, err
+		if err := json.Unmarshal([]byte(typedData), &result); err != nil {
+			return result, derp.Wrap(err, location, "Invalid JSON", typedData)
+		}
+		return result, nil
 	}
 
-	return result, derp.Internal("form.Parse", "Cannot Parse Value: Unknown Datatype", data)
+	return result, derp.Internal(location, "Cannot Parse Value: Unknown Datatype", data)
 }
 
 // MustParse guarantees that a value has been parsed into a Form, or else it panics the application.

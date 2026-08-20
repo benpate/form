@@ -1,6 +1,8 @@
 package widget
 
 import (
+	"strings"
+
 	"github.com/benpate/form"
 	"github.com/benpate/form/groupie"
 	"github.com/benpate/html"
@@ -19,15 +21,17 @@ func (widget Multiselect) View(f *form.Form, e *form.Element, provider form.Look
 	schemaElement := e.GetSchema(&f.Schema)
 	valueSlice := e.GetSliceOfString(value, &f.Schema)
 	lookupCodes, _ := form.GetLookupCodes(e, schemaElement, provider)
-	first := true
+
+	var text strings.Builder
 
 	group := groupie.New()
+	first := true
 
-	b.Div().Class("layout-value")
+	// Collect each group header, along with the Label of every selected option
 	for _, lookupCode := range lookupCodes {
 
 		if group.Header(lookupCode.Group) {
-			b.WriteString(lookupCode.Group + ": ")
+			text.WriteString(lookupCode.Group + ": ")
 		}
 
 		if slice.Contains(valueSlice, lookupCode.Value) {
@@ -35,14 +39,17 @@ func (widget Multiselect) View(f *form.Form, e *form.Element, provider form.Look
 			if first {
 				first = false
 			} else {
-				b.WriteString(", ")
+				text.WriteString(", ")
 			}
 
-			b.WriteString(lookupCode.Label)
+			text.WriteString(lookupCode.Label)
 		}
 	}
-	b.Close()
 
+	// Draw the whole list at once, so that it is escaped as text
+	drawValue(b, text.String())
+
+	// Many are called, but few are chosen
 	return nil
 }
 

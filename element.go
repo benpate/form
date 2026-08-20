@@ -158,9 +158,11 @@ func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error
 	return visible, nil
 }
 
+// replaceNewLookup writes a newly-entered "::NEWVALUE::" option into its
+// WritableLookupGroup, returning the stored value and whether it was written.
 func (element Element) replaceNewLookup(lookupProvider LookupProvider, value string) (string, bool, error) {
 
-	const location = "form.element.replaceNewLookup"
+	const location = "form.Element.replaceNewLookup"
 
 	// RULE: lookupProvider must not be nil
 	if lookupProvider == nil {
@@ -189,14 +191,15 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 	// If the LookupGroup is writable, then try to add a new value
 	if writableGroup, ok := lookupGroup.(WritableLookupGroup); ok {
 
-		value = strings.TrimPrefix(value, NewItemIdentifier)
-		value, err := writableGroup.Add(value)
+		newName := strings.TrimPrefix(value, NewItemIdentifier)
+		newValue, err := writableGroup.Add(newName)
 
+		// Report the name that was rejected, not the empty value Add returned for it.
 		if err != nil {
-			return value, false, derp.Wrap(err, location, "Error adding new lookup value", groupName, element.Path, value)
+			return value, false, derp.Wrap(err, location, "Error adding new lookup value", groupName, element.Path, newName)
 		}
 
-		return value, true, nil
+		return newValue, true, nil
 	}
 
 	// Otherwise, the value cannot be written, so keep the original value
@@ -219,7 +222,7 @@ func (element *Element) AllElements() []*Element {
 		result = []*Element{element}
 	}
 
-	// Scan all chiild elements for THEIR paths, and add them to the result
+	// Scan all child elements for THEIR paths, and add them to the result
 	for index := range element.Children {
 		result = append(result, element.Children[index].AllElements()...)
 	}
@@ -234,6 +237,8 @@ func (element *Element) AllElements() []*Element {
 
 // UnmarshalMap parses data from a generic structure (mapof.Any) into a Form record.
 func (element *Element) UnmarshalMap(data map[string]any) error {
+
+	const location = "form.Element.UnmarshalMap"
 
 	element.ID = convert.String(data["id"])
 	element.Type = convert.String(data["type"])
@@ -253,11 +258,11 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 			if childData, ok := childInterface.(map[string]any); ok {
 				var child Element
 				if err := child.UnmarshalMap(childData); err != nil {
-					return derp.Wrap(err, "form.UnmarshalMap", "Error parsing child form information.", childInterface)
+					return derp.Wrap(err, location, "Error parsing child form information.", childInterface)
 				}
 				element.Children[index] = child
 			} else {
-				return derp.Internal("form.UnmarshalMap", "Error parsing child form information.", childInterface)
+				return derp.Internal(location, "Error parsing child form information.", childInterface)
 			}
 		}
 	}
