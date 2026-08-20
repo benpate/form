@@ -36,7 +36,7 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		Name(e.Path).
 		ID(e.ID).
 		Attr("hint", e.Description).
-		Attr("rows", e.Options.GetString("rows")).
+		Attr("rows", convert.String(e.Options.GetInt("rows"))).
 		Aria("labelledby", e.ID+".label").
 		Aria("describedby", e.ID+".description").
 		TabIndex("0")
