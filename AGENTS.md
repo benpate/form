@@ -1,0 +1,32 @@
+# form — Notes for AI Agents
+
+This package renders HTML forms from a rosetta data schema plus a tree of `Element` UI definitions, and applies posted `url.Values` back onto the object. [README.md](README.md) covers usage; [doc.go](doc.go) documents the API surface; [widget/README.md](widget/README.md) covers the built-in widgets and the registry contract in depth.
+
+## Rendering and the widget registry
+
+- **An unregistered `Element.Type` fails the WHOLE render with an error, not a blank widget.** `Element.Widget()` in [element.go](element.go) returns `derp.Internal("form.Widget", "Unrecognized form widget", ...)` from a plain package-level map in [registry.go](registry.go). Nothing registers widgets implicitly — every `main()` and every test binary that renders a form must call `widget.UseAll()` (or `form.Use`) first, usually in `TestMain`. Callers that ignore the error (e.g. `fmt.Println` in an Example) see an empty page; any `ExampleXxx` that renders a form needs an `// Output:` comment so CI catches this.
+- **There is no `"number"` widget.** The `"text"` widget reads the input type from the DATA schema, so a `schema.Integer` path renders `<input type="number" step="1">` with min/max from the schema. The full registered set is the `UseAll()` body in [widget/widget.go](widget/widget.go) — treat that function as the source of truth for type names.
+- **The registry is init-time only and has no mutex on purpose.** Populate it during startup, before any goroutine renders a form. Do not "fix" it with a lock; this is the standard registration pattern.
+- **Errors surface only as a wrapped derp chain.** `Error()` prints just the outermost `location: message`; when debugging a blank render, unwrap with `errors.Unwrap` in a loop (or derp's report helpers) to find the failing element.
+
+## Escaping: values are untrusted, definitions are trusted
+
+- **Never pass a data value to `html.Builder.WriteString`.** That is the embedded `strings.Builder` method: it does not escape, AND it skips the builder's pending end bracket, so the text lands inside the open tag. Both failure modes are invisible in casual testing. Use `.InnerText()` for any end-user data, or the `drawValue` helper in [widget/utils.go](widget/utils.go) for read-only `View` output; [widget/view_escaping_test.go](widget/view_escaping_test.go) locks this in for the lookup widgets.
+- **LookupCode Labels are end-user data.** They arrive through a `LookupProvider` and may hold whatever a user typed. Every widget `View` and `Edit` must draw them with `InnerText` (via `drawValue`, `selectedCode`, `selectedLabels`). The one sanctioned raw write is `WYSIWYG.View`, whose stored value IS markup by design — sanitize before storage, not there.
+- **The form DEFINITION is trusted and deliberately unescaped.** Layout titles and widget descriptions go through `InnerHTML`, and options like `style`, `script`, and `show-if` are written straight into tags. Form definitions must come from application code or an administrator, never from an end user. Do not "harden" these paths by escaping them — the `html` and `heading` widgets exist precisely to emit authored markup.
+- **The `html-remote` widget executes its `url` option as a `text/template` against the form's value.** Another reason definitions are a trust boundary: a hostile definition is template injection by construction.
+
+## SetURLValues and the write path
+
+- **`Schema.Set` failures are logged at debug level and skipped, never returned.** One rejected field must not abandon the rest of the form, so `SetURLValues` in [form.go](form.go) deliberately drops invalid values (rosetta's `Set` validates, clamps, and truncates before writing). Do not refactor this into an early return; equally, do not expect `SetURLValues` to report bad input to the caller.
+- **Only visible, writable elements are written — that is the mass-assignment guard.** `SetURLValues` skips `ReadOnly` elements and anything whose `show-if` expression evaluates false against the object, and `Element.AllElements()` prunes a `ReadOnly` element AND its whole subtree. A client cannot post a value into a field the form does not currently show.
+- **The two-pass `show-if` loop is load-bearing.** Elements without `show-if` are written first, then elements with it, so a dependent field is evaluated against its parent's freshly-written value. Collapsing this into one pass silently breaks dependent fields.
+- **Array-typed paths must be wrapped before `Schema.Set` — `schemaSafeValue` does it.** `url.Values` holds plain `[]string`, which rosetta cannot write through its `ArrayGetterSetter` interface; the helper wraps Array paths in `*sliceof.String` (an empty one when nothing was posted, so un-checking every option clears the array). New multi-value widgets get this for free only if they go through `Schema.Set`; a custom `URLValueSetter` must handle it itself.
+- **The `::NEWVALUE::` sentinel (`form.NewItemIdentifier`) must match the hyperscript in `widget/select.go`.** `Element.replaceNewLookup` strips that prefix and calls `WritableLookupGroup.Add` on save; changing the literal in one place silently breaks "add another" options.
+
+## Structure and callers
+
+- **This package never emits the `<form>` tag.** Callers own the action URL, method, and enctype; `Form.Encoding()` (fed by each widget's `Encoding` method, promoted through layout children) is the only contribution — a caller that ignores it breaks `upload` widgets. Emissary's `WrapForm` is the canonical consumer, and it uses relative action URLs on purpose (absolute config-derived URLs drop the browser's port behind proxies).
+- **Two different things are called "options".** `Element.Options` is a per-widget `mapof.Any` from the JSON definition; `Form.Options` is a `[]string` of `"name:value"` pairs read by `OptionString`/`OptionBool` and the `show-if-option`/`hide-if-option` layout switches. They do not interact.
+- **`Form.Validate()` catches definition mistakes; `UnmarshalJSON` calls it automatically.** It checks every `Path` and every field named in a `show-if` expression against the schema. Forms built in Go code or via `Parse` are NOT auto-validated — call it yourself when loading a definition from storage.
+- **`benpate/table` renders its cells through this package.** Table columns are `form.Element`s drawn per-row, so registry, escaping, and schema rules above all apply there too; see that repo's AGENTS.md.
