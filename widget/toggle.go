@@ -14,9 +14,7 @@ type Toggle struct{}
 // View generates the HTML for viewing a toggle widget's value.
 func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
-	valueString := e.GetString(value, &f.Schema)
-
-	if valueBool := convert.Bool(valueString); valueBool {
+	if valueBool := convert.Bool(toggleValue(f, e, value)); valueBool {
 		b.Div().Class("layout-value").InnerText(e.Options.GetString("true-text")).Close()
 	} else {
 		b.Div().Class("layout-value").InnerText(e.Options.GetString("false-text")).Close()
@@ -29,7 +27,7 @@ func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	// find the path and schema to use
-	valueString := e.GetString(value, &f.Schema)
+	valueString := toggleValue(f, e, value)
 	id := e.ID
 	if id == "" {
 		id = "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString
@@ -50,6 +48,28 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 
 	b.CloseAll()
 	return nil
+}
+
+// toggleValue reads the toggle's value from the object, falling back to the schema's declared
+// default when the object carries no value for this path at all.
+//
+// RULE: An absent property and a stored FALSE are NOT the same thing, but they collapse into
+// the same rendering unless the default is applied here.  A map-backed object simply has no
+// key yet, so the value reads back as an empty string -- and because a toggle always posts
+// either "true" or "false", the very first save of the surrounding form would write that
+// phantom FALSE into storage.  A flag whose ON state is meant to be the default therefore has
+// to render ON before it has ever been saved, which is what this restores.
+func toggleValue(f *form.Form, e *form.Element, value any) string {
+
+	if result := e.GetString(value, &f.Schema); result != "" {
+		return result
+	}
+
+	if element := e.GetSchema(&f.Schema); element != nil {
+		return convert.String(element.DefaultValue())
+	}
+
+	return ""
 }
 
 /***********************************
