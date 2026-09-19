@@ -77,6 +77,7 @@ func TestWidget_LookupWidgets(t *testing.T) {
 	lookups := []form.Element{
 		{Type: "select", Path: "color"},
 		{Type: "select-group", Path: "color", Options: mapof.Any{"provider": "test", "children": "other"}},
+		{Type: "select-icons", Path: "color", Options: mapof.Any{"provider": "test"}},
 		{Type: "radio", Path: "color"},
 		{Type: "radio-button-group", Path: "color"},
 		{Type: "radio-button-group-horizontal", Path: "color"},

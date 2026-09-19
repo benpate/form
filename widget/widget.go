@@ -34,6 +34,7 @@ func UseAll() {
 	form.Use("radio-colors", RadioColors{})
 	form.Use("select", Select{})
 	form.Use("select-group", SelectGroup{})
+	form.Use("select-icons", SelectIcons{})
 	form.Use("text", Text{})
 	form.Use("textarea", TextArea{})
 	form.Use("time", TimePicker{})

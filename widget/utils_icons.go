@@ -1,6 +1,11 @@
 package widget
 
-import "github.com/benpate/html"
+import (
+	"regexp"
+
+	"github.com/benpate/form"
+	"github.com/benpate/html"
+)
 
 // loadingIcon draws an inline SVG spinner.
 func loadingIcon(b *html.Builder) {
@@ -36,4 +41,26 @@ func locateIcon(b *html.Builder) {
 		Close()
 
 	b.Close()
+}
+
+// iconNameFormat matches the icon names that are safe to write into a CSS class.
+var iconNameFormat = regexp.MustCompile(`^[a-z0-9-]+$`)
+
+// iconName returns the icon name for a LookupCode, preferring the explicit Icon
+// field and falling back to the Value. It returns "" for an unusable name.
+func iconName(lookupCode form.LookupCode) string {
+
+	result := lookupCode.Icon
+
+	if result == "" {
+		result = lookupCode.Value
+	}
+
+	// RULE: Attribute values are escaped, so a rejected name is class injection
+	// rather than markup injection -- but a space still adds an arbitrary class.
+	if !iconNameFormat.MatchString(result) {
+		return ""
+	}
+
+	return result
 }

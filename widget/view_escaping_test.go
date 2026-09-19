@@ -33,6 +33,7 @@ var viewEscapingWidgets = []string{
 	"radio-colors",
 	"select",
 	"select-group",
+	"select-icons",
 }
 
 // hostileForm returns a Form that draws the named widget from the hostile provider.
