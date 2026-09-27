@@ -32,8 +32,8 @@ func richForm() Form {
 			Description: "Edit your profile",
 			Children: []Element{
 				{Type: "text", Path: "name", Label: "Name"},
-				{Type: "select", Path: "nickname", Options: mapof.Any{"enum": []any{"a", "b", "c"}}},
-				{Type: "text", Path: "email", Options: mapof.Any{"show-if": "showEmail is true"}},
+				{Type: "select", Path: "nickname", Options: mapof.Template{"enum": []any{"a", "b", "c"}}},
+				{Type: "text", Path: "email", Options: mapof.Template{"show-if": "showEmail is true"}},
 				{Type: "text", Path: "age", Label: "Age"},
 				{Type: "text", Path: "score"},
 				{Type: "toggle", Path: "showEmail", Label: "Show Email?"},

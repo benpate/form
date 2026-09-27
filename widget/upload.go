@@ -3,6 +3,7 @@ package widget
 import (
 	"strings"
 
+	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/schema"
@@ -21,12 +22,14 @@ func (widget Upload) View(f *form.Form, e *form.Element, _ form.LookupProvider, 
 		valueString = "N/A"
 	}
 
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText(valueString).Close()
 	return nil
 }
 
 // Edit generates the editable HTML for this file-upload input.
 func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+
+	const location = "widget.Upload.Edit"
 
 	elementID := e.ID
 
@@ -34,11 +37,13 @@ func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 		elementID = e.Path + ".upload"
 	}
 
-	widget.preview(e, &f.Schema, value, b.SubTree())
+	if err := widget.preview(e, &f.Schema, value, b.SubTree()); err != nil {
+		return derp.Wrap(err, location, "Unable to draw preview")
+	}
 
-	multiple := iif(e.Options.GetBool("multiple"), "multiple", "")
+	multiple := iif(e.Options.GetBool("multiple", value), "multiple", "")
 	b.Input("file", e.Path).ID(elementID).
-		Attr("accept", e.Options.GetString("accept")).
+		Attr("accept", e.Options.GetString("accept", value)).
 		Attr("multiple", multiple).
 		Aria("label", e.Label).
 		Aria("description", e.Description).
@@ -50,17 +55,26 @@ func (widget Upload) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 
 // preview draws the already-uploaded file -- as an image, an audio player, or a
 // link, depending on the "accept" option -- along with its delete affordance.
-func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *html.Builder) {
+func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *html.Builder) error {
+
+	const location = "widget.Upload.preview"
 
 	// Get the URL for the uploaded file
 	valueString := e.GetString(value, s)
 
 	if valueString == "" {
-		return
+		return nil
+	}
+
+	// The delete URL is usually an option template naming the object being edited
+	deleteLink, err := e.Options.Evaluate("delete", value)
+
+	if err != nil {
+		return derp.Wrap(err, location, "Unable to render delete URL")
 	}
 
 	// Different file types are displayed differently
-	accept := e.Options.GetString("accept")
+	accept := e.Options.GetString("accept", value)
 
 	b.Div().Class("pos-relative", "width-128").Style("border:solid 1px black")
 
@@ -82,7 +96,7 @@ func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *ht
 	}
 
 	b.Input("hidden", e.Path).Value(e.GetString(value, s)).Close()
-	if deleteLink := e.Options.GetString("delete"); deleteLink != "" {
+	if deleteLink != "" {
 		b.Span().
 			Class("pos-absolute-top-right text-xs button").
 			Attr("hx-post", deleteLink).
@@ -93,6 +107,9 @@ func (widget Upload) preview(e *form.Element, s *schema.Schema, value any, b *ht
 			Close()
 	}
 	b.Close()
+
+	// Bob's your uncle
+	return nil
 }
 
 /***********************************

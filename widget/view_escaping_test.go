@@ -50,7 +50,7 @@ func hostileForm(widgetType string) form.Form {
 		form.Element{
 			Type:    widgetType,
 			Path:    "tags",
-			Options: mapof.Any{"provider": "test"},
+			Options: mapof.Template{"provider": "test"},
 		},
 	)
 }

@@ -39,7 +39,7 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 
 	// RULE: Only a positive "rows" option is written. GetInt returns zero for a
 	// missing option, and rows="0" is not a valid size.
-	if rows := e.Options.GetInt("rows"); rows > 0 {
+	if rows := e.Options.GetInt("rows", value); rows > 0 {
 		tag.Attr("rows", convert.String(rows))
 	}
 
@@ -48,24 +48,24 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		TabIndex("0")
 
 	// Autofocus
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
 	// Custom CSS style
-	if style := e.Options.GetString("style"); style != "" {
+	if style := e.Options.GetString("style", value); style != "" {
 		tag.Attr("style", style)
 	}
 
 	// Add placeholder
-	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
+	if placeholder := e.Options.GetString("placeholder", value); placeholder != "" {
 		tag.Attr("placeholder", placeholder)
 	}
 
 	// A schema-defined pattern takes precedence; otherwise fall back to the option.
 	if schemaString, ok := schemaElement.(schema.String); ok && schemaString.Pattern != "" {
 		tag.Attr("pattern", schemaString.Pattern)
-	} else if pattern := e.Options.GetString("pattern"); pattern != "" {
+	} else if pattern := e.Options.GetString("pattern", value); pattern != "" {
 		tag.Attr("pattern", pattern)
 	}
 
@@ -85,7 +85,7 @@ func (widget TextArea) Edit(f *form.Form, e *form.Element, _ form.LookupProvider
 		}
 
 		if schemaString.MaxLength > 0 {
-			if e.Options.GetBool("showLimit") {
+			if e.Options.GetBool("showLimit", value) {
 				tag.Attr("script", "install showLimit")
 			}
 		}

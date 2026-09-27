@@ -3,6 +3,7 @@ package widget
 import (
 	"strings"
 
+	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
 	"github.com/benpate/rosetta/convert"
@@ -18,12 +19,14 @@ func (widget Text) View(f *form.Form, e *form.Element, _ form.LookupProvider, va
 	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText(valueString).Close()
 	return nil
 }
 
 // Edit generates the HTML for editing a text input field.
 func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
+
+	const location = "widget.Text.Edit"
 
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
@@ -35,7 +38,14 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 
 	scripts := make([]string, 0)
 
-	if validator := e.Options.GetString("validator"); validator != "" {
+	// The validator URL is usually an option template naming the object being edited
+	validator, err := e.Options.Evaluate("validator", value)
+
+	if err != nil {
+		return derp.Wrap(err, location, "Unable to render validator URL")
+	}
+
+	if validator != "" {
 		b.Div().Class("badge-container").EndBracket()
 		scripts = append(scripts, `install validator(url:'`+validator+`')`)
 	}
@@ -47,11 +57,11 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 		Aria("description", e.Description).
 		TabIndex("0")
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
-	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
+	if placeholder := e.Options.GetString("placeholder", value); placeholder != "" {
 		tag.Attr("placeholder", placeholder)
 	}
 
@@ -62,7 +72,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 	}
 
 	// Custom CSS style
-	if style := e.Options.GetString("style"); style != "" {
+	if style := e.Options.GetString("style", value); style != "" {
 		tag.Attr("style", style)
 	}
 
@@ -73,7 +83,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 
 		tag.Type("number")
 
-		tag.Attr("step", convert.String(convert.IntDefault(e.Options["step"], 1)))
+		tag.Attr("step", convert.String(convert.IntDefault(e.Options.GetAny("step", value), 1)))
 
 		if s.Minimum.IsPresent() {
 			tag.Attr("min", s.Minimum.String())
@@ -83,13 +93,13 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required || e.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required", value) {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if", value); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -97,7 +107,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 
 		tag.Type("number")
 
-		tag.Attr("step", convert.String(convert.FloatDefault(e.Options["step"], 0.01)))
+		tag.Attr("step", convert.String(convert.FloatDefault(e.Options.GetAny("step", value), 0.01)))
 
 		if s.Minimum.IsPresent() {
 			tag.Attr("min", s.Minimum.String())
@@ -107,13 +117,13 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 			tag.Attr("max", s.Maximum.String())
 		}
 
-		if s.Required || e.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required", value) {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if", value); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -154,17 +164,17 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 		// A schema-defined pattern takes precedence; otherwise fall back to the option.
 		if s.Pattern != "" {
 			tag.Attr("pattern", s.Pattern)
-		} else if pattern := e.Options.GetString("pattern"); pattern != "" {
+		} else if pattern := e.Options.GetString("pattern", value); pattern != "" {
 			tag.Attr("pattern", pattern)
 		}
 
-		if s.Required || e.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required", value) {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if", value); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -172,7 +182,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 		tag.Type("text")
 	}
 
-	if autocomplete := e.Options.GetString("autocomplete"); autocomplete != "" {
+	if autocomplete := e.Options.GetString("autocomplete", value); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
 
 		if autocomplete == "off" {
@@ -180,11 +190,11 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 		}
 	}
 
-	if autocorrect := e.Options.GetString("autocorrect"); autocorrect != "" {
+	if autocorrect := e.Options.GetString("autocorrect", value); autocorrect != "" {
 		tag.Attr("autocorrect", autocorrect)
 	}
 
-	if spellcheck := e.Options.GetString("spellcheck"); spellcheck != "" {
+	if spellcheck := e.Options.GetString("spellcheck", value); spellcheck != "" {
 		tag.Attr("spellcheck", spellcheck)
 	}
 

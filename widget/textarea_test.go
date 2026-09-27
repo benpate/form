@@ -17,7 +17,7 @@ func TestTextarea(t *testing.T) {
 		form.Element{
 			Type:    "textarea",
 			Path:    "username",
-			Options: mapof.Any{"pattern": "[a-z]+"},
+			Options: mapof.Template{"pattern": "[a-z]+"},
 		},
 	)
 
@@ -37,7 +37,7 @@ func TestTextareaRows(t *testing.T) {
 		form.Element{
 			Type:    "textarea",
 			Path:    "username",
-			Options: mapof.Any{"rows": 4.0},
+			Options: mapof.Template{"rows": 4.0},
 		},
 	)
 

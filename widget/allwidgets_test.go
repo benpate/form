@@ -76,15 +76,15 @@ func TestWidget_LookupWidgets(t *testing.T) {
 	// Widgets that render a set of options from a lookup provider / schema enum.
 	lookups := []form.Element{
 		{Type: "select", Path: "color"},
-		{Type: "select-group", Path: "color", Options: mapof.Any{"provider": "test", "children": "other"}},
-		{Type: "select-icons", Path: "color", Options: mapof.Any{"provider": "test"}},
+		{Type: "select-group", Path: "color", Options: mapof.Template{"provider": "test", "children": "other"}},
+		{Type: "select-icons", Path: "color", Options: mapof.Template{"provider": "test"}},
 		{Type: "radio", Path: "color"},
 		{Type: "radio-button-group", Path: "color"},
 		{Type: "radio-button-group-horizontal", Path: "color"},
 		{Type: "radio-colors", Path: "color"},
-		{Type: "multiselect", Path: "tags", Options: mapof.Any{"provider": "test"}},
-		{Type: "check-button", Path: "color", Options: mapof.Any{"provider": "test"}},
-		{Type: "check-button-group", Path: "tags", Options: mapof.Any{"provider": "test"}},
+		{Type: "multiselect", Path: "tags", Options: mapof.Template{"provider": "test"}},
+		{Type: "check-button", Path: "color", Options: mapof.Template{"provider": "test"}},
+		{Type: "check-button-group", Path: "tags", Options: mapof.Template{"provider": "test"}},
 	}
 
 	for _, element := range lookups {
@@ -98,7 +98,7 @@ func TestWidget_DisplayWidgets(t *testing.T) {
 		{Type: "heading", Label: "My Heading", Description: "A description"},
 		{Type: "label", Label: "My Label", Description: "Help text"},
 		{Type: "html", Description: "<b>raw html</b>"},
-		{Type: "html-remote", Options: mapof.Any{"url": "/remote/{{.name}}"}},
+		{Type: "html-remote", Options: mapof.Template{"url": "/remote/{{.name}}"}},
 	}
 
 	for _, element := range displays {
@@ -135,10 +135,10 @@ func TestWidget_HTMLRemote_InvalidTemplate(t *testing.T) {
 	UseAll()
 	f := form.New(getTestSchema(), form.Element{
 		Type:    "html-remote",
-		Options: mapof.Any{"url": "{{.unterminated"},
+		Options: mapof.Template{"url": `/remote/{{template "nosuch"}}`},
 	})
 
-	// A malformed URL template produces an error
+	// A URL template that fails to render produces an error
 	_, err := f.Editor(widgetData(), nil)
 	require.Error(t, err)
 }

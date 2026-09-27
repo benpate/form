@@ -24,7 +24,7 @@ func (widget Place) View(f *form.Form, e *form.Element, _ form.LookupProvider, v
 	valueString := widget.getString(e, &f.Schema, "name", value)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText(valueString).Close()
 	return nil
 }
 
@@ -107,11 +107,11 @@ func (widget Place) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, v
 		Attr("autocomplete", "off").
 		Attr("data-1p-ignore", "true")
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
-	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
+	if placeholder := e.Options.GetString("placeholder", value); placeholder != "" {
 		tag.Attr("placeholder", placeholder)
 	}
 
@@ -119,13 +119,13 @@ func (widget Place) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, v
 	switch schemaElement := e.GetSchema(&f.Schema); s := schemaElement.(type) {
 
 	case schema.String:
-		if s.Required || e.Options.GetBool("required") {
+		if s.Required || e.Options.GetBool("required", value) {
 			tag.Attr("required", "true")
 		}
 
 		if s.RequiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+s.RequiredIf+"')")
-		} else if requiredIf := e.Options.GetString("required-if"); requiredIf != "" {
+		} else if requiredIf := e.Options.GetString("required-if", value); requiredIf != "" {
 			scripts = append(scripts, "install requiredIf(condition:'"+requiredIf+"')")
 		}
 
@@ -133,7 +133,7 @@ func (widget Place) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, v
 		tag.Type("text")
 	}
 
-	endpoint := e.Options.GetString("endpoint")
+	endpoint := e.Options.GetString("endpoint", value)
 
 	if endpoint != "" {
 		tag.Attr("list", menuID)

@@ -54,11 +54,11 @@ func (widget Select) Edit(f *form.Form, e *form.Element, provider form.LookupPro
 		Aria("description", e.Description).
 		TabIndex("0")
 
-	if isRequired(e, schemaElement) {
+	if isRequired(e, schemaElement, value) {
 		selectBox.Attr("required", "true")
 	}
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
 

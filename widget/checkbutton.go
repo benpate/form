@@ -27,13 +27,13 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 		derp.Report(derp.Wrap(err, "form.checkbutton.Edit", "Error getting value for CheckButton", e.Path, value))
 	}
 
-	elementValue := e.Options.GetString("value")
+	elementValue := e.Options.GetString("value", value)
 	id := "checkbutton-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + elementValue
 
 	// Build the widget HTML
 	b.Label(id).ID("label-" + id).Class("checkbutton")
 
-	if icon := e.Options.GetString("icon"); icon != "" {
+	if icon := e.Options.GetString("icon", value); icon != "" {
 		b.I().Class("margin-horizontal", "bi", "bi-"+icon).Style("font-size:32px;").Close()
 	}
 
@@ -45,8 +45,8 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 	checkbox.
 		ID(id).
 		Value(elementValue).
-		Class(e.Options.GetString("class")).
-		Script(e.Options.GetString("script")).
+		Class(e.Options.GetString("class", value)).
+		Script(e.Options.GetString("script", value)).
 		Aria("label", e.Label).
 		Aria("description", e.Description).
 		TabIndex("0")
@@ -55,7 +55,7 @@ func (widget CheckButton) Edit(f *form.Form, e *form.Element, _ form.LookupProvi
 		checkbox.Attr("checked", "true")
 	}
 
-	if disabled := e.Options.GetBool("disabled"); disabled {
+	if disabled := e.Options.GetBool("disabled", value); disabled {
 		checkbox.Attr("disabled", "true")
 	}
 

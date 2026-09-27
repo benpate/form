@@ -89,7 +89,7 @@ func TestGetLookupCode_SliceOfString(t *testing.T) {
 
 	element := Element{
 		Type: "select",
-		Options: mapof.Any{
+		Options: mapof.Template{
 			"enum": []string{"one", "two", "three"},
 		},
 	}
@@ -116,7 +116,7 @@ func TestGetLookupCode_NilGroup(t *testing.T) {
 	// A provider that returns a nil group must not panic; it falls through to the enum
 	element := Element{
 		Type: "select",
-		Options: mapof.Any{
+		Options: mapof.Template{
 			"provider": "missing",
 			"enum":     "one,two",
 		},
@@ -135,7 +135,7 @@ func TestGetLookupCode_Provider(t *testing.T) {
 	// A provider that returns a real group is used in preference to the enum
 	element := Element{
 		Type: "select",
-		Options: mapof.Any{
+		Options: mapof.Template{
 			"provider": "colors",
 			"enum":     "ignored",
 		},
@@ -160,7 +160,7 @@ func TestGetLookupCode_SliceOfLookupCodes(t *testing.T) {
 
 	element := Element{
 		Type: "select",
-		Options: mapof.Any{
+		Options: mapof.Template{
 			"enum": []LookupCode{
 				{Value: "1", Label: "One"},
 				{Value: "2", Label: "Two"},

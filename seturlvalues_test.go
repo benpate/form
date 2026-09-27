@@ -64,7 +64,7 @@ func TestSetURLValues_ShowIf(t *testing.T) {
 	form := New(s, Element{
 		Children: []Element{
 			{Type: "test", Path: "type"},
-			{Type: "test", Path: "comment", Options: mapof.Any{"show-if": "type is detailed"}},
+			{Type: "test", Path: "comment", Options: mapof.Template{"show-if": "type is detailed"}},
 		},
 	})
 
@@ -176,7 +176,7 @@ func TestReplaceNewLookup_Writable(t *testing.T) {
 	group := &mockWritableGroup{}
 	provider := mockProvider{group: group}
 
-	element := Element{Options: mapof.Any{"provider": "things"}}
+	element := Element{Options: mapof.Template{"provider": "things"}}
 
 	value, updated, err := element.replaceNewLookup(provider, NewItemIdentifier+"My New Thing")
 
@@ -195,7 +195,7 @@ func TestReplaceNewLookup_NilProvider(t *testing.T) {
 }
 
 func TestReplaceNewLookup_NotNewValue(t *testing.T) {
-	element := Element{Options: mapof.Any{"provider": "things"}}
+	element := Element{Options: mapof.Template{"provider": "things"}}
 	provider := mockProvider{group: &mockWritableGroup{}}
 
 	// A value without the new-item prefix is passed through unchanged
@@ -206,7 +206,7 @@ func TestReplaceNewLookup_NotNewValue(t *testing.T) {
 }
 
 func TestReplaceNewLookup_NoProviderOption(t *testing.T) {
-	element := Element{Options: mapof.Any{}}
+	element := Element{Options: mapof.Template{}}
 	provider := mockProvider{group: &mockWritableGroup{}}
 
 	value, updated, err := element.replaceNewLookup(provider, NewItemIdentifier+"x")
@@ -218,7 +218,7 @@ func TestReplaceNewLookup_NoProviderOption(t *testing.T) {
 func TestReplaceNewLookup_ReadOnlyGroup(t *testing.T) {
 
 	// A non-writable group cannot accept new values
-	element := Element{Options: mapof.Any{"provider": "things"}}
+	element := Element{Options: mapof.Template{"provider": "things"}}
 	provider := mockProvider{group: NewReadOnlyLookupGroup()}
 
 	value, updated, err := element.replaceNewLookup(provider, NewItemIdentifier+"x")

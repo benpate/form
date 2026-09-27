@@ -141,7 +141,7 @@ func TestElement_UnmarshalMap_WithChildren(t *testing.T) {
 	require.Equal(t, "layout", element.Type)
 	require.Equal(t, "root", element.ID)
 	require.True(t, element.ReadOnly)
-	require.Equal(t, "value", element.Options.GetString("key"))
+	require.Equal(t, "value", element.Options.GetString("key", nil))
 	require.Equal(t, 2, len(element.Children))
 	require.Equal(t, "name", element.Children[0].Path)
 }

@@ -14,7 +14,7 @@ func (widget Colorpicker) View(f *form.Form, e *form.Element, _ form.LookupProvi
 	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText(valueString).Close()
 	return nil
 }
 

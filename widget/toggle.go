@@ -15,9 +15,9 @@ type Toggle struct{}
 func (widget Toggle) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if valueBool := convert.Bool(toggleValue(f, e, value)); valueBool {
-		b.Div().Class("layout-value").InnerText(e.Options.GetString("true-text")).Close()
+		b.Div().Class("layout-value").InnerText(e.Options.GetString("true-text", value)).Close()
 	} else {
-		b.Div().Class("layout-value").InnerText(e.Options.GetString("false-text")).Close()
+		b.Div().Class("layout-value").InnerText(e.Options.GetString("false-text", value)).Close()
 	}
 
 	return nil
@@ -33,7 +33,7 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 		id = "toggle-" + strings.ReplaceAll(e.Path, ".", "-") + "-" + valueString
 	}
 
-	script := "install toggle " + e.Options.GetString("script")
+	script := "install toggle " + e.Options.GetString("script", value)
 
 	// Start building a new tag
 	tag := b.Span().ID(id).Script(script).Name(e.Path)
@@ -42,9 +42,9 @@ func (widget Toggle) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 		tag.Value("true")
 	}
 
-	tag.Attr("text", e.Options.GetString("text"))
-	tag.Attr("true-text", e.Options.GetString("true-text"))
-	tag.Attr("false-text", e.Options.GetString("false-text"))
+	tag.Attr("text", e.Options.GetString("text", value))
+	tag.Attr("true-text", e.Options.GetString("true-text", value))
+	tag.Attr("false-text", e.Options.GetString("false-text", value))
 
 	b.CloseAll()
 	return nil

@@ -26,7 +26,7 @@ func TestFormValidate_Valid(t *testing.T) {
 			Type: "layout-vertical",
 			Children: []Element{
 				{Type: "text", Path: "name"},
-				{Type: "text", Path: "email", Options: mapof.Any{"show-if": "showEmail is true"}},
+				{Type: "text", Path: "email", Options: mapof.Template{"show-if": "showEmail is true"}},
 				{Type: "toggle", Path: "showEmail"},
 			},
 		},
@@ -58,7 +58,7 @@ func TestFormValidate_MissingShowIfField(t *testing.T) {
 		Element{
 			Type: "layout-vertical",
 			Children: []Element{
-				{Type: "text", Path: "email", Options: mapof.Any{"show-if": "missing_field is true"}},
+				{Type: "text", Path: "email", Options: mapof.Template{"show-if": "missing_field is true"}},
 			},
 		},
 	)

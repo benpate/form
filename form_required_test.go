@@ -28,7 +28,7 @@ func TestFormSetURLValues(t *testing.T) {
 			Children: []Element{
 				{Type: "test", Path: "name"},
 				{Type: "test", Path: "age"},
-				{Type: "test", Path: "email", Options: mapof.Any{"show-if": "showEmail is true"}},
+				{Type: "test", Path: "email", Options: mapof.Template{"show-if": "showEmail is true"}},
 				{Type: "test", Path: "requireAge"},
 				{Type: "test", Path: "showEmail"},
 			},
@@ -131,7 +131,7 @@ func TestFormSetURLValues_MissingShowIfField(t *testing.T) {
 			Children: []Element{
 				{Type: "test", Path: "name"},
 				{Type: "test", Path: "age"},
-				{Type: "test", Path: "email", Options: mapof.Any{"show-if": "missing_field is true"}},
+				{Type: "test", Path: "email", Options: mapof.Template{"show-if": "missing_field is true"}},
 				{Type: "test", Path: "requireAge"},
 				{Type: "test", Path: "showEmail"},
 			},

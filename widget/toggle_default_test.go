@@ -27,7 +27,7 @@ func toggleForm(t *testing.T, element schema.Element) form.Form {
 		Element: form.Element{
 			Type:    "toggle",
 			Path:    "data.flag",
-			Options: mapof.Any{"true-text": "ON", "false-text": "OFF"},
+			Options: mapof.Template{"true-text": "ON", "false-text": "OFF"},
 		},
 	}
 }

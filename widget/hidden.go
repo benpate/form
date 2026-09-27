@@ -20,7 +20,7 @@ func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 	// find the path and schema to use
 	var elementValue string
 
-	if optionValue, ok := e.Options["value"]; ok {
+	if optionValue, ok := e.Options.GetAnyOK("value", value); ok {
 		elementValue = convert.String(optionValue)
 	} else {
 		elementValue = e.GetString(value, &f.Schema)

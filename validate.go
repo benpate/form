@@ -35,7 +35,7 @@ func (element *Element) validateSchema(s *schema.Schema) error {
 	}
 
 	// RULE: Every field referenced by a "show-if" expression must exist in the schema.
-	if showIf := element.Options.GetString("show-if"); showIf != "" {
+	if showIf := element.Options.GetString("show-if", nil); showIf != "" {
 		for _, field := range exp.Parse(showIf).Fields() {
 			if _, ok := s.GetElement(field); !ok {
 				return derp.Internal(location, "Form 'show-if' references a field that is not in the schema", field, showIf)

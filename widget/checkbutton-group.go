@@ -52,11 +52,11 @@ func (widget CheckButtonGroup) Edit(f *form.Form, e *form.Element, provider form
 
 		toggleButton.
 			ID(id).
-			Class(e.Options.GetString("class")).
+			Class(e.Options.GetString("class", value)).
 			Value(lookupCode.Value).
 			Aria("label", lookupCode.Label).
 			Aria("description", lookupCode.Description).
-			Script(e.Options.GetString("script")).
+			Script(e.Options.GetString("script", value)).
 			TabIndex("0")
 
 		if slice.Contains(valueSlice, lookupCode.Value) {

@@ -111,7 +111,7 @@ func TestLookupCode_GetPointer(t *testing.T) {
 func TestGetLookupCodes_FromSchemaEnum(t *testing.T) {
 
 	// A schema String with an Enum drives getSchemaEnumeration
-	element := &Element{Path: "color", Options: mapof.Any{}}
+	element := &Element{Path: "color", Options: mapof.Template{}}
 	schemaElement := schema.String{Enum: []string{"red", "green", "blue"}}
 
 	codes, writable := GetLookupCodes(element, schemaElement, nil)
@@ -124,7 +124,7 @@ func TestGetLookupCodes_FromEnumOption(t *testing.T) {
 
 	element := &Element{
 		Path:    "color",
-		Options: mapof.Any{"enum": "red,green,blue"},
+		Options: mapof.Template{"enum": "red,green,blue"},
 	}
 
 	codes, writable := GetLookupCodes(element, nil, nil)

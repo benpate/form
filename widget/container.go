@@ -15,22 +15,22 @@ func (Container) View(f *form.Form, e *form.Element, provider form.LookupProvide
 	const location = "form.Container.View"
 	var result error
 
-	classes := e.Options.GetSliceOfString("class")
-	styles := e.Options.GetSliceOfString("style")
+	classes := e.Options.GetSliceOfString("class", value)
+	styles := e.Options.GetSliceOfString("style", value)
 
 	b.Div().Class(classes...).Style(styles...)
 
 	for index, child := range e.Children {
 
 		// If there is a "show-if-option" then look in the form.Options for a true/false
-		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+		if showIfToken := child.Options.GetString("show-if-option", value); showIfToken != "" {
 			if showValue := f.OptionBool(showIfToken); !showValue {
 				continue
 			}
 		}
 
 		// If there is a "hide-if-option" then look in the form.Options for a true/false
-		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+		if hideIfToken := child.Options.GetString("hide-if-option", value); hideIfToken != "" {
 			if hideValue := f.OptionBool(hideIfToken); hideValue {
 				continue
 			}
@@ -60,22 +60,22 @@ func (Container) Edit(f *form.Form, e *form.Element, provider form.LookupProvide
 	const location = "form.Container.Edit"
 	var result error
 
-	classes := e.Options.GetSliceOfString("class")
-	styles := e.Options.GetSliceOfString("style")
+	classes := e.Options.GetSliceOfString("class", value)
+	styles := e.Options.GetSliceOfString("style", value)
 
 	b.Div().Class(classes...).Style(styles...)
 
 	for index, child := range e.Children {
 
 		// If there is a "show-if-option" then look in the form.Options for a true/false
-		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+		if showIfToken := child.Options.GetString("show-if-option", value); showIfToken != "" {
 			if showValue := f.OptionBool(showIfToken); !showValue {
 				continue
 			}
 		}
 
 		// If there is a "hide-if-option" then look in the form.Options for a true/false
-		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+		if hideIfToken := child.Options.GetString("hide-if-option", value); hideIfToken != "" {
 			if hideValue := f.OptionBool(hideIfToken); hideValue {
 				continue
 			}

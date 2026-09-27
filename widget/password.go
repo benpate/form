@@ -10,13 +10,13 @@ import (
 type Password struct{}
 
 // View generates the read-only HTML for this password field, masking the value.
-func (widget Password) View(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText("********").Close()
+func (widget Password) View(_ *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText("********").Close()
 	return nil
 }
 
 // Edit generates the editable HTML for this password input field.
-func (widget Password) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, _ any, b *html.Builder) error {
+func (widget Password) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
 
 	if e.ID == "" {
 		e.ID = e.Path + "." + e.Type
@@ -29,37 +29,37 @@ func (widget Password) Edit(_ *form.Form, e *form.Element, _ form.LookupProvider
 		Aria("description", e.Description).
 		TabIndex("0")
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
-	if placeholder := e.Options.GetString("placeholder"); placeholder != "" {
+	if placeholder := e.Options.GetString("placeholder", value); placeholder != "" {
 		tag.Attr("placeholder", placeholder)
 	}
 
 	// Custom CSS style
-	if style := e.Options.GetString("style"); style != "" {
+	if style := e.Options.GetString("style", value); style != "" {
 		tag.Attr("style", style)
 	}
 
 	// Password rules may not have a schema attached, so use options instead.
-	if minlength := e.Options.GetInt("minlength"); minlength > 0 {
+	if minlength := e.Options.GetInt("minlength", value); minlength > 0 {
 		tag.Attr("minlength", convert.String(minlength))
 	}
 
-	if maxlength := e.Options.GetInt("maxlength"); maxlength > 0 {
+	if maxlength := e.Options.GetInt("maxlength", value); maxlength > 0 {
 		tag.Attr("maxlength", convert.String(maxlength))
 	}
 
-	if pattern := e.Options.GetString("pattern"); pattern != "" {
+	if pattern := e.Options.GetString("pattern", value); pattern != "" {
 		tag.Attr("pattern", pattern)
 	}
 
-	if required := e.Options.GetBool("required"); required {
+	if required := e.Options.GetBool("required", value); required {
 		tag.Attr("required", "true")
 	}
 
-	if autocomplete := e.Options.GetString("autocomplete"); autocomplete != "" {
+	if autocomplete := e.Options.GetString("autocomplete", value); autocomplete != "" {
 		tag.Attr("autocomplete", autocomplete)
 
 		if autocomplete == "off" {

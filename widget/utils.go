@@ -18,8 +18,8 @@ func iif[T any](condition bool, trueValue T, falseValue T) T {
 }
 
 // isRequired returns TRUE if either the schema or the form element marks this
-// field as required.
-func isRequired(element *form.Element, schemaElement schema.Element) bool {
+// field as required, rendering a "required" template against the value.
+func isRequired(element *form.Element, schemaElement schema.Element, value any) bool {
 
 	if schemaElement != nil {
 		if schemaElement.IsRequired() {
@@ -28,7 +28,7 @@ func isRequired(element *form.Element, schemaElement schema.Element) bool {
 	}
 
 	if element != nil {
-		if element.Options.GetBool("required") {
+		if element.Options.GetBool("required", value) {
 			return true
 		}
 	}

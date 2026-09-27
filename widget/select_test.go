@@ -39,7 +39,7 @@ func TestSelectOne_ReadOnly(t *testing.T) {
 		form.Element{
 			Type: "select",
 			Path: "color",
-			Options: mapof.Any{
+			Options: mapof.Template{
 				"enum": []form.LookupCode{
 					{Value: "YELLOW", Label: "Yellow"},
 					{Value: "ORANGE", Label: "Orange"},
@@ -71,7 +71,7 @@ func TestSelectOne_View(t *testing.T) {
 		form.Element{
 			Type: "select",
 			Path: "color",
-			Options: mapof.Any{
+			Options: mapof.Template{
 				"enum": []form.LookupCode{
 					{Value: "YELLOW", Label: "Yellow"},
 					{Value: "ORANGE", Label: "Orange"},
@@ -103,7 +103,7 @@ func TestSelectOne_WithGroups(t *testing.T) {
 		form.Element{
 			Type: "select",
 			Path: "other",
-			Options: mapof.Any{
+			Options: mapof.Template{
 				"enum": []form.LookupCode{
 					{Group: "Colour", Value: "YELLOW", Label: "Yellow"},
 					{Group: "Colour", Value: "ORANGE", Label: "Orange"},

@@ -13,20 +13,20 @@ import (
 
 // Element defines a single form element, or a nested form layout.  It can be serialized to and from a database.
 type Element struct {
-	Type        string    `json:"type"`                  // The kind of form element
-	ID          string    `json:"id"`                    // The ID of the element (needed by some widgets)
-	Path        string    `json:"path"`                  // Path to the data value displayed in for this form element
-	Label       string    `json:"label,omitempty"`       // Short label to be displayed on the form element
-	Description string    `json:"description,omitempty"` // Longer description text to be displayed on the form element
-	Options     mapof.Any `json:"options,omitempty"`     // Additional custom properties defined by individual widgets
-	Children    []Element `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
-	ReadOnly    bool      `json:"readOnly,omitempty"`    // If true, then this element is read-only
+	Type        string         `json:"type"`                  // The kind of form element
+	ID          string         `json:"id"`                    // The ID of the element (needed by some widgets)
+	Path        string         `json:"path"`                  // Path to the data value displayed in for this form element
+	Label       string         `json:"label,omitempty"`       // Short label to be displayed on the form element
+	Description string         `json:"description,omitempty"` // Longer description text to be displayed on the form element
+	Options     mapof.Template `json:"options,omitempty"`     // Additional custom properties defined by individual widgets, whose strings may be templates
+	Children    []Element      `json:"children,omitempty"`    // Array of sub-form elements that may be displayed depending on the kind.
+	ReadOnly    bool           `json:"readOnly,omitempty"`    // If true, then this element is read-only
 }
 
 // NewElement returns a fully populated Element object.
 func NewElement() Element {
 	return Element{
-		Options:  make(mapof.Any),
+		Options:  mapof.NewTemplate(),
 		Children: make([]Element, 0),
 	}
 }
@@ -135,7 +135,7 @@ func (element *Element) isInputVisible(s *schema.Schema, value any) (bool, error
 	}
 
 	// Collect the "show-if" property of the form element
-	showIf := element.Options.GetString("show-if")
+	showIf := element.Options.GetString("show-if", value)
 
 	// RULE: if there is no "show-if" option, then the input is always visible
 	if showIf == "" {
@@ -175,7 +175,7 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 	}
 
 	// Get the lookup provider name
-	groupName := element.Options.GetString("provider")
+	groupName := element.Options.GetString("provider", nil)
 
 	if groupName == "" {
 		return value, false, nil
@@ -247,10 +247,9 @@ func (element *Element) UnmarshalMap(data map[string]any) error {
 	element.Description = convert.String(data["description"])
 	element.ReadOnly = convert.Bool(data["readOnly"])
 
-	element.Options = make(mapof.Any)
-	if options, ok := data["options"].(map[string]any); ok {
-		element.Options = options
-	}
+	// Copy the options, compiling any that hold a template
+	options, _ := data["options"].(map[string]any)
+	element.Options = mapof.ParseTemplate(options)
 
 	if children, ok := data["children"].([]any); ok {
 		element.Children = make([]Element, len(children))

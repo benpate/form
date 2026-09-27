@@ -91,7 +91,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			}
 
 			// Does this element have a "show-if" attribute? And, does it match the current scan?
-			if hasShowIf := element.Options.GetString("show-if") != ""; hasShowIf != showIf {
+			if hasShowIf := element.Options.GetString("show-if", object) != ""; hasShowIf != showIf {
 				continue
 			}
 
@@ -99,7 +99,7 @@ func (form *Form) SetURLValues(object any, values url.Values, lookupProvider Loo
 			visible, err := element.isInputVisible(&form.Schema, object)
 
 			if err != nil {
-				return derp.Wrap(err, location, "Unable to evaluate show-if expression", element.Options.GetString("show-if"))
+				return derp.Wrap(err, location, "Unable to evaluate show-if expression", element.Options.GetString("show-if", object))
 			}
 
 			if !visible {

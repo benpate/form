@@ -95,7 +95,7 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 
 	// If we have a valid LookupProvider, then try to use it to generate lookup codes first
 	if lookupProvider != nil {
-		if provider, ok := element.Options["provider"].(string); ok {
+		if provider, ok := element.Options.GetStringOK("provider", nil); ok {
 
 			// Group may be nil when the provider does not recognize this name; fall through if so
 			if group := lookupProvider.Group(provider); group != nil {
@@ -106,7 +106,7 @@ func GetLookupCodes(element *Element, schemaElement schema.Element, lookupProvid
 	}
 
 	// If an "enum" option is present, then try to use it to generate LookupCodes
-	if enumValue, ok := element.Options["enum"]; ok {
+	if enumValue, ok := element.Options.GetAnyOK("enum", nil); ok {
 
 		switch typed := enumValue.(type) {
 

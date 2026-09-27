@@ -35,7 +35,7 @@ func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.Looku
 
 	// If we have a configuration option for labels,
 	// parse it into a slice
-	if labelString, ok := e.Options.GetStringOK("labels"); ok && (labelString != "") {
+	if labelString, ok := e.Options.GetStringOK("labels", value); ok && (labelString != "") {
 		labels = strings.Split(labelString, ",")
 	}
 
@@ -69,7 +69,7 @@ func (widget LayoutTabs) Edit(f *form.Form, e *form.Element, provider form.Looku
 			Aria("controls", "panel-"+child.ID).
 			TabIndex("0")
 
-		if script, ok := child.Options.GetStringOK("script"); ok {
+		if script, ok := child.Options.GetStringOK("script", value); ok {
 			tab.Script(script)
 		}
 

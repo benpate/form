@@ -71,11 +71,11 @@ func (widget SelectGroup) Edit(f *form.Form, e *form.Element, provider form.Look
 		return derp.Wrap(err, location, "Unable to configure select-group widget.")
 	}
 
-	if isRequired(e, schemaElement) {
+	if isRequired(e, schemaElement, value) {
 		selectBox.Attr("required", "true")
 	}
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		selectBox.Attr("autofocus", "true")
 	}
 
@@ -137,7 +137,7 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 	const location = "form.widget.SelectGroup.setChildWidget"
 
 	// Locate child selectbox
-	children := e.Options.GetString("children")
+	children := e.Options.GetString("children", value)
 
 	if children == "" {
 		return derp.Internal(location, "Unable to link child widget because 'children' value is empty", e)

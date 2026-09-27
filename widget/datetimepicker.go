@@ -19,7 +19,7 @@ func (widget DateTimePicker) View(f *form.Form, e *form.Element, _ form.LookupPr
 	valueString := e.GetString(value, &f.Schema)
 
 	// TODO: LOW: Apply formatting options?
-	b.Div().Class("layout-value", e.Options.GetString("class")).InnerText(valueString).Close()
+	b.Div().Class("layout-value", e.Options.GetString("class", value)).InnerText(valueString).Close()
 	return nil
 }
 
@@ -35,11 +35,11 @@ func (widget DateTimePicker) Edit(f *form.Form, e *form.Element, _ form.LookupPr
 		Value(valueString).
 		TabIndex("0")
 
-	if focus, ok := e.Options.GetBoolOK("focus"); ok && focus {
+	if focus, ok := e.Options.GetBoolOK("focus", value); ok && focus {
 		tag.Attr("autofocus", "true")
 	}
 
-	if defaultValue := e.Options.GetString("default"); defaultValue != "" {
+	if defaultValue := e.Options.GetString("default", value); defaultValue != "" {
 
 		if defaultValue == "now" {
 			tag.Script(`on load if my value is "" then make a Date set my valueAsDate to it`)

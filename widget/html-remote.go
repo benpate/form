@@ -1,9 +1,6 @@
 package widget
 
 import (
-	"bytes"
-	"text/template"
-
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
@@ -24,22 +21,15 @@ func (widget HTMLRemote) Edit(_ *form.Form, e *form.Element, _ form.LookupProvid
 
 	const location = "widget.HTMLRemote.Edit"
 
-	// Collect and parse the Remote URL template
-	remoteURL := e.Options.GetString("url")
-	remoteTemplate, err := template.New("").Parse(remoteURL)
+	// Render the Remote URL, which may be an option template
+	remoteURL, err := e.Options.Evaluate("url", value)
 
 	if err != nil {
-		return derp.Wrap(err, location, "Unable to parse remote URL template", remoteURL)
-	}
-
-	// Replace values in the template
-	buffer := bytes.Buffer{}
-	if err := remoteTemplate.Execute(&buffer, value); err != nil {
-		return derp.Wrap(err, location, "Unable to execute remote URL template", remoteURL)
+		return derp.Wrap(err, location, "Unable to render remote URL")
 	}
 
 	b.Div().
-		Attr("hx-get", buffer.String()).
+		Attr("hx-get", remoteURL).
 		Attr("hx-swap", "innerHTML").
 		Attr("hx-trigger", "intersect once").
 		Attr("hx-target", "this").

@@ -31,14 +31,14 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 		child := e.Children[index]
 
 		// If there is a "show-if-option" then look in the form.Options for a true/false
-		if showIfToken := child.Options.GetString("show-if-option"); showIfToken != "" {
+		if showIfToken := child.Options.GetString("show-if-option", value); showIfToken != "" {
 			if showValue := f.OptionBool(showIfToken); !showValue {
 				continue
 			}
 		}
 
 		// If there is a "hide-if-option" then look in the form.Options for a true/false
-		if hideIfToken := child.Options.GetString("hide-if-option"); hideIfToken != "" {
+		if hideIfToken := child.Options.GetString("hide-if-option", value); hideIfToken != "" {
 			if hideValue := f.OptionBool(hideIfToken); hideValue {
 				continue
 			}
@@ -63,7 +63,7 @@ func drawLayout(f *form.Form, e *form.Element, provider form.LookupProvider, val
 
 			container.Class("layout-element", "layout-"+alignment+"-element")
 
-			if showIf := child.Options.GetString("show-if"); showIf != "" {
+			if showIf := child.Options.GetString("show-if", value); showIf != "" {
 				container.Data("script", "install showIf(condition:'"+showIf+"')")
 			}
 

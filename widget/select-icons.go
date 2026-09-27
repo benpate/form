@@ -48,7 +48,7 @@ func (widget SelectIcons) Edit(f *form.Form, e *form.Element, provider form.Look
 
 	// RULE: When the field is required, an unmatched value falls back to the first
 	// option, which is what a <select> with no blank <option> already does.
-	required := isRequired(e, schemaElement)
+	required := isRequired(e, schemaElement, value)
 	selectedIndex := indexOfCode(lookupCodes, valueString)
 
 	if (selectedIndex < 0) && required && (len(lookupCodes) > 0) {

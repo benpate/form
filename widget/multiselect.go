@@ -63,8 +63,8 @@ func (widget Multiselect) Edit(f *form.Form, e *form.Element, provider form.Look
 	// find the path and schema to use
 	schemaElement := e.GetSchema(&f.Schema)
 
-	sortable, _ := e.Options.GetBoolOK("sort")
-	maxHeight := first.String(e.Options.GetString("maxHeight"), "300")
+	sortable, _ := e.Options.GetBoolOK("sort", value)
+	maxHeight := first.String(e.Options.GetString("maxHeight", value), "300")
 
 	// Get all options for this element...
 	options, _ := form.GetLookupCodes(e, schemaElement, provider)

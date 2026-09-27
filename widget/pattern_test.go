@@ -28,7 +28,7 @@ func TestText_SchemaPatternOverridesOption(t *testing.T) {
 	f := form.New(getTestSchema(), form.Element{
 		Type:    "text",
 		Path:    "code",
-		Options: mapof.Any{"pattern": "ignored"},
+		Options: mapof.Template{"pattern": "ignored"},
 	})
 
 	result, err := f.Editor(nil, testLookupProvider{})
@@ -45,7 +45,7 @@ func TestText_OptionPatternFallback(t *testing.T) {
 	f := form.New(getTestSchema(), form.Element{
 		Type:    "text",
 		Path:    "name",
-		Options: mapof.Any{"pattern": "[a-z]+"},
+		Options: mapof.Template{"pattern": "[a-z]+"},
 	})
 
 	result, err := f.Editor(nil, testLookupProvider{})

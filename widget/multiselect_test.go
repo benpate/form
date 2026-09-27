@@ -30,7 +30,7 @@ func TestMultiselect(t *testing.T) {
 	}
 
 	{
-		f.Element.Options = mapof.Any{"sort": true}
+		f.Element.Options = mapof.Template{"sort": true}
 
 		result, err := f.Editor(&value, nil)
 		require.Nil(t, err)
