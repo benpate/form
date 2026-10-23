@@ -31,31 +31,6 @@ func NewElement() Element {
 	}
 }
 
-// Widget retrieves the specific widget object for this Element
-func (element *Element) Widget() (Widget, error) {
-
-	widget, ok := registry[element.Type]
-
-	if !ok {
-		return nil, derp.Internal("form.Widget", "Unrecognized form widget", element)
-	}
-
-	return widget, nil
-}
-
-// View returns static HTML that displays the value of this element.
-func (element *Element) View(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
-
-	widget, err := element.Widget()
-
-	if err != nil {
-		return err
-	}
-
-	return widget.View(form, element, lookupProvider, value, b)
-
-}
-
 // Edit returns an HTML form that can edit this element.
 func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
 
@@ -73,6 +48,19 @@ func (element *Element) Edit(form *Form, lookupProvider LookupProvider, value an
 	return widget.Edit(form, element, lookupProvider, value, b)
 }
 
+// View returns static HTML that displays the value of this element.
+func (element *Element) View(form *Form, lookupProvider LookupProvider, value any, b *html.Builder) error {
+
+	widget, err := element.Widget()
+
+	if err != nil {
+		return err
+	}
+
+	return widget.View(form, element, lookupProvider, value, b)
+
+}
+
 // Encoding returns the form encoding required by this widget.
 func (element *Element) Encoding() string {
 
@@ -83,15 +71,16 @@ func (element *Element) Encoding() string {
 	return ""
 }
 
-// GetString returns the value of the element at the provided path.  If the schema is present,
-// then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
-func (element *Element) GetString(value any, s *schema.Schema) string {
-	return FormatValue(element.getValue(value, s))
-}
+// Widget retrieves the specific widget object for this Element
+func (element *Element) Widget() (Widget, error) {
 
-// GetSliceOfString rturns a slice of strings for a provided path.
-func (element *Element) GetSliceOfString(value any, s *schema.Schema) []string {
-	return formatValues(element.getValue(value, s))
+	widget, ok := registry[element.Type]
+
+	if !ok {
+		return nil, derp.Internal("form.Widget", "Unrecognized form widget", element)
+	}
+
+	return widget, nil
 }
 
 // IsEmpty returns TRUE if the element is not defined
@@ -106,19 +95,6 @@ func (element *Element) GetSchema(s *schema.Schema) schema.Element {
 	if s != nil {
 		schemaElement, _ := s.GetElement(element.Path)
 		return schemaElement
-	}
-
-	return nil
-}
-
-// getValue returns the value of the element at the provided path.  If the schema is present,
-// then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
-func (element *Element) getValue(value any, s *schema.Schema) any {
-
-	// If there is a schema, use it to get the value
-	if s != nil {
-		result, _ := s.Get(value, element.Path)
-		return result
 	}
 
 	return nil
@@ -204,6 +180,30 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 
 	// Otherwise, the value cannot be written, so keep the original value
 	return value, false, nil
+}
+
+// GetString returns the value of the element at the provided path.  If the schema is present,
+// then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
+func (element *Element) GetString(value any, s *schema.Schema) string {
+	return FormatValue(element.getValue(value, s))
+}
+
+// GetSliceOfString rturns a slice of strings for a provided path.
+func (element *Element) GetSliceOfString(value any, s *schema.Schema) []string {
+	return formatValues(element.getValue(value, s))
+}
+
+// getValue returns the value of the element at the provided path.  If the schema is present,
+// then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
+func (element *Element) getValue(value any, s *schema.Schema) any {
+
+	// If there is a schema, use it to get the value
+	if s != nil {
+		result, _ := s.Get(value, element.Path)
+		return result
+	}
+
+	return nil
 }
 
 // AllElements returns pointers to all of the valid paths in this form

@@ -21,14 +21,6 @@ type LookupCode struct {
 	Href        string `json:"href,omitempty"        form:"href"        bson:"href,omitempty"`        // Optional URL to use when using this LookupCode
 }
 
-// NewLookupCode creates a new LookupCode from a string
-func NewLookupCode(value string) LookupCode {
-	return LookupCode{
-		Value: value,
-		Label: value,
-	}
-}
-
 // ParseLookupCode converts a LookupCode, a map, a string, or a number into a LookupCode, using a
 // string or number as both its Value and Label. Anything else returns an empty LookupCode.
 func ParseLookupCode(value any) LookupCode {
@@ -78,6 +70,14 @@ func ParseLookupCode(value any) LookupCode {
 	}
 
 	return LookupCode{}
+}
+
+// NewLookupCode creates a new LookupCode from a string
+func NewLookupCode(value string) LookupCode {
+	return LookupCode{
+		Value: value,
+		Label: value,
+	}
 }
 
 // ID returns the unique ID of the LookupCode, allowing them to
