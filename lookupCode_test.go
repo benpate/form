@@ -76,11 +76,11 @@ func TestGetLookupCode_SliceOfAny(t *testing.T) {
 	lookupCodes, writable := GetLookupCodes(&element, nil, nil)
 
 	require.Len(t, lookupCodes, 3)
-	require.Equal(t, "1", lookupCodes[0].Value)
+	require.Equal(t, "1.00", lookupCodes[0].Value)
 	require.Equal(t, "One", lookupCodes[0].Label)
-	require.Equal(t, "2", lookupCodes[1].Value)
+	require.Equal(t, "2.00", lookupCodes[1].Value)
 	require.Equal(t, "Two", lookupCodes[1].Label)
-	require.Equal(t, "3", lookupCodes[2].Value)
+	require.Equal(t, "3.00", lookupCodes[2].Value)
 	require.Equal(t, "Three", lookupCodes[2].Label)
 	require.False(t, writable)
 }
