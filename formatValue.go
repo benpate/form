@@ -17,7 +17,8 @@ func FormatValue(value any) string {
 		return result
 	}
 
-	// RULE: A rounded number posts back as a different number, so keep every digit instead
+	// Two decimals would round this number, and a rounded number posts back as a different
+	// one, so keep every digit instead
 	switch typed := value.(type) {
 
 	case float64:
@@ -30,7 +31,7 @@ func FormatValue(value any) string {
 		return strconv.FormatFloat(typed.Float(), 'f', -1, 64)
 	}
 
-	// Everything else converts exactly as convert.String does
+	// Everything else converts as convert.String does
 	return result
 }
 
