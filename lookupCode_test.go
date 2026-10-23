@@ -180,3 +180,69 @@ func TestGetLookupCode_SliceOfLookupCodes(t *testing.T) {
 	require.Equal(t, "Three", lookupCodes[2].Label)
 	require.False(t, writable)
 }
+
+// TestGetLookupCode_SliceOfAny_Fractional confirms that fractional enum values keep every digit
+// they need, and two decimals when two decimals are exact
+func TestGetLookupCode_SliceOfAny_Fractional(t *testing.T) {
+
+	element, err := Parse(`{"type":"select","path":"test","options":{"enum":[{"label":"Half","value":0.5},{"label":"Two and a quarter","value":2.25},{"label":"Eighth","value":0.125},{"label":"Negative","value":-1.5}]}}`)
+
+	require.Nil(t, err)
+
+	lookupCodes, writable := GetLookupCodes(&element, nil, nil)
+
+	require.Len(t, lookupCodes, 4)
+	require.Equal(t, "0.50", lookupCodes[0].Value)
+	require.Equal(t, "Half", lookupCodes[0].Label)
+	require.Equal(t, "2.25", lookupCodes[1].Value)
+	require.Equal(t, "0.125", lookupCodes[2].Value)
+	require.Equal(t, "-1.50", lookupCodes[3].Value)
+	require.False(t, writable)
+}
+
+// TestGetLookupCode_SchemaNumber_Fractional confirms that a Number schema's fractional enum keeps
+// every digit it needs
+func TestGetLookupCode_SchemaNumber_Fractional(t *testing.T) {
+
+	element := Element{Type: "select", Path: "test"}
+	lookupCodes, writable := GetLookupCodes(&element, schema.Number{Enum: []float64{0.5, 0.125}}, nil)
+
+	require.Len(t, lookupCodes, 2)
+	require.Equal(t, "0.50", lookupCodes[0].Value)
+	require.Equal(t, "0.125", lookupCodes[1].Value)
+	require.False(t, writable)
+}
+
+// TestGetLookupCode_Fractional_RoundTrip confirms that every fractional lookup value posts back as
+// the number it came from, and passes the schema's enum
+func TestGetLookupCode_Fractional_RoundTrip(t *testing.T) {
+
+	enum := []float64{0.5, 2.25, 0.125, 1.005, -1.5}
+	s := schema.New(schema.Object{Properties: schema.ElementMap{"test": schema.Number{Enum: enum}}})
+
+	lookupCodes, _ := GetLookupCodes(&Element{Type: "select", Path: "test"}, schema.Number{Enum: enum}, nil)
+	require.Len(t, lookupCodes, len(enum))
+
+	for index, lookupCode := range lookupCodes {
+		object := mapof.Any{}
+		require.NoError(t, s.Set(&object, "test", lookupCode.Value), "posted value %q", lookupCode.Value)
+		require.Equal(t, enum[index], object["test"], "posted value %q", lookupCode.Value)
+	}
+}
+
+// TestGetLookupCode_SliceOfNumbers confirms that an enum of bare numbers becomes one lookup code
+// per number, with every digit each one needs
+func TestGetLookupCode_SliceOfNumbers(t *testing.T) {
+
+	element, err := Parse(`{"type":"select","path":"test","options":{"enum":[1,0.5,0.125]}}`)
+
+	require.Nil(t, err)
+
+	lookupCodes, writable := GetLookupCodes(&element, nil, nil)
+
+	require.Len(t, lookupCodes, 3)
+	require.Equal(t, LookupCode{Value: "1", Label: "1"}, lookupCodes[0])
+	require.Equal(t, LookupCode{Value: "0.50", Label: "0.50"}, lookupCodes[1])
+	require.Equal(t, LookupCode{Value: "0.125", Label: "0.125"}, lookupCodes[2])
+	require.False(t, writable)
+}

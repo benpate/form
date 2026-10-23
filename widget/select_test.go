@@ -222,3 +222,29 @@ func TestSelectMany(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, expected, result)
 }
+
+// TestSelectOne_FractionalEnum confirms that a fractional Number enum renders options that post back
+// unchanged, and still marks the stored value as selected
+func TestSelectOne_FractionalEnum(t *testing.T) {
+
+	UseAll()
+
+	f := form.New(schema.New(schema.Object{
+		Properties: schema.ElementMap{
+			"ratio": schema.Number{Enum: []float64{0.5, 0.125}},
+		},
+	}),
+		form.Element{
+			Type: "select",
+			Path: "ratio",
+		},
+	)
+
+	value := mapof.Any{"ratio": 0.125}
+
+	result, err := f.Editor(&value, nil)
+	expected := `<select id="select-ratio" name="ratio" tabIndex="0"><option value=""></option><option value="0.50">0.50</option><option value="0.125" selected="true">0.125</option></select>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, result)
+}

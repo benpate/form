@@ -107,7 +107,7 @@ func (widget Text) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 
 		tag.Type("number")
 
-		tag.Attr("step", convert.String(convert.FloatDefault(e.Options.GetAny("step", value), 0.01)))
+		tag.Attr("step", form.FormatValue(convert.FloatDefault(e.Options.GetAny("step", value), 0.01)))
 
 		if s.Minimum.IsPresent() {
 			tag.Attr("min", s.Minimum.String())

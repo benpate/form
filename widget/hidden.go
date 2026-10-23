@@ -3,7 +3,6 @@ package widget
 import (
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 )
 
 // Hidden is a widget that creates a hidden input field.
@@ -21,7 +20,7 @@ func (widget Hidden) Edit(f *form.Form, e *form.Element, _ form.LookupProvider, 
 	var elementValue string
 
 	if optionValue, ok := e.Options.GetAnyOK("value", value); ok {
-		elementValue = convert.String(optionValue)
+		elementValue = form.FormatValue(optionValue)
 	} else {
 		elementValue = e.GetString(value, &f.Schema)
 	}

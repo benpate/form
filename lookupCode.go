@@ -21,18 +21,8 @@ type LookupCode struct {
 	Href        string `json:"href,omitempty"        form:"href"        bson:"href,omitempty"`        // Optional URL to use when using this LookupCode
 }
 
-// NewLookupCode creates a new LookupCode from a string
-func NewLookupCode(value string) LookupCode {
-	return LookupCode{
-		Value: value,
-		Label: value,
-	}
-}
-
-// ParseLookupCode converts a number of values into a LookupCode, including:
-// LookupCode, , mapof.Any, mapof.String, map[string]any, map[string]string, and
-// string. For strings, the string value is used for both the .Value and .Label
-// If no compatible type is found, then an empty LookupCode is returned.
+// ParseLookupCode converts a LookupCode, a map, a string, or a number into a LookupCode, using a
+// string or number as both its Value and Label. Anything else returns an empty LookupCode.
 func ParseLookupCode(value any) LookupCode {
 
 	switch typed := value.(type) {
@@ -47,10 +37,13 @@ func ParseLookupCode(value any) LookupCode {
 			Label: typed,
 		}
 
+	case float64, float32, int, int64:
+		return NewLookupCode(FormatValue(typed))
+
 	case mapof.Any:
 
 		return LookupCode{
-			Value:       typed.GetString("value"),
+			Value:       FormatValue(typed["value"]),
 			Label:       typed.GetString("label"),
 			Description: typed.GetString("description"),
 			Icon:        typed.GetString("icon"),
@@ -77,6 +70,14 @@ func ParseLookupCode(value any) LookupCode {
 	}
 
 	return LookupCode{}
+}
+
+// NewLookupCode creates a new LookupCode from a string
+func NewLookupCode(value string) LookupCode {
+	return LookupCode{
+		Value: value,
+		Label: value,
+	}
 }
 
 // ID returns the unique ID of the LookupCode, allowing them to
@@ -150,7 +151,7 @@ func getSchemaEnumeration(schemaElement schema.Element) []string {
 		return convert.SliceOfString(s.Enum)
 
 	case schema.Number:
-		return convert.SliceOfString(s.Enum)
+		return formatValues(s.Enum)
 
 	case schema.String:
 		return s.Enum

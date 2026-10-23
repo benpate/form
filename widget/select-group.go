@@ -8,7 +8,6 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/form/groupie"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 	"github.com/benpate/rosetta/sliceof"
@@ -157,19 +156,23 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 		return derp.Wrap(err, location, "Unable to marshal lookupCodes into JSON", e)
 	}
 
-	// Escape single quotes in the JSON string
-	lookupJSON := string(lookupJSONbytes)
-	lookupJSON = strings.ReplaceAll(lookupJSON, `\`, `\\`)
-	lookupJSON = strings.ReplaceAll(lookupJSON, "'", "\\'")
-
-	// Construct parameters for the hyperscript behavior
+	// Construct parameters for the hyperscript behavior. The child value is stored data, so it
+	// is quoted like the options; "children" comes from the trusted form definition.
 	hyperscript := "install SelectGroup(" +
 		"children: '" + children + "', " +
-		"options:'" + lookupJSON + "', " +
-		"value:'" + convert.String(childValue) + "'" +
+		"options:" + hyperscriptQuote(string(lookupJSONbytes)) + ", " +
+		"value:" + hyperscriptQuote(form.FormatValue(childValue)) +
 		")"
 
 	// Add the behavior to the selectBox
 	selectBox.Script(hyperscript)
 	return nil
+}
+
+// hyperscriptQuote returns a single-quoted hyperscript string holding value, escaping the
+// backslashes and quotes that would otherwise end the string early
+func hyperscriptQuote(value string) string {
+	value = strings.ReplaceAll(value, `\`, `\\`)
+	value = strings.ReplaceAll(value, "'", `\'`)
+	return "'" + value + "'"
 }

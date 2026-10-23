@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/benpate/form"
+	"github.com/benpate/rosetta/mapof"
 	"github.com/stretchr/testify/require"
 )
 
@@ -141,6 +142,49 @@ func TestTextOptions(t *testing.T) {
 
 	result, err := f.Editor(nil, testLookupProvider{})
 	expected := `<input name="tag" id="tag" tabIndex="0" list="datalist-tag" type="text" value=""><datalist id="datalist-tag"><option value="ONE"><option value="TWO"><option value="THREE"><option value="FOUR"><option value="FIVE"></datalist>`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, result)
+}
+
+// TestFloat_FractionalValue confirms that a stored fraction renders with every digit it needs
+func TestFloat_FractionalValue(t *testing.T) {
+
+	UseAll()
+
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type: "text",
+			Path: "distance",
+		},
+	)
+
+	value := mapof.Any{"distance": 12.345}
+
+	result, err := f.Editor(&value, testLookupProvider{})
+	expected := `<input name="distance" id="distance.text" tabIndex="0" type="number" step="0.01" min="10" max="100" required="true" value="12.345">`
+
+	require.Nil(t, err)
+	require.Equal(t, expected, result)
+}
+
+// TestFloat_FractionalStep confirms that a step finer than two decimals renders with every digit
+func TestFloat_FractionalStep(t *testing.T) {
+
+	UseAll()
+
+	f := form.New(
+		getTestSchema(),
+		form.Element{
+			Type:    "text",
+			Path:    "distance",
+			Options: mapof.Template{"step": 0.001},
+		},
+	)
+
+	result, err := f.Editor(nil, testLookupProvider{})
+	expected := `<input name="distance" id="distance.text" tabIndex="0" type="number" step="0.001" min="10" max="100" required="true" value="">`
 
 	require.Nil(t, err)
 	require.Equal(t, expected, result)

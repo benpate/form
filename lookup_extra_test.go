@@ -89,8 +89,12 @@ func TestParseLookupCode_Types(t *testing.T) {
 	require.Equal(t, "v3", ParseLookupCode(map[string]any{"value": "v3"}).Value)
 	require.Equal(t, "v4", ParseLookupCode(map[string]string{"value": "v4"}).Value)
 
+	// Numbers use the same value for Value and Label, with every digit they need
+	require.Equal(t, LookupCode{Value: "42", Label: "42"}, ParseLookupCode(42))
+	require.Equal(t, LookupCode{Value: "0.125", Label: "0.125"}, ParseLookupCode(0.125))
+
 	// Unknown type returns an empty LookupCode
-	require.Equal(t, LookupCode{}, ParseLookupCode(42))
+	require.Equal(t, LookupCode{}, ParseLookupCode(true))
 }
 
 func TestLookupCode_GetPointer(t *testing.T) {

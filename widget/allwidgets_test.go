@@ -234,3 +234,31 @@ func TestWidget_Metadata(t *testing.T) {
 		_ = widget.Encoding(&element)
 	}
 }
+
+// TestWidget_Place_KeepsCoordinatePrecision confirms that stored coordinates render with every
+// digit, so re-saving the form does not move the place
+func TestWidget_Place_KeepsCoordinatePrecision(t *testing.T) {
+
+	UseAll()
+
+	s := schema.New(schema.Object{
+		Properties: schema.ElementMap{
+			"location": schema.Object{
+				Properties: schema.ElementMap{
+					"formatted": schema.String{},
+					"latitude":  schema.Number{},
+					"longitude": schema.Number{},
+				},
+			},
+		},
+	})
+
+	f := form.New(s, form.Element{Type: "place", Path: "location", ID: "loc"})
+	value := mapof.Any{"location": mapof.Any{"formatted": "New York, NY", "latitude": 40.712776, "longitude": -74.005974}}
+
+	result, err := f.Editor(&value, nil)
+
+	require.NoError(t, err)
+	require.Contains(t, result, `class="PlaceSelectLatitude" value="40.712776"`)
+	require.Contains(t, result, `class="PlaceSelectLongitude" value="-74.005974"`)
+}
