@@ -86,12 +86,12 @@ func (element *Element) Encoding() string {
 // GetString returns the value of the element at the provided path.  If the schema is present,
 // then it is used to resolve the value.  If the schema is not present, then the value is returned using path lookup instead.
 func (element *Element) GetString(value any, s *schema.Schema) string {
-	return convert.String(element.getValue(value, s))
+	return FormatValue(element.getValue(value, s))
 }
 
 // GetSliceOfString rturns a slice of strings for a provided path.
 func (element *Element) GetSliceOfString(value any, s *schema.Schema) []string {
-	return convert.SliceOfString(element.getValue(value, s))
+	return formatValues(element.getValue(value, s))
 }
 
 // IsEmpty returns TRUE if the element is not defined

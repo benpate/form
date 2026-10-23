@@ -8,7 +8,6 @@ import (
 	"github.com/benpate/form"
 	"github.com/benpate/form/groupie"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 	"github.com/benpate/rosetta/slice"
 	"github.com/benpate/rosetta/sliceof"
@@ -166,7 +165,7 @@ func (widget SelectGroup) setChildWidget(f *form.Form, e *form.Element, lookupCo
 	hyperscript := "install SelectGroup(" +
 		"children: '" + children + "', " +
 		"options:'" + lookupJSON + "', " +
-		"value:'" + convert.String(childValue) + "'" +
+		"value:'" + form.FormatValue(childValue) + "'" +
 		")"
 
 	// Add the behavior to the selectBox

@@ -7,7 +7,6 @@ import (
 	"github.com/benpate/derp"
 	"github.com/benpate/form"
 	"github.com/benpate/html"
-	"github.com/benpate/rosetta/convert"
 	"github.com/benpate/rosetta/schema"
 )
 
@@ -239,7 +238,7 @@ func (widget Place) getString(element *form.Element, schema *schema.Schema, subP
 	path := element.Path + "." + subPath
 
 	if result, err := schema.Get(value, path); err == nil {
-		return convert.String(result)
+		return form.FormatValue(result)
 	}
 
 	return ""

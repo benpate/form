@@ -229,3 +229,20 @@ func TestGetLookupCode_Fractional_RoundTrip(t *testing.T) {
 		require.Equal(t, enum[index], object["test"], "posted value %q", lookupCode.Value)
 	}
 }
+
+// TestGetLookupCode_SliceOfNumbers confirms that an enum of bare numbers becomes one lookup code
+// per number, with every digit each one needs
+func TestGetLookupCode_SliceOfNumbers(t *testing.T) {
+
+	element, err := Parse(`{"type":"select","path":"test","options":{"enum":[1,0.5,0.125]}}`)
+
+	require.Nil(t, err)
+
+	lookupCodes, writable := GetLookupCodes(&element, nil, nil)
+
+	require.Len(t, lookupCodes, 3)
+	require.Equal(t, LookupCode{Value: "1", Label: "1"}, lookupCodes[0])
+	require.Equal(t, LookupCode{Value: "0.50", Label: "0.50"}, lookupCodes[1])
+	require.Equal(t, LookupCode{Value: "0.125", Label: "0.125"}, lookupCodes[2])
+	require.False(t, writable)
+}
