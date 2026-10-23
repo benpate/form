@@ -46,13 +46,20 @@ func formatValues(value any) []string {
 		return result
 	}
 
-	// Otherwise, format each item separately so that no number is rounded
+	// Otherwise, read the value as a list so that each item can be formatted separately
 	items, ok := convert.SliceOfAnyOk(value)
 
-	if !ok || (len(items) != len(result)) {
+	// RULE: A value that cannot be read as a list keeps the rounded conversion
+	if !ok {
 		return result
 	}
 
+	// RULE: A list that does not line up item for item with the rounded conversion keeps it, too
+	if len(items) != len(result) {
+		return result
+	}
+
+	// Format each item so that no number is rounded
 	formatted := make([]string, len(items))
 
 	for index, item := range items {
