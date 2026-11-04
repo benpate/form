@@ -40,5 +40,6 @@ func UseAll() {
 	form.Use("time", TimePicker{})
 	form.Use("toggle", Toggle{})
 	form.Use("upload", Upload{})
+	form.Use("upload-multiple", UploadMultiple{})
 	form.Use("wysiwyg", WYSIWYG{})
 }
