@@ -15,28 +15,6 @@ type remoteRecord struct {
 	ParentID string
 }
 
-// htmlRemoteForm returns a Form that draws an html-remote element, which has no path, beside a
-// text field, so that a test can see the layout give it a label, an ID, and a description.
-func htmlRemoteForm(element form.Element) form.Form {
-
-	UseAll()
-
-	return form.New(
-		schema.New(schema.Object{
-			Properties: schema.ElementMap{
-				"label": schema.String{},
-			},
-		}),
-		form.Element{
-			Type: "layout-vertical",
-			Children: []form.Element{
-				{Type: "text", Path: "label"},
-				element,
-			},
-		},
-	)
-}
-
 // TestHTMLRemote_LoadsTheURLAtOnce draws one empty div that fills itself from the templated URL
 // as soon as it is on the page, with the element's ID so the layout's label names it
 func TestHTMLRemote_LoadsTheURLAtOnce(t *testing.T) {
@@ -100,4 +78,26 @@ func TestHTMLRemote_Metadata(t *testing.T) {
 	require.True(t, widget.ShowLabels())
 	require.Equal(t, "BOTTOM", widget.ShowDescriptions())
 	require.Equal(t, "", widget.Encoding(&form.Element{}))
+}
+
+// htmlRemoteForm returns a Form that draws an html-remote element, which has no path, beside a
+// text field, so that a test can see the layout give it a label, an ID, and a description.
+func htmlRemoteForm(element form.Element) form.Form {
+
+	UseAll()
+
+	return form.New(
+		schema.New(schema.Object{
+			Properties: schema.ElementMap{
+				"label": schema.String{},
+			},
+		}),
+		form.Element{
+			Type: "layout-vertical",
+			Children: []form.Element{
+				{Type: "text", Path: "label"},
+				element,
+			},
+		},
+	)
 }
