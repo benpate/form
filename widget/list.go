@@ -16,44 +16,12 @@ import (
 // List is a widget that edits an ordered list of strings, one text input per row.
 type List struct{}
 
-// View generates the read-only HTML for this list, one row of text per value.
-func (widget List) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
-
-	const location = "widget.List.View"
-
-	if _, _, err := listSchema(f, e); err != nil {
-		return derp.Wrap(err, location, "Invalid schema for list", e.Path)
-	}
-
-	values := e.GetSliceOfString(value, &f.Schema)
-
-	// An empty list draws the same empty value as every other widget
-	if len(values) == 0 {
-		drawValue(b, "")
-		return nil
-	}
-
-	// Draw each value as one row of text
-	b.Table().Class("grid", "list")
-	b.TBody()
-
-	for _, item := range values {
-		b.TR().Class("grid-row")
-		b.TD().Class("grid-cell").InnerText(item).Close()
-		b.Close() // TR
-	}
-
-	b.CloseAll()
-
-	// Nothing to see here
-	return nil
-}
-
 // Edit generates the editable HTML for this list: a row per value, a blank row to copy, and an add button.
 func (widget List) Edit(f *form.Form, e *form.Element, provider form.LookupProvider, value any, b *html.Builder) error {
 
 	const location = "widget.List.Edit"
 
+	// RULE: A read-only list cannot be edited, so it draws its View instead
 	if e.ReadOnly {
 		return widget.View(f, e, provider, value, b)
 	}
@@ -72,6 +40,7 @@ func (widget List) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 		values = []string{""}
 	}
 
+	// Name the wrapper, and the hint that every row's input points to
 	elementID := getElementID(e)
 	hintID := elementID + "-hint"
 
@@ -133,9 +102,87 @@ func (widget List) Edit(f *form.Form, e *form.Element, provider form.LookupProvi
 	return nil
 }
 
+// View generates the read-only HTML for this list, one row of text per value.
+func (widget List) View(f *form.Form, e *form.Element, _ form.LookupProvider, value any, b *html.Builder) error {
+
+	const location = "widget.List.View"
+
+	// RULE: The path must hold an Array of Strings, as it must for Edit
+	if _, _, err := listSchema(f, e); err != nil {
+		return derp.Wrap(err, location, "Invalid schema for list", e.Path)
+	}
+
+	// An empty list draws the same empty value as every other widget
+	values := e.GetSliceOfString(value, &f.Schema)
+
+	if len(values) == 0 {
+		drawValue(b, "")
+		return nil
+	}
+
+	// Draw each value as one row of text
+	b.Table().Class("grid", "list")
+	b.TBody()
+
+	for _, item := range values {
+		b.TR().Class("grid-row")
+		b.TD().Class("grid-cell").InnerText(item).Close()
+		b.Close() // TR
+	}
+
+	b.CloseAll()
+
+	// Nothing to see here
+	return nil
+}
+
+// SetURLValue is a part of the URLValueSetter interface.
+// It writes the posted rows, trimmed and without blanks or repeats, as the list's new value.
+func (widget List) SetURLValue(f *form.Form, e *form.Element, object any, values url.Values) error {
+
+	const location = "widget.List.SetURLValue"
+
+	// RULE: Never write a path that is not an Array of Strings
+	if _, _, err := listSchema(f, e); err != nil {
+		return derp.Wrap(err, location, "Invalid schema for list", e.Path)
+	}
+
+	// Write the cleaned rows through a *sliceof.String, as form.schemaSafeValue writes an Array path
+	result := cleanList(values[e.Path])
+
+	if err := f.Schema.Set(object, e.Path, &result); err != nil {
+		return derp.Wrap(err, location, "Unable to set list", e.Path)
+	}
+
+	// Check it twice
+	return nil
+}
+
+// listSchema returns the Array at this element's path and the String that each of its items must be,
+// or an error when the path holds anything else.
+func listSchema(f *form.Form, e *form.Element) (schema.Array, schema.String, error) {
+
+	const location = "widget.listSchema"
+
+	arraySchema, isArray := e.GetSchema(&f.Schema).(schema.Array)
+
+	if !isArray {
+		return schema.Array{}, schema.String{}, derp.Internal(location, "List path must be an Array", e.Path)
+	}
+
+	itemSchema, isString := arraySchema.Items.(schema.String)
+
+	if !isString {
+		return schema.Array{}, schema.String{}, derp.Internal(location, "List items must be Strings", e.Path)
+	}
+
+	return arraySchema, itemSchema, nil
+}
+
 // drawRow writes one editable row: the drag grip, the text input, and the X that removes it.
 func (widget List) drawRow(b *html.Builder, e *form.Element, itemSchema schema.String, value string, hintID string, canDelete bool) {
 
+	// Each row is a table row, which is what the ListWidget behavior and Sortable move
 	b.TR().Class("grid-row")
 
 	// The grip is a pointer target only; the keys move a row from its input
@@ -152,6 +199,7 @@ func (widget List) drawRow(b *html.Builder, e *form.Element, itemSchema schema.S
 		Aria("describedby", hintID).
 		Attr("autocomplete", "off")
 
+	// The item String's limits go on every input, so the browser checks each row
 	if itemSchema.MinLength > 0 {
 		input.Attr("minlength", strconv.Itoa(itemSchema.MinLength))
 	}
@@ -179,27 +227,6 @@ func (widget List) drawRow(b *html.Builder, e *form.Element, itemSchema schema.S
 	b.Close() // TD
 
 	b.Close() // TR
-}
-
-// SetURLValue is a part of the URLValueSetter interface.
-// It writes the posted rows, trimmed and without blanks or repeats, as the list's new value.
-func (widget List) SetURLValue(f *form.Form, e *form.Element, object any, values url.Values) error {
-
-	const location = "widget.List.SetURLValue"
-
-	if _, _, err := listSchema(f, e); err != nil {
-		return derp.Wrap(err, location, "Invalid schema for list", e.Path)
-	}
-
-	// Pointer to a sliceof.String, as form.schemaSafeValue writes an Array path
-	result := cleanList(values[e.Path])
-
-	if err := f.Schema.Set(object, e.Path, &result); err != nil {
-		return derp.Wrap(err, location, "Unable to set list", e.Path)
-	}
-
-	// Check it twice
-	return nil
 }
 
 // cleanList trims each value, drops blanks, and drops any value that repeats an earlier one ignoring case.
@@ -231,49 +258,24 @@ func cleanList(values []string) sliceof.String {
 	return result
 }
 
-// listSchema returns the Array at this element's path and the String that each of its items must be,
-// or an error when the path holds anything else.
-func listSchema(f *form.Form, e *form.Element) (schema.Array, schema.String, error) {
-
-	const location = "widget.listSchema"
-
-	arraySchema, isArray := e.GetSchema(&f.Schema).(schema.Array)
-
-	if !isArray {
-		return schema.Array{}, schema.String{}, derp.Internal(location, "List path must be an Array", e.Path)
-	}
-
-	itemSchema, isString := arraySchema.Items.(schema.String)
-
-	if !isString {
-		return schema.Array{}, schema.String{}, derp.Internal(location, "List items must be Strings", e.Path)
-	}
-
-	return arraySchema, itemSchema, nil
-}
-
 /***********************************
  * Widget Metadata
  ***********************************/
 
 // ShowLabels is a part of the Widget interface.
-// It returns TRUE if this widget requires labels to be displayed around it.
-// For List widgets, labels are shown, so this always returns TRUE.
+// It returns TRUE, because a list is drawn with its label.
 func (widget List) ShowLabels() bool {
 	return true
 }
 
 // ShowDescriptions is a part of the Widget interface.
-// It returns the position of the description for this widget,
-// which is either "TOP", "BOTTOM", or "NONE".
+// It returns "BOTTOM", so the description is drawn below the list.
 func (widget List) ShowDescriptions() string {
 	return "BOTTOM"
 }
 
 // Encoding is a part of the Widget interface.
-// It returns the encoding type for this widget.
-// For List widgets, there is no special encoding,
-// so this always returns an empty string.
+// It returns an empty string, because a list needs no special encoding.
 func (widget List) Encoding(_ *form.Element) string {
 	return ""
 }

@@ -12,29 +12,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// listForm returns a Form that draws a list widget over "tags", an Array of at most three Strings.
-func listForm(options mapof.Template) form.Form {
-
-	UseAll()
-
-	return form.New(
-		schema.New(schema.Object{
-			Properties: schema.ElementMap{
-				"tags":   schema.Array{MinLength: 1, MaxLength: 3, Items: schema.String{MaxLength: 20, Pattern: "^[a-z]+$"}},
-				"name":   schema.String{},
-				"counts": schema.Array{Items: schema.Integer{}},
-			},
-		}),
-		form.Element{Type: "list", Path: "tags", Label: "Tags", Options: options},
-	)
-}
-
-// listRowCount returns the number of editable rows drawn in the table, not counting the template's.
-func listRowCount(html string) int {
-	table, _, _ := strings.Cut(html, "<template")
-	return strings.Count(table, `<tr class="grid-row">`)
-}
-
 func TestList_Edit(t *testing.T) {
 
 	f := listForm(nil)
@@ -260,4 +237,27 @@ func TestCleanList(t *testing.T) {
 	require.Equal(t, sliceof.String{}, cleanList(nil))
 	require.Equal(t, sliceof.String{"Ä"}, cleanList([]string{"Ä", "ä"}))
 	require.Equal(t, sliceof.String{"one two"}, cleanList([]string{" one two "}))
+}
+
+// listForm returns a Form that draws a list widget over "tags", an Array of at most three Strings.
+func listForm(options mapof.Template) form.Form {
+
+	UseAll()
+
+	return form.New(
+		schema.New(schema.Object{
+			Properties: schema.ElementMap{
+				"tags":   schema.Array{MinLength: 1, MaxLength: 3, Items: schema.String{MaxLength: 20, Pattern: "^[a-z]+$"}},
+				"name":   schema.String{},
+				"counts": schema.Array{Items: schema.Integer{}},
+			},
+		}),
+		form.Element{Type: "list", Path: "tags", Label: "Tags", Options: options},
+	)
+}
+
+// listRowCount returns the number of editable rows drawn in the table, not counting the template's.
+func listRowCount(html string) int {
+	table, _, _ := strings.Cut(html, "<template")
+	return strings.Count(table, `<tr class="grid-row">`)
 }
