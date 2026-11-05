@@ -140,13 +140,20 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 
 	const location = "form.Element.replaceNewLookup"
 
-	// RULE: lookupProvider must not be nil
-	if lookupProvider == nil {
+	// RULE: value MUST match the ::NEWVALUE:: new item identifier
+	if !strings.HasPrefix(value, NewItemIdentifier) {
 		return value, false, nil
 	}
 
-	// RULE: value MUST match the ::NEWVALUE:: new item identifier
-	if !strings.HasPrefix(value, NewItemIdentifier) {
+	// RULE: A new value must have a name, whether or not it can be written
+	newName := strings.TrimPrefix(value, NewItemIdentifier)
+
+	if strings.TrimSpace(newName) == "" {
+		return value, false, derp.Validation("New value must have a name", element.Path)
+	}
+
+	// RULE: lookupProvider must not be nil
+	if lookupProvider == nil {
 		return value, false, nil
 	}
 
@@ -167,7 +174,6 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 	// If the LookupGroup is writable, then try to add a new value
 	if writableGroup, ok := lookupGroup.(WritableLookupGroup); ok {
 
-		newName := strings.TrimPrefix(value, NewItemIdentifier)
 		newValue, err := writableGroup.Add(newName)
 
 		// Report the name that was rejected, not the empty value Add returned for it.
