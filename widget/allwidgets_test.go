@@ -62,7 +62,6 @@ func TestWidget_InputWidgets(t *testing.T) {
 		{Type: "datetime", Path: "other"},
 		{Type: "time", Path: "other"},
 		{Type: "upload", Path: "other"},
-		{Type: "upload-multiple", Options: mapof.Template{"name": "other", "url": "/remote/{{.name}}"}},
 		{Type: "wysiwyg", Path: "ology.biology"},
 	}
 
@@ -221,7 +220,7 @@ func TestWidget_Metadata(t *testing.T) {
 		"layout-group", "layout-horizontal", "layout-tabs", "layout-vertical",
 		"multiselect", "password", "place", "radio", "radio-button-group",
 		"radio-button-group-horizontal", "radio-colors", "select", "select-group",
-		"text", "textarea", "time", "toggle", "upload", "upload-multiple", "wysiwyg",
+		"text", "textarea", "time", "toggle", "upload", "wysiwyg",
 	}
 
 	for _, widgetType := range types {
