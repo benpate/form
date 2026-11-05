@@ -217,7 +217,7 @@ func TestWidget_Metadata(t *testing.T) {
 	types := []string{
 		"checkbox", "check-button", "check-button-group", "colorpicker", "container",
 		"date", "datetime", "heading", "html", "html-remote", "hidden", "label",
-		"layout-group", "layout-horizontal", "layout-tabs", "layout-vertical",
+		"layout-group", "layout-horizontal", "layout-tabs", "layout-vertical", "list",
 		"multiselect", "password", "place", "radio", "radio-button-group",
 		"radio-button-group-horizontal", "radio-colors", "select", "select-group",
 		"text", "textarea", "time", "toggle", "upload", "wysiwyg",

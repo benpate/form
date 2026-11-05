@@ -106,6 +106,13 @@ If a `Label` is provided, then it is entered into the HTML result as plain text.
 
 If a `Description` is provided, then it is entered into the HTML as HTML.
 
+### type: "list"
+This renders an ordered list of free-text values as rows of a table, one text input per row, with a handle to drag each row, an X to remove it, and an add button below. Its path must be an `Array` of `String`. Rows post in their order, and the server trims each value and drops blank rows and repeats that differ only in case. The Array's `maxLength` hides the add button, its `minLength` disables the X, and the item String's `minLength`, `maxLength`, and `pattern` go onto each input. The keys and the drag come from a Hyperscript behavior, `ListWidget`, that the host application supplies. It allows the following additional option:
+
+|           |                                                       |
+| --------- | ----------------------------------------------------- |
+| add-label | The add button's text. Default is "Add a Row".        |
+
 ### type: "multiselect"
 This renders is a custom Hyperscript widget that looks like a scrollable multiselect input.
 

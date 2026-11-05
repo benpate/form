@@ -25,6 +25,7 @@ func UseAll() {
 	form.Use("layout-horizontal", LayoutHorizontal{})
 	form.Use("layout-tabs", LayoutTabs{})
 	form.Use("layout-vertical", LayoutVertical{})
+	form.Use("list", List{})
 	form.Use("multiselect", Multiselect{})
 	form.Use("password", Password{})
 	form.Use("place", Place{})
