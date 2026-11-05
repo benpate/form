@@ -190,7 +190,7 @@ func TestReplaceNewLookup_Writable(t *testing.T) {
 }
 
 func TestReplaceNewLookup_NilProvider(t *testing.T) {
-	element := Element{}
+	element := Element{Options: mapof.Template{"provider": "things"}}
 	value, updated, err := element.replaceNewLookup(nil, NewItemIdentifier+"x")
 	require.NoError(t, err)
 	require.False(t, updated)
@@ -265,6 +265,20 @@ func TestReplaceNewLookup_KeepsNameAsTyped(t *testing.T) {
 	require.Equal(t, []string{" Book Club "}, group.added)
 }
 
+// TestReplaceNewLookup_PlainText passes the sentinel through unchanged on an element with no lookup provider.
+func TestReplaceNewLookup_PlainText(t *testing.T) {
+
+	element := Element{Path: "name"}
+	provider := mockProvider{group: &mockWritableGroup{}}
+
+	for _, posted := range []string{NewItemIdentifier, NewItemIdentifier + "   ", NewItemIdentifier + "x"} {
+		value, updated, err := element.replaceNewLookup(provider, posted)
+		require.NoError(t, err, "posted %q", posted)
+		require.False(t, updated, "posted %q", posted)
+		require.Equal(t, posted, value, "posted %q", posted)
+	}
+}
+
 // TestSetURLValues_BlankNewValue fails the save on a blank "add another", before it reaches Add.
 func TestSetURLValues_BlankNewValue(t *testing.T) {
 
@@ -288,6 +302,26 @@ func TestSetURLValues_BlankNewValue(t *testing.T) {
 	require.True(t, derp.IsValidationError(err), "a blank name must fail the save as invalid input: %v", err)
 	require.Empty(t, group.added)
 	require.Equal(t, "stored", object.GetString("circle"))
+}
+
+// TestSetURLValues_SentinelInPlainText saves the sentinel as typed in a field with no lookup provider.
+func TestSetURLValues_SentinelInPlainText(t *testing.T) {
+
+	useTestWidget()
+
+	s := schema.New(schema.Object{Properties: schema.ElementMap{
+		"name": schema.String{},
+	}})
+
+	form := New(s, Element{Children: []Element{
+		{Type: "test", Path: "name"},
+	}})
+
+	object := mapof.Any{"name": "Sarah"}
+	values := url.Values{"name": {NewItemIdentifier}}
+
+	require.NoError(t, form.SetURLValues(&object, values, mockProvider{group: &mockWritableGroup{}}))
+	require.Equal(t, NewItemIdentifier, object.GetString("name"))
 }
 
 // --- Elements the form does not show ---

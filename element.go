@@ -145,6 +145,13 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 		return value, false, nil
 	}
 
+	// RULE: Only an element with a lookup provider takes new values; elsewhere the sentinel is plain text
+	groupName := element.Options.GetString("provider", nil)
+
+	if groupName == "" {
+		return value, false, nil
+	}
+
 	// RULE: A new value must have a name, whether or not it can be written
 	newName := strings.TrimPrefix(value, NewItemIdentifier)
 
@@ -154,13 +161,6 @@ func (element Element) replaceNewLookup(lookupProvider LookupProvider, value str
 
 	// RULE: lookupProvider must not be nil
 	if lookupProvider == nil {
-		return value, false, nil
-	}
-
-	// Get the lookup provider name
-	groupName := element.Options.GetString("provider", nil)
-
-	if groupName == "" {
 		return value, false, nil
 	}
 

@@ -80,10 +80,9 @@ func TestOptionTemplates_Concurrent(t *testing.T) {
 	for index := range 20 {
 		wait.Go(func() {
 			username := "user" + strconv.Itoa(index)
-			result, err := form.Editor(getTestSchema(), element, mapof.Any{"username": username, "name": "a.png"}, nil)
 
 			// Report a mismatch rather than failing here, because require cannot run off the test goroutine
-			if (err != nil) || !strings.Contains(result, `url:&#39;/v?user=`+username+`&#39;`) {
+			if result, err := form.Editor(getTestSchema(), element, mapof.Any{"username": username, "name": "a.png"}, nil); (err != nil) || !strings.Contains(result, `url:&#39;/v?user=`+username+`&#39;`) {
 				mismatches <- username
 			}
 		})
