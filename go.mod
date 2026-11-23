@@ -1,6 +1,6 @@
 module github.com/benpate/form
 
-go 1.27.3
+go 1.27.4
 
 require (
 	github.com/benpate/derp v0.48.0
